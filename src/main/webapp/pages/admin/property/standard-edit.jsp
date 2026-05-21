@@ -1,0 +1,139 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.property.model.PropertyStandard" %>
+<%
+    PropertyStandard entity = (PropertyStandard) request.getAttribute("entity");
+    Boolean isEdit = (Boolean) request.getAttribute("isEdit");
+    if (isEdit == null) isEdit = false;
+    String error = (String) request.getAttribute("error");
+    if (error == null) error = "";
+%>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title><%= isEdit ? "编辑" : "新增" %>收费标准 - 小区物业管理系统</title>
+    <link href="${pageContext.request.contextPath}/css/common.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 顶部栏 -->
+    <div class="top-bar">
+        <h4>小区物业管理系统</h4>
+        <div>当前用户：<%= session.getAttribute("currentUser") != null ? session.getAttribute("currentUser") : "管理员" %></div>
+    </div>
+    
+    <!-- 主容器 -->
+    <div class="main-container">
+        <!-- 侧边栏 -->
+        <div class="sidebar">
+            <div class="sidebar-title">管理菜单</div>
+            <a href="${pageContext.request.contextPath}/admin/staff?action=list" class="sidebar-item">工作人员管理</a>
+            <a href="${pageContext.request.contextPath}/admin/resident?action=list" class="sidebar-item">住户管理</a>
+            <a href="${pageContext.request.contextPath}/admin/property?action=list" class="sidebar-item active">物业费管理</a>
+            <a href="${pageContext.request.contextPath}/admin/water?action=list" class="sidebar-item">水费管理</a>
+            <a href="${pageContext.request.contextPath}/admin/parking?action=list" class="sidebar-item">车位费管理</a>
+            <a href="${pageContext.request.contextPath}/admin/repair?action=list" class="sidebar-item">维修管理</a>
+            <a href="${pageContext.request.contextPath}/admin/ad?action=list" class="sidebar-item">广告管理</a>
+            <div class="sidebar-divider"></div>
+            <a href="${pageContext.request.contextPath}/logout" class="sidebar-item">退出登录</a>
+        </div>
+        
+        <!-- 内容区 -->
+        <div class="content-area">
+            <!-- 内部导航 -->
+            <div class="property-nav">
+                <a href="${pageContext.request.contextPath}/admin/property?action=list">物业费明细</a>
+                <a href="${pageContext.request.contextPath}/admin/property/standard?action=list" class="active">收费标准</a>
+                <a href="${pageContext.request.contextPath}/admin/property/batch?action=add">生成账单</a>
+                <a href="${pageContext.request.contextPath}/admin/property/appeal?action=list">申诉管理</a>
+                <a href="${pageContext.request.contextPath}/admin/property/report?action=list">统计报表</a>
+            </div>
+            
+            <!-- 页面标题 -->
+            <h2 class="page-title"><%= isEdit ? "编辑" : "新增" %>收费标准</h2>
+            
+            <!-- 错误提示 -->
+            <% if (!error.isEmpty()) { %>
+            <div class="card" style="border-left:4px solid var(--error);margin-bottom:16px">
+                <p style="color:var(--error);margin:0"><%= error %></p>
+            </div>
+            <% } %>
+            
+            <!-- 编辑表单 -->
+            <div class="card">
+                <form method="post" action="${pageContext.request.contextPath}/admin/property/standard?action=save">
+                    <% if (isEdit && entity != null) { %>
+                    <input type="hidden" name="standardId" value="<%= entity.getStandardId() %>">
+                    <% } %>
+                    
+                    <div class="form-group">
+                        <label class="form-label">收费类型 <span class="required">*</span></label>
+                        <select name="feeType" class="form-control" required>
+                            <option value="">请选择</option>
+                            <option value="物业费" <%= "物业费".equals(entity != null ? entity.getFeeType() : "") ? "selected" : "" %>>物业费</option>
+                            <option value="绿化费" <%= "绿化费".equals(entity != null ? entity.getFeeType() : "") ? "selected" : "" %>>绿化费</option>
+                            <option value="电梯费" <%= "电梯费".equals(entity != null ? entity.getFeeType() : "") ? "selected" : "" %>>电梯费</option>
+                            <option value="停车费" <%= "停车费".equals(entity != null ? entity.getFeeType() : "") ? "selected" : "" %>>停车费</option>
+                            <option value="垃圾清运费" <%= "垃圾清运费".equals(entity != null ? entity.getFeeType() : "") ? "selected" : "" %>>垃圾清运费</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">单价（元/m²/月）<span class="required">*</span></label>
+                        <input type="number" name="unitPrice" class="form-control" step="0.01" min="0" required
+                               value="<%= entity != null && entity.getUnitPrice() != null ? entity.getUnitPrice() : "" %>"
+                               placeholder="例如：2.50">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">生效日期 <span class="required">*</span></label>
+                        <input type="date" name="effectiveDate" class="form-control" required
+                               value="<%= entity != null && entity.getEffectiveDate() != null ? new java.text.SimpleDateFormat("yyyy-MM-dd").format(entity.getEffectiveDate()) : "" %>">
+                    </div>
+                    
+                    <% if (isEdit && entity != null) { %>
+                    <div class="form-group">
+                        <label class="form-label">状态</label>
+                        <select name="status" class="form-control">
+                            <option value="生效" <%= "生效".equals(entity.getStatus()) ? "selected" : "" %>>生效</option>
+                            <option value="失效" <%= "失效".equals(entity.getStatus()) ? "selected" : "" %>>失效</option>
+                        </select>
+                    </div>
+                    <% } %>
+                    
+                    <div class="d-flex gap-12">
+                        <button type="submit" class="btn btn-primary">保存</button>
+                        <a href="${pageContext.request.contextPath}/admin/property/standard?action=list" class="btn btn-secondary">取消</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<style>
+.property-nav {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+}
+.property-nav a {
+    padding: 8px 16px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-radius: var(--radius-btn);
+    font-size: 14px;
+    transition: all 0.2s;
+}
+.property-nav a:hover {
+    background-color: var(--bg-page);
+    color: var(--primary);
+}
+.property-nav a.active {
+    background-color: var(--primary);
+    color: white;
+}
+</style>
