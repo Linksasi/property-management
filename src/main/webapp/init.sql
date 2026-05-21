@@ -1,6 +1,7 @@
 -- =============================================
 -- 小区物业管理系统 - 数据库初始化脚本
 -- 数据库名: PropertyManagementDB
+-- 对应文档: 数据库表结构_最终版.md
 -- =============================================
 
 -- 创建数据库
@@ -17,351 +18,378 @@ GO
 -- 公共基础表（系统用户、住户、房屋）
 -- =============================================
 
--- 系统用户表
+-- 1. SystemUser（统一用户登录表）
 CREATE TABLE SystemUser (
-    user_id INT PRIMARY KEY IDENTITY(1,1),
+    user_id VARCHAR(20) PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(100) NOT NULL,
-    user_type VARCHAR(20) NOT NULL,  -- admin, staff, resident
-    create_time DATETIME DEFAULT GETDATE()
+    user_type NVARCHAR(20) NOT NULL,
+    real_name NVARCHAR(50),
+    phone VARCHAR(20),
+    status NVARCHAR(20) DEFAULT '正常',
+    created_at DATETIME DEFAULT GETDATE()
 );
 
--- 住户表
+-- 2. Resident（住户）
 CREATE TABLE Resident (
-    resident_id INT PRIMARY KEY IDENTITY(1,1),
-    resident_name VARCHAR(50) NOT NULL,
-    gender VARCHAR(10),
-    phone VARCHAR(20),
-    id_card VARCHAR(18),
-    create_time DATETIME DEFAULT GETDATE()
+    resident_id VARCHAR(20) PRIMARY KEY,
+    user_id VARCHAR(20),
+    name NVARCHAR(50) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    id_card VARCHAR(18) NOT NULL UNIQUE,
+    check_in_date DATE NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES SystemUser(user_id)
 );
 
--- 房屋表
+-- 3. Housing（住房）
 CREATE TABLE Housing (
-    building VARCHAR(20),      -- 楼栋
-    unit VARCHAR(10),           -- 单元
-    room_no VARCHAR(20),        -- 房号
-    area DECIMAL(10,2),        -- 面积
-    PRIMARY KEY (building, unit, room_no)
+    housing_id VARCHAR(20) PRIMARY KEY,
+    building VARCHAR(10) NOT NULL,
+    unit VARCHAR(10) NOT NULL,
+    room_no VARCHAR(10) NOT NULL,
+    area DECIMAL(10,2) NOT NULL,
+    floor INT NOT NULL,
+    house_type NVARCHAR(20) NOT NULL
 );
 
--- 住户-房屋关联表
+-- 4. ResidentHousing（住户住房关联表）
 CREATE TABLE ResidentHousing (
-    resident_id INT,
-    building VARCHAR(20),
-    unit VARCHAR(10),
-    room_no VARCHAR(20),
-    relationship VARCHAR(20),  -- owner, tenant
+    resident_id VARCHAR(20),
+    housing_id VARCHAR(20),
     start_date DATE,
-    PRIMARY KEY (resident_id, building, unit, room_no),
-    FOREIGN KEY (resident_id) REFERENCES Resident(resident_id)
+    end_date DATE,
+    is_owner BIT DEFAULT 0,
+    PRIMARY KEY (resident_id, housing_id),
+    FOREIGN KEY (resident_id) REFERENCES Resident(resident_id),
+    FOREIGN KEY (housing_id) REFERENCES Housing(housing_id)
 );
 
 -- =============================================
--- 工作人员表（管理员 + 员工 合并）
+-- 工作人员管理模块
 -- =============================================
 
--- 工种表
+-- 5. WorkType（工种）
 CREATE TABLE WorkType (
-    work_type_id INT PRIMARY KEY IDENTITY(1,1),
-    work_type_name VARCHAR(50) NOT NULL,
-    description VARCHAR(200)
+    worktype_id VARCHAR(20) PRIMARY KEY,
+    worktype_name NVARCHAR(50) NOT NULL
 );
 
--- 工作地点表
+-- 6. WorkLocation（工作地点）
 CREATE TABLE WorkLocation (
-    location_id INT PRIMARY KEY IDENTITY(1,1),
-    location_name VARCHAR(100) NOT NULL,
-    address VARCHAR(200)
+    location_id VARCHAR(20) PRIMARY KEY,
+    location_name NVARCHAR(50) NOT NULL
 );
 
--- 员工表（is_admin=1管理员, is_admin=0员工, work_type_id区分工种）
+-- 7. Staff（工作人员，含管理员）
 CREATE TABLE Staff (
-    staff_id INT PRIMARY KEY IDENTITY(1,1),
-    staff_name VARCHAR(50) NOT NULL,
-    gender VARCHAR(10),
-    phone VARCHAR(20),
-    email VARCHAR(100),
-    work_type_id INT,
-    location_id INT,
-    is_admin INT DEFAULT 0,  -- 1=管理员, 0=普通员工
-    create_time DATETIME DEFAULT GETDATE(),
-    FOREIGN KEY (work_type_id) REFERENCES WorkType(work_type_id),
+    staff_id VARCHAR(20) PRIMARY KEY,
+    user_id VARCHAR(20),
+    name NVARCHAR(50) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    id_card VARCHAR(18) NOT NULL UNIQUE,
+    worktype_id VARCHAR(20),
+    is_admin BIT DEFAULT 0,
+    status NVARCHAR(20) DEFAULT '在职',
+    FOREIGN KEY (user_id) REFERENCES SystemUser(user_id),
+    FOREIGN KEY (worktype_id) REFERENCES WorkType(worktype_id)
+);
+
+-- 8. ShiftRecord（排班记录）
+CREATE TABLE ShiftRecord (
+    shift_id VARCHAR(20) PRIMARY KEY,
+    staff_id VARCHAR(20),
+    location_id VARCHAR(20),
+    shift_date DATE NOT NULL,
+    shift_period NVARCHAR(20) NOT NULL,
+    FOREIGN KEY (staff_id) REFERENCES Staff(staff_id),
     FOREIGN KEY (location_id) REFERENCES WorkLocation(location_id)
 );
 
--- 考勤记录表
-CREATE TABLE ShiftRecord (
-    shift_id INT PRIMARY KEY IDENTITY(1,1),
-    staff_id INT NOT NULL,
-    shift_date DATE NOT NULL,
-    check_in_time DATETIME,
-    check_out_time DATETIME,
-    FOREIGN KEY (staff_id) REFERENCES Staff(staff_id)
+-- =============================================
+-- 广告管理模块
+-- =============================================
+
+-- 9. ExternalAdCompany（广告公司）
+CREATE TABLE ExternalAdCompany (
+    company_id VARCHAR(20) PRIMARY KEY,
+    user_id VARCHAR(20),
+    company_name NVARCHAR(100) NOT NULL,
+    contact NVARCHAR(50) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES SystemUser(user_id)
+);
+
+-- 10. AdStandard（广告收费标准）
+CREATE TABLE AdStandard (
+    standard_id VARCHAR(20) PRIMARY KEY,
+    ad_type NVARCHAR(30) NOT NULL,
+    unit_price DECIMAL(10,2) NOT NULL
+);
+
+-- 11. AdSlot（广告位）
+CREATE TABLE AdSlot (
+    slot_id VARCHAR(20) PRIMARY KEY,
+    location NVARCHAR(100) NOT NULL,
+    standard_id VARCHAR(20),
+    status NVARCHAR(20) DEFAULT '空闲',
+    FOREIGN KEY (standard_id) REFERENCES AdStandard(standard_id)
+);
+
+-- 12. AdApplication（广告入驻申请）
+CREATE TABLE AdApplication (
+    app_id VARCHAR(20) PRIMARY KEY,
+    ad_content NVARCHAR(500) NOT NULL,
+    expect_slot NVARCHAR(100),
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    apply_date DATETIME NOT NULL,
+    status NVARCHAR(20) NOT NULL,
+    slot_id VARCHAR(20),
+    company_id VARCHAR(20),
+    FOREIGN KEY (slot_id) REFERENCES AdSlot(slot_id),
+    FOREIGN KEY (company_id) REFERENCES ExternalAdCompany(company_id)
+);
+
+-- 13. ApprovalRecord（审批记录）
+CREATE TABLE ApprovalRecord (
+    approval_id VARCHAR(20) PRIMARY KEY,
+    app_id VARCHAR(20) UNIQUE,
+    approval_date DATETIME NOT NULL,
+    result NVARCHAR(20) NOT NULL,
+    reject_reason NVARCHAR(500),
+    FOREIGN KEY (app_id) REFERENCES AdApplication(app_id)
 );
 
 -- =============================================
--- 物业费模块
+-- 物业费管理模块
 -- =============================================
 
--- 物业费标准表
+-- 14. PropertyStandard（收费标准）- 已更新：增加status和created_at字段
 CREATE TABLE PropertyStandard (
-    standard_id INT PRIMARY KEY IDENTITY(1,1),
-    housing_type VARCHAR(20),  -- 普通, 高档, 别墅
-    price_per_area DECIMAL(10,4) NOT NULL,  -- 元/平方米
-    description VARCHAR(200)
+    standard_id VARCHAR(20) PRIMARY KEY,
+    fee_type NVARCHAR(30) NOT NULL,
+    unit_price DECIMAL(10,2) NOT NULL,
+    effective_date DATE NOT NULL,
+    status NVARCHAR(20) DEFAULT '生效',
+    created_at DATETIME DEFAULT GETDATE()
 );
 
--- 物业费批次表（按年月生成）
+-- 15. PropertyFeeBatch（物业费批次）
 CREATE TABLE PropertyFeeBatch (
-    batch_id INT PRIMARY KEY IDENTITY(1,1),
-    year_month VARCHAR(7) NOT NULL,  -- 2024-01
-    generate_date DATE,
-    total_amount DECIMAL(12,2),
-    status VARCHAR(20) DEFAULT 'pending'
+    batch_id VARCHAR(20) PRIMARY KEY,
+    bill_month VARCHAR(7) NOT NULL,
+    create_time DATETIME NOT NULL,
+    admin_id VARCHAR(20),
+    FOREIGN KEY (admin_id) REFERENCES Staff(staff_id)
 );
 
--- 物业费明细表
+-- 16. PropertyFeeDetail（物业费明细）
 CREATE TABLE PropertyFeeDetail (
-    detail_id INT PRIMARY KEY IDENTITY(1,1),
-    batch_id INT,
-    building VARCHAR(20),
-    unit VARCHAR(10),
-    room_no VARCHAR(20),
+    detail_id VARCHAR(20) PRIMARY KEY,
+    batch_id VARCHAR(20),
+    housing_id VARCHAR(20),
+    resident_id VARCHAR(20),
+    standard_id VARCHAR(20),
     area DECIMAL(10,2),
-    unit_price DECIMAL(10,4),
-    total_fee DECIMAL(10,2),
-    is_paid INT DEFAULT 0,  -- 0未缴, 1已缴
+    amount DECIMAL(10,2) NOT NULL,
+    paid_amount DECIMAL(10,2) DEFAULT 0,
+    status NVARCHAR(20) NOT NULL,
     due_date DATE,
+    create_date DATETIME DEFAULT GETDATE(),
     paid_date DATETIME,
-    FOREIGN KEY (batch_id) REFERENCES PropertyFeeBatch(batch_id)
+    FOREIGN KEY (batch_id) REFERENCES PropertyFeeBatch(batch_id),
+    FOREIGN KEY (housing_id) REFERENCES Housing(housing_id),
+    FOREIGN KEY (resident_id) REFERENCES Resident(resident_id),
+    FOREIGN KEY (standard_id) REFERENCES PropertyStandard(standard_id)
 );
 
--- 缴费订单表
+-- 17. PaymentOrder（支付订单）
 CREATE TABLE PaymentOrder (
-    order_id INT PRIMARY KEY IDENTITY(1,1),
-    fee_type VARCHAR(20),  -- property, water, parking
-    order_no VARCHAR(50) UNIQUE,
-    resident_id INT,
+    order_id VARCHAR(20) PRIMARY KEY,
+    detail_id VARCHAR(20),
+    order_no VARCHAR(50),
     amount DECIMAL(10,2),
-    payment_method VARCHAR(20),
-    payment_time DATETIME,
-    status VARCHAR(20),
-    FOREIGN KEY (resident_id) REFERENCES Resident(resident_id)
+    payment_method NVARCHAR(20),
+    status NVARCHAR(20) NOT NULL,
+    create_time DATETIME DEFAULT GETDATE(),
+    pay_time DATETIME,
+    FOREIGN KEY (detail_id) REFERENCES PropertyFeeDetail(detail_id)
 );
 
--- 电子凭证表
+-- 18. ElectronicVoucher（电子凭证）
 CREATE TABLE ElectronicVoucher (
-    voucher_id INT PRIMARY KEY IDENTITY(1,1),
-    order_id INT,
-    file_path VARCHAR(200),
-    upload_time DATETIME DEFAULT GETDATE(),
-    FOREIGN KEY (order_id) REFERENCES PaymentOrder(order_id)
+    voucher_id VARCHAR(20) PRIMARY KEY,
+    order_id VARCHAR(20),
+    resident_id VARCHAR(20),
+    housing_id VARCHAR(20),
+    amount DECIMAL(10,2) NOT NULL,
+    payment_date DATETIME,
+    transaction_no VARCHAR(50),
+    create_time DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (order_id) REFERENCES PaymentOrder(order_id),
+    FOREIGN KEY (resident_id) REFERENCES Resident(resident_id),
+    FOREIGN KEY (housing_id) REFERENCES Housing(housing_id)
 );
 
--- 物业费申诉表
+-- 19. PropertyFeeAppeal（费用申诉）
 CREATE TABLE PropertyFeeAppeal (
-    appeal_id INT PRIMARY KEY IDENTITY(1,1),
-    detail_id INT,
-    resident_id INT,
-    appeal_reason VARCHAR(500),
-    appeal_time DATETIME DEFAULT GETDATE(),
-    status VARCHAR(20) DEFAULT 'pending',  -- pending, approved, rejected
+    appeal_id VARCHAR(20) PRIMARY KEY,
+    detail_id VARCHAR(20),
+    resident_id VARCHAR(20),
+    reason NVARCHAR(500) NOT NULL,
+    status NVARCHAR(20) NOT NULL,
+    admin_id VARCHAR(20),
+    admin_reason NVARCHAR(200),
+    create_time DATETIME DEFAULT GETDATE(),
     handle_time DATETIME,
-    handle_result VARCHAR(200),
     FOREIGN KEY (detail_id) REFERENCES PropertyFeeDetail(detail_id),
-    FOREIGN KEY (resident_id) REFERENCES Resident(resident_id)
+    FOREIGN KEY (resident_id) REFERENCES Resident(resident_id),
+    FOREIGN KEY (admin_id) REFERENCES Staff(staff_id)
 );
 
--- 催缴记录表
+-- 20. CollectionRecord（催缴记录）
 CREATE TABLE CollectionRecord (
-    record_id INT PRIMARY KEY IDENTITY(1,1),
-    detail_id INT,
-    staff_id INT,
-    contact_time DATETIME,
-    contact_result VARCHAR(200),
-    FOREIGN KEY (detail_id) REFERENCES PropertyFeeDetail(detail_id),
-    FOREIGN KEY (staff_id) REFERENCES Staff(staff_id)
+    record_id VARCHAR(20) PRIMARY KEY,
+    detail_id VARCHAR(20),
+    user_id VARCHAR(20) NOT NULL,
+    method NVARCHAR(20) NOT NULL,
+    record_time DATETIME NOT NULL,
+    result NVARCHAR(20),
+    FOREIGN KEY (detail_id) REFERENCES PropertyFeeDetail(detail_id)
 );
 
 -- =============================================
--- 水费模块
+-- 水表与水费管理模块
 -- =============================================
 
--- 水表表
+-- 21. WaterMeter（水表）
 CREATE TABLE WaterMeter (
-    meter_id INT PRIMARY KEY IDENTITY(1,1),
-    building VARCHAR(20),
-    unit VARCHAR(10),
-    room_no VARCHAR(20),
-    meter_no VARCHAR(50) UNIQUE,
-    install_date DATE,
-    status VARCHAR(20) DEFAULT 'active'
+    meter_id VARCHAR(20) PRIMARY KEY,
+    housing_id VARCHAR(20),
+    current_read DECIMAL(10,2) NOT NULL,
+    last_read DECIMAL(10,2) NOT NULL,
+    update_date DATE NOT NULL,
+    FOREIGN KEY (housing_id) REFERENCES Housing(housing_id)
 );
 
--- 水费计费规则表
+-- 22. WaterBillingRule（水费阶梯规则）
 CREATE TABLE WaterBillingRule (
-    rule_id INT PRIMARY KEY IDENTITY(1,1),
-    tier_name VARCHAR(50),
-    min_usage INT,  -- 吨
-    max_usage INT,
-    price_per_ton DECIMAL(10,4),
-    effective_date DATE
+    rule_id VARCHAR(20) PRIMARY KEY,
+    base_price DECIMAL(10,2) NOT NULL,
+    boost_price DECIMAL(10,2) NOT NULL,
+    tier1_limit DECIMAL(10,2) NOT NULL,
+    tier2_limit DECIMAL(10,2) NOT NULL,
+    tier3_price DECIMAL(10,2) NOT NULL,
+    effective_date DATE NOT NULL
 );
 
--- 水费账单表
+-- 23. WaterFeeBill（水费账单）
 CREATE TABLE WaterFeeBill (
-    bill_id INT PRIMARY KEY IDENTITY(1,1),
-    meter_id INT,
-    year_month VARCHAR(7),
-    previous_reading INT,
-    current_reading INT,
-    usage_tons INT,
-    amount DECIMAL(10,2),
-    is_paid INT DEFAULT 0,
-    due_date DATE,
-    paid_date DATETIME,
+    bill_id VARCHAR(20) PRIMARY KEY,
+    meter_id VARCHAR(20),
+    bill_month VARCHAR(7) NOT NULL,
+    usage DECIMAL(10,2) NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    status NVARCHAR(20) NOT NULL,
+    create_date DATETIME DEFAULT GETDATE(),
     FOREIGN KEY (meter_id) REFERENCES WaterMeter(meter_id)
 );
 
 -- =============================================
--- 车位费模块
+-- 维修管理模块
 -- =============================================
 
--- 车位表
-CREATE TABLE ParkingSpace (
-    space_id INT PRIMARY KEY IDENTITY(1,1),
-    space_code VARCHAR(20) UNIQUE,  -- A001
-    space_type VARCHAR(20),  -- ground, underground, mechanical
-    status VARCHAR(20) DEFAULT 'available',  -- available, occupied, reserved
-    building VARCHAR(20),
-    monthly_fee DECIMAL(10,2)
-);
-
--- 车位费标准表
-CREATE TABLE ParkingStandard (
-    standard_id INT PRIMARY KEY IDENTITY(1,1),
-    space_type VARCHAR(20),
-    monthly_fee DECIMAL(10,2),
-    yearly_fee DECIMAL(10,2),
-    description VARCHAR(200)
-);
-
--- 车位费记录表
-CREATE TABLE ParkingFeeRecord (
-    record_id INT PRIMARY KEY IDENTITY(1,1),
-    space_id INT,
-    resident_id INT,
-    year_month VARCHAR(7),
-    fee_amount DECIMAL(10,2),
-    is_paid INT DEFAULT 0,
-    due_date DATE,
-    paid_date DATETIME,
-    FOREIGN KEY (space_id) REFERENCES ParkingSpace(space_id),
-    FOREIGN KEY (resident_id) REFERENCES Resident(resident_id)
-);
-
--- =============================================
--- 维修模块
--- =============================================
-
--- 维修申请表
+-- 24. RepairRequest（维修申请）
 CREATE TABLE RepairRequest (
-    request_id INT PRIMARY KEY IDENTITY(1,1),
-    resident_id INT,
-    building VARCHAR(20),
-    unit VARCHAR(10),
-    room_no VARCHAR(20),
-    repair_type VARCHAR(50),
-    description VARCHAR(500),
-    request_time DATETIME DEFAULT GETDATE(),
-    status VARCHAR(20) DEFAULT 'pending',  -- pending, assigned, in_progress, completed, cancelled
-    urgency_level INT DEFAULT 2,  -- 1=紧急, 2=一般, 3=不急
-    FOREIGN KEY (resident_id) REFERENCES Resident(resident_id)
+    request_id VARCHAR(20) PRIMARY KEY,
+    housing_id VARCHAR(20),
+    user_id VARCHAR(20) NOT NULL,
+    description NVARCHAR(500) NOT NULL,
+    repair_type NVARCHAR(30) NOT NULL,
+    apply_time DATETIME NOT NULL,
+    urgency NVARCHAR(10) NOT NULL,
+    status NVARCHAR(20) NOT NULL,
+    FOREIGN KEY (housing_id) REFERENCES Housing(housing_id)
 );
 
--- 维修工单表
+-- 25. MaintenanceWorkOrder（维修工单）
 CREATE TABLE MaintenanceWorkOrder (
-    work_order_id INT PRIMARY KEY IDENTITY(1,1),
-    request_id INT,
-    staff_id INT,
-    assign_time DATETIME,
-    start_time DATETIME,
+    workorder_id VARCHAR(20) PRIMARY KEY,
+    request_id VARCHAR(20),
+    staff_id VARCHAR(20),
+    content NVARCHAR(500),
+    materials NVARCHAR(200),
+    work_hours DECIMAL(5,2),
     complete_time DATETIME,
-    result_description VARCHAR(500),
-    score INT,  -- 住户评分 1-5
+    status NVARCHAR(20) NOT NULL,
     FOREIGN KEY (request_id) REFERENCES RepairRequest(request_id),
     FOREIGN KEY (staff_id) REFERENCES Staff(staff_id)
 );
 
 -- =============================================
--- 广告模块
+-- 车位费管理模块
 -- =============================================
 
--- 广告公司表
-CREATE TABLE ExternalAdCompany (
-    company_id INT PRIMARY KEY IDENTITY(1,1),
-    company_name VARCHAR(100),
-    contact_person VARCHAR(50),
-    phone VARCHAR(20),
-    address VARCHAR(200),
-    credit_level VARCHAR(10)
+-- 26. ParkingSpace（车位）
+CREATE TABLE ParkingSpace (
+    space_id VARCHAR(20) PRIMARY KEY,
+    location NVARCHAR(50) NOT NULL,
+    space_type NVARCHAR(20) NOT NULL,
+    status NVARCHAR(20) DEFAULT '空闲'
 );
 
--- 广告位标准表
-CREATE TABLE AdSlot (
-    slot_id INT PRIMARY KEY IDENTITY(1,1),
-    slot_code VARCHAR(20) UNIQUE,
-    slot_type VARCHAR(50),  -- billboard, doorframe, elevator
-    location_description VARCHAR(200),
-    width DECIMAL(10,2),
-    height DECIMAL(10,2),
-    standard_fee DECIMAL(10,2)  -- 元/月
+-- 27. ParkingStandard（车位费标准）
+CREATE TABLE ParkingStandard (
+    standard_id VARCHAR(20) PRIMARY KEY,
+    space_type NVARCHAR(20) NOT NULL,
+    unit_price DECIMAL(10,2) NOT NULL,
+    billing_cycle NVARCHAR(20) DEFAULT '月付'
 );
 
--- 广告位申请审批表
-CREATE TABLE AdApplication (
-    application_id INT PRIMARY KEY IDENTITY(1,1),
-    company_id INT,
-    slot_id INT,
-    ad_content VARCHAR(500),
-    start_date DATE,
-    end_date DATE,
-    fee_amount DECIMAL(10,2),
-    application_date DATETIME DEFAULT GETDATE(),
-    status VARCHAR(20) DEFAULT 'pending',
-    FOREIGN KEY (company_id) REFERENCES ExternalAdCompany(company_id),
-    FOREIGN KEY (slot_id) REFERENCES AdSlot(slot_id)
+-- 28. ParkingFeeRecord（车位费记录）
+CREATE TABLE ParkingFeeRecord (
+    record_id VARCHAR(20) PRIMARY KEY,
+    space_id VARCHAR(20),
+    bill_month VARCHAR(7) NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    status NVARCHAR(20) NOT NULL,
+    create_date DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (space_id) REFERENCES ParkingSpace(space_id)
 );
 
--- 审批记录表
-CREATE TABLE ApprovalRecord (
-    record_id INT PRIMARY KEY IDENTITY(1,1),
-    application_id INT,
-    approver_id INT,
-    approve_time DATETIME,
-    approve_result VARCHAR(20),  -- approved, rejected
-    comments VARCHAR(200),
-    FOREIGN KEY (application_id) REFERENCES AdApplication(application_id),
-    FOREIGN KEY (approver_id) REFERENCES Staff(staff_id)
-);
+-- =============================================
+-- 创建索引
+-- =============================================
+CREATE INDEX IX_SystemUser_username ON SystemUser(username);
+CREATE INDEX IX_SystemUser_phone ON SystemUser(phone);
+CREATE INDEX IX_Staff_worktype ON Staff(worktype_id);
+CREATE INDEX IX_PropertyFeeDetail_batch ON PropertyFeeDetail(batch_id);
+CREATE INDEX IX_PropertyFeeDetail_housing ON PropertyFeeDetail(housing_id);
+CREATE INDEX IX_PropertyFeeDetail_status ON PropertyFeeDetail(status);
+CREATE INDEX IX_WaterFeeBill_meter ON WaterFeeBill(meter_id);
+CREATE INDEX IX_WaterFeeBill_month ON WaterFeeBill(bill_month);
+CREATE INDEX IX_ParkingFeeRecord_space ON ParkingFeeRecord(space_id);
+CREATE INDEX IX_RepairRequest_status ON RepairRequest(status);
 
 -- =============================================
 -- 初始化数据
 -- =============================================
 
 -- 插入工种
-INSERT INTO WorkType (work_type_name, description) VALUES
-('管理员', '系统管理员'),
-('维修工', '负责维修'),
-('保洁员', '负责清洁'),
-('保安', '负责安保');
+INSERT INTO WorkType (worktype_id, worktype_name) VALUES
+('WT001', '维修-水电'),
+('WT002', '维修-木工'),
+('WT003', '维修-管道'),
+('WT004', '保洁'),
+('WT005', '安保'),
+('WT006', '绿化'),
+('WT007', '管理员');
 
 -- 插入工作地点
-INSERT INTO WorkLocation (location_name, address) VALUES
-('客服中心', '小区南门'),
-('维修部', '地下室'),
-('保洁部', '物资仓库'),
-('安保中心', '北门');
+INSERT INTO WorkLocation (location_id, location_name) VALUES
+('LOC001', '客服中心'),
+('LOC002', '维修部'),
+('LOC003', '保洁部'),
+('LOC004', '安保中心');
 
 GO
