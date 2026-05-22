@@ -5,6 +5,8 @@ import com.property.dao.PropertyFeeAppealDAOImpl;
 import com.property.dao.PropertyFeeDetailDAO;
 import com.property.dao.PropertyFeeDetailDAOImpl;
 import com.property.model.PropertyFeeAppeal;
+import com.property.model.PropertyFeeDetail;
+
 import java.util.List;
 
 /**
@@ -27,6 +29,13 @@ public class PropertyFeeAppealService {
      */
     public PropertyFeeAppeal findById(String appealId) {
         return appealDAO.findById(appealId);
+    }
+    
+    /**
+     * 根据账单明细ID查询
+     */
+    public PropertyFeeDetail getDetailById(String detailId) {
+        return detailDAO.findById(detailId);
     }
     
     /**

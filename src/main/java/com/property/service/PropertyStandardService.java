@@ -49,6 +49,7 @@ public class PropertyStandardService {
     
     /**
      * 新增收费标准
+     * 如果同类型已有生效标准，自动停用旧标准
      */
     public boolean insert(PropertyStandard standard) {
         // 生成ID
@@ -59,6 +60,18 @@ public class PropertyStandardService {
         if (standard.getStatus() == null || standard.getStatus().isEmpty()) {
             standard.setStatus("生效");
         }
+        
+        // 自动停用同类型的旧标准
+        if ("生效".equals(standard.getStatus()) && standard.getFeeType() != null) {
+            List<PropertyStandard> activeStandards = dao.findByStatus("生效");
+            for (PropertyStandard existing : activeStandards) {
+                if (standard.getFeeType().equals(existing.getFeeType())) {
+                    existing.setStatus("失效");
+                    dao.update(existing);
+                }
+            }
+        }
+        
         return dao.insert(standard) > 0;
     }
     

@@ -420,3 +420,418 @@
 22-May-2026 01:01:49.221 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@3c91b6a8]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:3 ClientConnectionId: a8bdc0e0-1b6f-487a-8248-5183be527f2d），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
 22-May-2026 01:01:49.223 信息 [Thread-1] org.apache.coyote.AbstractProtocol.stop 正在停止ProtocolHandler ["http-nio-8080"]
 22-May-2026 01:01:49.225 信息 [Thread-1] org.apache.coyote.AbstractProtocol.destroy 正在销毁协议处理器 ["http-nio-8080"]
+22-May-2026 18:57:19.141 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Server.服务器版本: Apache Tomcat/10.1.52
+22-May-2026 18:57:19.145 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 服务器构建:        Jan 23 2026 19:29:07 UTC
+22-May-2026 18:57:19.145 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 服务器版本号:      10.1.52.0
+22-May-2026 18:57:19.146 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 操作系统名称:      Windows 11
+22-May-2026 18:57:19.146 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log OS.版本:           10.0
+22-May-2026 18:57:19.146 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 架构:              amd64
+22-May-2026 18:57:19.146 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Java 环境变量:     C:\Program Files\Java\jdk-21
+22-May-2026 18:57:19.146 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Java虚拟机版本:    21.0.6+8-LTS-188
+22-May-2026 18:57:19.146 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log JVM.供应商:        Oracle Corporation
+22-May-2026 18:57:19.146 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:     D:\creat\property-management\src\main\webapp
+22-May-2026 18:57:19.147 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:     D:\apache-tomcat-10.1.52
+22-May-2026 18:57:19.153 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.lang=ALL-UNNAMED
+22-May-2026 18:57:19.153 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.io=ALL-UNNAMED
+22-May-2026 18:57:19.153 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.util=ALL-UNNAMED
+22-May-2026 18:57:19.153 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.util.concurrent=ALL-UNNAMED
+22-May-2026 18:57:19.153 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED
+22-May-2026 18:57:19.153 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dcatalina.home=D:\apache-tomcat-10.1.52
+22-May-2026 18:57:19.153 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dcatalina.base=D:\creat\property-management\src\main\webapp
+22-May-2026 18:57:19.154 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Djava.io.tmpdir=D:\creat\property-management\src\main\webapp\temp
+22-May-2026 18:57:19.154 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Djava.util.logging.config.file=D:\creat\property-management\src\main\webapp\conf\logging.properties
+22-May-2026 18:57:19.154 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+22-May-2026 18:57:19.154 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -javaagent:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.3\lib\idea_rt.jar=6099:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.3\bin
+22-May-2026 18:57:19.154 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dfile.encoding=UTF-8
+22-May-2026 18:57:19.154 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dsun.stdout.encoding=UTF-8
+22-May-2026 18:57:19.154 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dsun.stderr.encoding=UTF-8
+22-May-2026 18:57:19.160 信息 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent 在java.library.path:[C:\Program Files\Java\jdk-21\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files (x86)\VMware\VMware Workstation\bin\;$env:PATH;C:\MinGW\bin;C:\Program Files\NVIDIA Corporation\NVIDIA App\NvDLISR;C:\Program Files\dotnet\;C:\Program Files\nodejs\;C:\Program Files\Git LFS;C:\Windows\System32;C:\Windows;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Program Files (x86)\Microsoft SQL Server\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\180\Tools\Binn\;C:\Program Files\Microsoft SQL Server\170\DTS\Binn\;D:\rational rose\common;C:\tools\deepseek;C:\Program Files\GitHub CLI\;C:\Users\links\.mavis\bin;C:\Users\links\AppData\Local\Microsoft\WindowsApps;C:\Users\links\.dotnet\tools;D:\cursor\resources\app\bin;D:\Microsoft VS Code\bin;C:\MinGW\bin;C:\Users\links\AppData\Roaming\npm;C:\Users\links\AppData\Roaming\npm\bin;C:\Program Files\Git\cmd;C:\Program Files\Git\bin;C:\Program Files\Java\jdk-17\bin;C:\Users\links\AppData\Local\Python\bin;.]上找不到基于APR的Apache Tomcat本机库，该库允许在生产环境中获得最佳性能
+22-May-2026 18:57:19.324 信息 [main] org.apache.coyote.AbstractProtocol.init 初始化协议处理器 ["http-nio-8080"]
+22-May-2026 18:57:19.341 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[345]毫秒内初始化
+22-May-2026 18:57:19.385 信息 [main] org.apache.catalina.core.StandardService.startInternal 正在启动服务[Catalina]
+22-May-2026 18:57:19.385 信息 [main] org.apache.catalina.core.StandardEngine.startInternal 正在启动 Servlet 引擎：[Apache Tomcat/10.1.52]
+22-May-2026 18:57:19.393 信息 [main] org.apache.catalina.startup.HostConfig.deployDescriptor 正在部署部署描述符[D:\creat\property-management\src\main\webapp\conf\Catalina\localhost\webapp.xml]。
+22-May-2026 18:57:19.837 信息 [main] org.apache.jasper.servlet.TldScanner.scanJars 至少有一个JAR被扫描用于TLD但尚未包含TLD。 为此记录器启用调试日志记录，以获取已扫描但未在其中找到TLD的完整JAR列表。 在扫描期间跳过不需要的JAR可以缩短启动时间和JSP编译时间。
+22-May-2026 18:57:19.867 警告 [main] org.apache.catalina.filters.FilterBase.init 未为[org.apache.catalina.filters.SetCharacterEncodingFilter]类型的筛选器定义属性[forceEncoding]
+22-May-2026 18:57:19.880 信息 [main] org.apache.catalina.startup.HostConfig.deployDescriptor 部署描述符[D:\creat\property-management\src\main\webapp\conf\Catalina\localhost\webapp.xml]的部署已在[485]ms内完成
+22-May-2026 18:57:19.884 信息 [main] org.apache.coyote.AbstractProtocol.start 开始协议处理句柄["http-nio-8080"]
+22-May-2026 18:57:19.900 信息 [main] org.apache.catalina.startup.Catalina.start [559]毫秒后服务器启动
+22-May-2026 19:12:05.085 信息 [Thread-1] org.apache.coyote.AbstractProtocol.pause 暂停ProtocolHandler["http-nio-8080"]
+22-May-2026 19:12:05.088 信息 [Thread-1] org.apache.catalina.core.StandardService.stopInternal 正在停止服务[Catalina]
+22-May-2026 19:12:05.090 警告 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesJdbc Web应用程序 [webapp] 注册了JDBC驱动程序 [com.microsoft.sqlserver.jdbc.SQLServerDriver]，但在Web应用程序停止时无法注销它。 为防止内存泄漏，JDBC驱动程序已被强制取消注册。
+22-May-2026 19:12:05.091 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@2b903f03]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:33 ClientConnectionId: ba8e5e9a-00aa-4f93-8408-747a0eca4ca7），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:12:05.091 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@2b903f03]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:34 ClientConnectionId: 1fae3e0e-1b15-4104-9408-1d3654d26585），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:12:05.091 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@2b903f03]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:21 ClientConnectionId: 8d7b483a-ff84-4b08-b4fd-01fefec51236），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:12:05.091 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@2b903f03]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:9 ClientConnectionId: 1ed0c45b-27d9-489e-8b4d-0ae0ab5aa605），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:12:05.091 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@2b903f03]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:35 ClientConnectionId: c643e3d6-a07e-4ff9-95dd-33bb0969daf0），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:12:05.092 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@2b903f03]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:36 ClientConnectionId: f828b885-1327-4900-ad21-7fb286b0408e），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:12:05.092 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@2b903f03]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:37 ClientConnectionId: 37101134-aba3-4b6d-b128-27d6fbe4ded1），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:12:05.092 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@2b903f03]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:38 ClientConnectionId: 101df20e-14aa-400c-bc0b-748119cfb854），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:12:05.092 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@2b903f03]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:39 ClientConnectionId: f487baaf-7dc6-4145-8c84-70e953c6e0cc），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:12:05.092 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@2b903f03]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:32 ClientConnectionId: 403374c4-ace4-463f-963e-3660267a503e），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:12:05.096 信息 [Thread-1] org.apache.coyote.AbstractProtocol.stop 正在停止ProtocolHandler ["http-nio-8080"]
+22-May-2026 19:12:05.098 信息 [Thread-1] org.apache.coyote.AbstractProtocol.destroy 正在销毁协议处理器 ["http-nio-8080"]
+22-May-2026 19:12:07.564 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Server.服务器版本: Apache Tomcat/10.1.52
+22-May-2026 19:12:07.567 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 服务器构建:        Jan 23 2026 19:29:07 UTC
+22-May-2026 19:12:07.568 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 服务器版本号:      10.1.52.0
+22-May-2026 19:12:07.568 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 操作系统名称:      Windows 11
+22-May-2026 19:12:07.568 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log OS.版本:           10.0
+22-May-2026 19:12:07.568 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 架构:              amd64
+22-May-2026 19:12:07.568 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Java 环境变量:     C:\Program Files\Java\jdk-21
+22-May-2026 19:12:07.569 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Java虚拟机版本:    21.0.6+8-LTS-188
+22-May-2026 19:12:07.569 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log JVM.供应商:        Oracle Corporation
+22-May-2026 19:12:07.569 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:     D:\creat\property-management\src\main\webapp
+22-May-2026 19:12:07.569 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:     D:\apache-tomcat-10.1.52
+22-May-2026 19:12:07.575 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.lang=ALL-UNNAMED
+22-May-2026 19:12:07.576 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.io=ALL-UNNAMED
+22-May-2026 19:12:07.576 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.util=ALL-UNNAMED
+22-May-2026 19:12:07.576 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.util.concurrent=ALL-UNNAMED
+22-May-2026 19:12:07.576 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED
+22-May-2026 19:12:07.576 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dcatalina.home=D:\apache-tomcat-10.1.52
+22-May-2026 19:12:07.576 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dcatalina.base=D:\creat\property-management\src\main\webapp
+22-May-2026 19:12:07.576 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Djava.io.tmpdir=D:\creat\property-management\src\main\webapp\temp
+22-May-2026 19:12:07.576 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Djava.util.logging.config.file=D:\creat\property-management\src\main\webapp\conf\logging.properties
+22-May-2026 19:12:07.576 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+22-May-2026 19:12:07.576 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -javaagent:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.3\lib\idea_rt.jar=9725:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.3\bin
+22-May-2026 19:12:07.577 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dfile.encoding=UTF-8
+22-May-2026 19:12:07.577 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dsun.stdout.encoding=UTF-8
+22-May-2026 19:12:07.577 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dsun.stderr.encoding=UTF-8
+22-May-2026 19:12:07.584 信息 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent 在java.library.path:[C:\Program Files\Java\jdk-21\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files (x86)\VMware\VMware Workstation\bin\;$env:PATH;C:\MinGW\bin;C:\Program Files\NVIDIA Corporation\NVIDIA App\NvDLISR;C:\Program Files\dotnet\;C:\Program Files\nodejs\;C:\Program Files\Git LFS;C:\Windows\System32;C:\Windows;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Program Files (x86)\Microsoft SQL Server\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\180\Tools\Binn\;C:\Program Files\Microsoft SQL Server\170\DTS\Binn\;D:\rational rose\common;C:\tools\deepseek;C:\Program Files\GitHub CLI\;C:\Users\links\.mavis\bin;C:\Users\links\AppData\Local\Microsoft\WindowsApps;C:\Users\links\.dotnet\tools;D:\cursor\resources\app\bin;D:\Microsoft VS Code\bin;C:\MinGW\bin;C:\Users\links\AppData\Roaming\npm;C:\Users\links\AppData\Roaming\npm\bin;C:\Program Files\Git\cmd;C:\Program Files\Git\bin;C:\Program Files\Java\jdk-17\bin;C:\Users\links\AppData\Local\Python\bin;.]上找不到基于APR的Apache Tomcat本机库，该库允许在生产环境中获得最佳性能
+22-May-2026 19:12:07.749 信息 [main] org.apache.coyote.AbstractProtocol.init 初始化协议处理器 ["http-nio-8080"]
+22-May-2026 19:12:07.762 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[333]毫秒内初始化
+22-May-2026 19:12:07.811 信息 [main] org.apache.catalina.core.StandardService.startInternal 正在启动服务[Catalina]
+22-May-2026 19:12:07.811 信息 [main] org.apache.catalina.core.StandardEngine.startInternal 正在启动 Servlet 引擎：[Apache Tomcat/10.1.52]
+22-May-2026 19:12:07.820 信息 [main] org.apache.catalina.startup.HostConfig.deployDescriptor 正在部署部署描述符[D:\creat\property-management\src\main\webapp\conf\Catalina\localhost\webapp.xml]。
+22-May-2026 19:12:08.229 信息 [main] org.apache.jasper.servlet.TldScanner.scanJars 至少有一个JAR被扫描用于TLD但尚未包含TLD。 为此记录器启用调试日志记录，以获取已扫描但未在其中找到TLD的完整JAR列表。 在扫描期间跳过不需要的JAR可以缩短启动时间和JSP编译时间。
+22-May-2026 19:12:08.254 警告 [main] org.apache.catalina.filters.FilterBase.init 未为[org.apache.catalina.filters.SetCharacterEncodingFilter]类型的筛选器定义属性[forceEncoding]
+22-May-2026 19:12:08.266 信息 [main] org.apache.catalina.startup.HostConfig.deployDescriptor 部署描述符[D:\creat\property-management\src\main\webapp\conf\Catalina\localhost\webapp.xml]的部署已在[443]ms内完成
+22-May-2026 19:12:08.270 信息 [main] org.apache.coyote.AbstractProtocol.start 开始协议处理句柄["http-nio-8080"]
+22-May-2026 19:12:08.287 信息 [main] org.apache.catalina.startup.Catalina.start [524]毫秒后服务器启动
+22-May-2026 19:13:22.877 信息 [Thread-1] org.apache.coyote.AbstractProtocol.pause 暂停ProtocolHandler["http-nio-8080"]
+22-May-2026 19:13:22.879 信息 [Thread-1] org.apache.catalina.core.StandardService.stopInternal 正在停止服务[Catalina]
+22-May-2026 19:13:22.881 警告 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesJdbc Web应用程序 [webapp] 注册了JDBC驱动程序 [com.microsoft.sqlserver.jdbc.SQLServerDriver]，但在Web应用程序停止时无法注销它。 为防止内存泄漏，JDBC驱动程序已被强制取消注册。
+22-May-2026 19:13:22.882 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@59dbf362]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:1 ClientConnectionId: f366f982-51e7-4d7f-8ec2-ad70ec8fd83a），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:13:22.882 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@59dbf362]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:4 ClientConnectionId: d62ce45b-1109-4172-9d30-b7021e88c6b4），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:13:22.882 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@59dbf362]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:5 ClientConnectionId: 35d6aac6-d29b-4db7-b82c-e6d976144509），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:13:22.882 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@59dbf362]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:7 ClientConnectionId: 1cef2caa-11d6-4179-ba5c-5090023b3813），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:13:22.882 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@59dbf362]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:12 ClientConnectionId: d3898e26-7985-4040-920c-4c58c593cc31），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:13:22.884 信息 [Thread-1] org.apache.coyote.AbstractProtocol.stop 正在停止ProtocolHandler ["http-nio-8080"]
+22-May-2026 19:13:22.887 信息 [Thread-1] org.apache.coyote.AbstractProtocol.destroy 正在销毁协议处理器 ["http-nio-8080"]
+22-May-2026 19:13:31.702 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Server.服务器版本: Apache Tomcat/10.1.52
+22-May-2026 19:13:31.706 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 服务器构建:        Jan 23 2026 19:29:07 UTC
+22-May-2026 19:13:31.706 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 服务器版本号:      10.1.52.0
+22-May-2026 19:13:31.706 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 操作系统名称:      Windows 11
+22-May-2026 19:13:31.706 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log OS.版本:           10.0
+22-May-2026 19:13:31.706 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 架构:              amd64
+22-May-2026 19:13:31.706 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Java 环境变量:     C:\Program Files\Java\jdk-21
+22-May-2026 19:13:31.706 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Java虚拟机版本:    21.0.6+8-LTS-188
+22-May-2026 19:13:31.706 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log JVM.供应商:        Oracle Corporation
+22-May-2026 19:13:31.706 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:     D:\creat\property-management\src\main\webapp
+22-May-2026 19:13:31.706 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:     D:\apache-tomcat-10.1.52
+22-May-2026 19:13:31.715 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.lang=ALL-UNNAMED
+22-May-2026 19:13:31.716 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.io=ALL-UNNAMED
+22-May-2026 19:13:31.716 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.util=ALL-UNNAMED
+22-May-2026 19:13:31.716 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.util.concurrent=ALL-UNNAMED
+22-May-2026 19:13:31.716 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED
+22-May-2026 19:13:31.716 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dcatalina.home=D:\apache-tomcat-10.1.52
+22-May-2026 19:13:31.716 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dcatalina.base=D:\creat\property-management\src\main\webapp
+22-May-2026 19:13:31.716 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Djava.io.tmpdir=D:\creat\property-management\src\main\webapp\temp
+22-May-2026 19:13:31.716 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Djava.util.logging.config.file=D:\creat\property-management\src\main\webapp\conf\logging.properties
+22-May-2026 19:13:31.717 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+22-May-2026 19:13:31.717 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -javaagent:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.3\lib\idea_rt.jar=7447:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.3\bin
+22-May-2026 19:13:31.717 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dfile.encoding=UTF-8
+22-May-2026 19:13:31.717 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dsun.stdout.encoding=UTF-8
+22-May-2026 19:13:31.717 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dsun.stderr.encoding=UTF-8
+22-May-2026 19:13:31.726 信息 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent 在java.library.path:[C:\Program Files\Java\jdk-21\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files (x86)\VMware\VMware Workstation\bin\;$env:PATH;C:\MinGW\bin;C:\Program Files\NVIDIA Corporation\NVIDIA App\NvDLISR;C:\Program Files\dotnet\;C:\Program Files\nodejs\;C:\Program Files\Git LFS;C:\Windows\System32;C:\Windows;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Program Files (x86)\Microsoft SQL Server\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\180\Tools\Binn\;C:\Program Files\Microsoft SQL Server\170\DTS\Binn\;D:\rational rose\common;C:\tools\deepseek;C:\Program Files\GitHub CLI\;C:\Users\links\.mavis\bin;C:\Users\links\AppData\Local\Microsoft\WindowsApps;C:\Users\links\.dotnet\tools;D:\cursor\resources\app\bin;D:\Microsoft VS Code\bin;C:\MinGW\bin;C:\Users\links\AppData\Roaming\npm;C:\Users\links\AppData\Roaming\npm\bin;C:\Program Files\Git\cmd;C:\Program Files\Git\bin;C:\Program Files\Java\jdk-17\bin;C:\Users\links\AppData\Local\Python\bin;.]上找不到基于APR的Apache Tomcat本机库，该库允许在生产环境中获得最佳性能
+22-May-2026 19:13:31.898 信息 [main] org.apache.coyote.AbstractProtocol.init 初始化协议处理器 ["http-nio-8080"]
+22-May-2026 19:13:31.915 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[355]毫秒内初始化
+22-May-2026 19:13:31.956 信息 [main] org.apache.catalina.core.StandardService.startInternal 正在启动服务[Catalina]
+22-May-2026 19:13:31.956 信息 [main] org.apache.catalina.core.StandardEngine.startInternal 正在启动 Servlet 引擎：[Apache Tomcat/10.1.52]
+22-May-2026 19:13:31.963 信息 [main] org.apache.catalina.startup.HostConfig.deployDescriptor 正在部署部署描述符[D:\creat\property-management\src\main\webapp\conf\Catalina\localhost\webapp.xml]。
+22-May-2026 19:13:32.366 信息 [main] org.apache.jasper.servlet.TldScanner.scanJars 至少有一个JAR被扫描用于TLD但尚未包含TLD。 为此记录器启用调试日志记录，以获取已扫描但未在其中找到TLD的完整JAR列表。 在扫描期间跳过不需要的JAR可以缩短启动时间和JSP编译时间。
+22-May-2026 19:13:32.393 警告 [main] org.apache.catalina.filters.FilterBase.init 未为[org.apache.catalina.filters.SetCharacterEncodingFilter]类型的筛选器定义属性[forceEncoding]
+22-May-2026 19:13:32.406 信息 [main] org.apache.catalina.startup.HostConfig.deployDescriptor 部署描述符[D:\creat\property-management\src\main\webapp\conf\Catalina\localhost\webapp.xml]的部署已在[440]ms内完成
+22-May-2026 19:13:32.410 信息 [main] org.apache.coyote.AbstractProtocol.start 开始协议处理句柄["http-nio-8080"]
+22-May-2026 19:13:32.426 信息 [main] org.apache.catalina.startup.Catalina.start [510]毫秒后服务器启动
+22-May-2026 19:17:35.990 信息 [Thread-1] org.apache.coyote.AbstractProtocol.pause 暂停ProtocolHandler["http-nio-8080"]
+22-May-2026 19:17:35.993 信息 [Thread-1] org.apache.catalina.core.StandardService.stopInternal 正在停止服务[Catalina]
+22-May-2026 19:17:35.995 警告 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesJdbc Web应用程序 [webapp] 注册了JDBC驱动程序 [com.microsoft.sqlserver.jdbc.SQLServerDriver]，但在Web应用程序停止时无法注销它。 为防止内存泄漏，JDBC驱动程序已被强制取消注册。
+22-May-2026 19:17:35.996 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@3774e2c9]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:5 ClientConnectionId: 5a258ddb-f914-437e-bf8f-671ea0630072），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:17:35.996 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@3774e2c9]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:17 ClientConnectionId: 82242972-8ec8-421b-ba36-2876f12b2d31），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:17:35.996 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@3774e2c9]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:11 ClientConnectionId: 453c8950-8d37-4283-91ff-a487e4d9d2ef），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:17:35.997 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@3774e2c9]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:22 ClientConnectionId: 8fb18088-05d2-4b4b-b63d-70f0005e2b12），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:17:35.997 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@3774e2c9]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:33 ClientConnectionId: 075a23b4-4295-4a1d-8f3c-69f37807785a），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:17:35.997 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@3774e2c9]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:28 ClientConnectionId: cf334c27-b8c4-4d87-b8ba-2f5f42026bbc），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:17:35.997 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@3774e2c9]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:39 ClientConnectionId: 6bbc7c39-9d52-421b-8af9-36a157f6fcf2），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:17:35.999 信息 [Thread-1] org.apache.coyote.AbstractProtocol.stop 正在停止ProtocolHandler ["http-nio-8080"]
+22-May-2026 19:17:36.001 信息 [Thread-1] org.apache.coyote.AbstractProtocol.destroy 正在销毁协议处理器 ["http-nio-8080"]
+22-May-2026 19:18:49.921 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Server.服务器版本: Apache Tomcat/10.1.52
+22-May-2026 19:18:49.925 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 服务器构建:        Jan 23 2026 19:29:07 UTC
+22-May-2026 19:18:49.925 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 服务器版本号:      10.1.52.0
+22-May-2026 19:18:49.925 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 操作系统名称:      Windows 11
+22-May-2026 19:18:49.926 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log OS.版本:           10.0
+22-May-2026 19:18:49.926 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 架构:              amd64
+22-May-2026 19:18:49.926 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Java 环境变量:     C:\Program Files\Java\jdk-21
+22-May-2026 19:18:49.926 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Java虚拟机版本:    21.0.6+8-LTS-188
+22-May-2026 19:18:49.926 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log JVM.供应商:        Oracle Corporation
+22-May-2026 19:18:49.927 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:     D:\creat\property-management\src\main\webapp
+22-May-2026 19:18:49.927 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:     D:\apache-tomcat-10.1.52
+22-May-2026 19:18:49.931 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.lang=ALL-UNNAMED
+22-May-2026 19:18:49.931 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.io=ALL-UNNAMED
+22-May-2026 19:18:49.933 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.util=ALL-UNNAMED
+22-May-2026 19:18:49.933 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.util.concurrent=ALL-UNNAMED
+22-May-2026 19:18:49.933 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED
+22-May-2026 19:18:49.933 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dcatalina.home=D:\apache-tomcat-10.1.52
+22-May-2026 19:18:49.933 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dcatalina.base=D:\creat\property-management\src\main\webapp
+22-May-2026 19:18:49.933 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Djava.io.tmpdir=D:\creat\property-management\src\main\webapp\temp
+22-May-2026 19:18:49.933 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Djava.util.logging.config.file=D:\creat\property-management\src\main\webapp\conf\logging.properties
+22-May-2026 19:18:49.933 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+22-May-2026 19:18:49.933 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -javaagent:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.3\lib\idea_rt.jar=10467:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.3\bin
+22-May-2026 19:18:49.934 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dfile.encoding=UTF-8
+22-May-2026 19:18:49.934 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dsun.stdout.encoding=UTF-8
+22-May-2026 19:18:49.934 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dsun.stderr.encoding=UTF-8
+22-May-2026 19:18:49.941 信息 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent 在java.library.path:[C:\Program Files\Java\jdk-21\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files (x86)\VMware\VMware Workstation\bin\;$env:PATH;C:\MinGW\bin;C:\Program Files\NVIDIA Corporation\NVIDIA App\NvDLISR;C:\Program Files\dotnet\;C:\Program Files\nodejs\;C:\Program Files\Git LFS;C:\Windows\System32;C:\Windows;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Program Files (x86)\Microsoft SQL Server\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\180\Tools\Binn\;C:\Program Files\Microsoft SQL Server\170\DTS\Binn\;D:\rational rose\common;C:\tools\deepseek;C:\Program Files\GitHub CLI\;C:\Users\links\.mavis\bin;C:\Users\links\AppData\Local\Microsoft\WindowsApps;C:\Users\links\.dotnet\tools;D:\cursor\resources\app\bin;D:\Microsoft VS Code\bin;C:\MinGW\bin;C:\Users\links\AppData\Roaming\npm;C:\Users\links\AppData\Roaming\npm\bin;C:\Program Files\Git\cmd;C:\Program Files\Git\bin;C:\Program Files\Java\jdk-17\bin;C:\Users\links\AppData\Local\Python\bin;.]上找不到基于APR的Apache Tomcat本机库，该库允许在生产环境中获得最佳性能
+22-May-2026 19:18:50.119 信息 [main] org.apache.coyote.AbstractProtocol.init 初始化协议处理器 ["http-nio-8080"]
+22-May-2026 19:18:50.133 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[339]毫秒内初始化
+22-May-2026 19:18:50.191 信息 [main] org.apache.catalina.core.StandardService.startInternal 正在启动服务[Catalina]
+22-May-2026 19:18:50.191 信息 [main] org.apache.catalina.core.StandardEngine.startInternal 正在启动 Servlet 引擎：[Apache Tomcat/10.1.52]
+22-May-2026 19:18:50.199 信息 [main] org.apache.catalina.startup.HostConfig.deployDescriptor 正在部署部署描述符[D:\creat\property-management\src\main\webapp\conf\Catalina\localhost\webapp.xml]。
+22-May-2026 19:18:50.605 信息 [main] org.apache.jasper.servlet.TldScanner.scanJars 至少有一个JAR被扫描用于TLD但尚未包含TLD。 为此记录器启用调试日志记录，以获取已扫描但未在其中找到TLD的完整JAR列表。 在扫描期间跳过不需要的JAR可以缩短启动时间和JSP编译时间。
+22-May-2026 19:18:50.629 警告 [main] org.apache.catalina.filters.FilterBase.init 未为[org.apache.catalina.filters.SetCharacterEncodingFilter]类型的筛选器定义属性[forceEncoding]
+22-May-2026 19:18:50.644 信息 [main] org.apache.catalina.startup.HostConfig.deployDescriptor 部署描述符[D:\creat\property-management\src\main\webapp\conf\Catalina\localhost\webapp.xml]的部署已在[442]ms内完成
+22-May-2026 19:18:50.648 信息 [main] org.apache.coyote.AbstractProtocol.start 开始协议处理句柄["http-nio-8080"]
+22-May-2026 19:18:50.664 信息 [main] org.apache.catalina.startup.Catalina.start [529]毫秒后服务器启动
+22-May-2026 19:19:51.536 信息 [Thread-1] org.apache.coyote.AbstractProtocol.pause 暂停ProtocolHandler["http-nio-8080"]
+22-May-2026 19:19:51.539 信息 [Thread-1] org.apache.catalina.core.StandardService.stopInternal 正在停止服务[Catalina]
+22-May-2026 19:19:51.542 警告 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesJdbc Web应用程序 [webapp] 注册了JDBC驱动程序 [com.microsoft.sqlserver.jdbc.SQLServerDriver]，但在Web应用程序停止时无法注销它。 为防止内存泄漏，JDBC驱动程序已被强制取消注册。
+22-May-2026 19:19:51.543 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@61b74d4c]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:12 ClientConnectionId: 9053a087-1bd2-4fec-8bf2-6c5c64875aca），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:19:51.543 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@61b74d4c]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:7 ClientConnectionId: fbadfc4a-c49f-4051-a831-88b4d799a868），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:19:51.543 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@61b74d4c]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:19 ClientConnectionId: 03093411-6085-4470-a4e9-a7e944c4438d），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:19:51.545 信息 [Thread-1] org.apache.coyote.AbstractProtocol.stop 正在停止ProtocolHandler ["http-nio-8080"]
+22-May-2026 19:19:51.547 信息 [Thread-1] org.apache.coyote.AbstractProtocol.destroy 正在销毁协议处理器 ["http-nio-8080"]
+22-May-2026 19:19:54.126 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Server.服务器版本: Apache Tomcat/10.1.52
+22-May-2026 19:19:54.129 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 服务器构建:        Jan 23 2026 19:29:07 UTC
+22-May-2026 19:19:54.129 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 服务器版本号:      10.1.52.0
+22-May-2026 19:19:54.130 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 操作系统名称:      Windows 11
+22-May-2026 19:19:54.130 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log OS.版本:           10.0
+22-May-2026 19:19:54.130 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 架构:              amd64
+22-May-2026 19:19:54.130 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Java 环境变量:     C:\Program Files\Java\jdk-21
+22-May-2026 19:19:54.130 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Java虚拟机版本:    21.0.6+8-LTS-188
+22-May-2026 19:19:54.130 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log JVM.供应商:        Oracle Corporation
+22-May-2026 19:19:54.132 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:     D:\creat\property-management\src\main\webapp
+22-May-2026 19:19:54.132 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:     D:\apache-tomcat-10.1.52
+22-May-2026 19:19:54.138 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.lang=ALL-UNNAMED
+22-May-2026 19:19:54.138 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.io=ALL-UNNAMED
+22-May-2026 19:19:54.138 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.util=ALL-UNNAMED
+22-May-2026 19:19:54.138 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.util.concurrent=ALL-UNNAMED
+22-May-2026 19:19:54.138 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED
+22-May-2026 19:19:54.138 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dcatalina.home=D:\apache-tomcat-10.1.52
+22-May-2026 19:19:54.138 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dcatalina.base=D:\creat\property-management\src\main\webapp
+22-May-2026 19:19:54.138 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Djava.io.tmpdir=D:\creat\property-management\src\main\webapp\temp
+22-May-2026 19:19:54.138 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Djava.util.logging.config.file=D:\creat\property-management\src\main\webapp\conf\logging.properties
+22-May-2026 19:19:54.139 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+22-May-2026 19:19:54.139 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -javaagent:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.3\lib\idea_rt.jar=7774:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.3\bin
+22-May-2026 19:19:54.139 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dfile.encoding=UTF-8
+22-May-2026 19:19:54.139 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dsun.stdout.encoding=UTF-8
+22-May-2026 19:19:54.139 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dsun.stderr.encoding=UTF-8
+22-May-2026 19:19:54.146 信息 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent 在java.library.path:[C:\Program Files\Java\jdk-21\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files (x86)\VMware\VMware Workstation\bin\;$env:PATH;C:\MinGW\bin;C:\Program Files\NVIDIA Corporation\NVIDIA App\NvDLISR;C:\Program Files\dotnet\;C:\Program Files\nodejs\;C:\Program Files\Git LFS;C:\Windows\System32;C:\Windows;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Program Files (x86)\Microsoft SQL Server\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\180\Tools\Binn\;C:\Program Files\Microsoft SQL Server\170\DTS\Binn\;D:\rational rose\common;C:\tools\deepseek;C:\Program Files\GitHub CLI\;C:\Users\links\.mavis\bin;C:\Users\links\AppData\Local\Microsoft\WindowsApps;C:\Users\links\.dotnet\tools;D:\cursor\resources\app\bin;D:\Microsoft VS Code\bin;C:\MinGW\bin;C:\Users\links\AppData\Roaming\npm;C:\Users\links\AppData\Roaming\npm\bin;C:\Program Files\Git\cmd;C:\Program Files\Git\bin;C:\Program Files\Java\jdk-17\bin;C:\Users\links\AppData\Local\Python\bin;.]上找不到基于APR的Apache Tomcat本机库，该库允许在生产环境中获得最佳性能
+22-May-2026 19:19:54.310 信息 [main] org.apache.coyote.AbstractProtocol.init 初始化协议处理器 ["http-nio-8080"]
+22-May-2026 19:19:54.324 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[323]毫秒内初始化
+22-May-2026 19:19:54.365 信息 [main] org.apache.catalina.core.StandardService.startInternal 正在启动服务[Catalina]
+22-May-2026 19:19:54.365 信息 [main] org.apache.catalina.core.StandardEngine.startInternal 正在启动 Servlet 引擎：[Apache Tomcat/10.1.52]
+22-May-2026 19:19:54.376 信息 [main] org.apache.catalina.startup.HostConfig.deployDescriptor 正在部署部署描述符[D:\creat\property-management\src\main\webapp\conf\Catalina\localhost\webapp.xml]。
+22-May-2026 19:19:54.799 信息 [main] org.apache.jasper.servlet.TldScanner.scanJars 至少有一个JAR被扫描用于TLD但尚未包含TLD。 为此记录器启用调试日志记录，以获取已扫描但未在其中找到TLD的完整JAR列表。 在扫描期间跳过不需要的JAR可以缩短启动时间和JSP编译时间。
+22-May-2026 19:19:54.823 警告 [main] org.apache.catalina.filters.FilterBase.init 未为[org.apache.catalina.filters.SetCharacterEncodingFilter]类型的筛选器定义属性[forceEncoding]
+22-May-2026 19:19:54.834 信息 [main] org.apache.catalina.startup.HostConfig.deployDescriptor 部署描述符[D:\creat\property-management\src\main\webapp\conf\Catalina\localhost\webapp.xml]的部署已在[456]ms内完成
+22-May-2026 19:19:54.837 信息 [main] org.apache.coyote.AbstractProtocol.start 开始协议处理句柄["http-nio-8080"]
+22-May-2026 19:19:54.853 信息 [main] org.apache.catalina.startup.Catalina.start [528]毫秒后服务器启动
+22-May-2026 19:22:18.027 信息 [Thread-1] org.apache.coyote.AbstractProtocol.pause 暂停ProtocolHandler["http-nio-8080"]
+22-May-2026 19:22:18.030 信息 [Thread-1] org.apache.catalina.core.StandardService.stopInternal 正在停止服务[Catalina]
+22-May-2026 19:22:18.033 警告 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesJdbc Web应用程序 [webapp] 注册了JDBC驱动程序 [com.microsoft.sqlserver.jdbc.SQLServerDriver]，但在Web应用程序停止时无法注销它。 为防止内存泄漏，JDBC驱动程序已被强制取消注册。
+22-May-2026 19:22:18.033 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@45e0061a]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:5 ClientConnectionId: 1f51cc9b-22fd-46bb-8b4a-630d7a16dfa6），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:22:18.033 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@45e0061a]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:12 ClientConnectionId: a5488a37-8208-4b82-a103-84078267ca7d），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:22:18.034 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@45e0061a]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:24 ClientConnectionId: f0651f10-27ce-48bd-a1e9-1ce4bad27277），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:22:18.034 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@45e0061a]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:17 ClientConnectionId: 692b272a-01c9-4046-b7a9-7d8fd506d22b），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:22:18.035 信息 [Thread-1] org.apache.coyote.AbstractProtocol.stop 正在停止ProtocolHandler ["http-nio-8080"]
+22-May-2026 19:22:18.037 信息 [Thread-1] org.apache.coyote.AbstractProtocol.destroy 正在销毁协议处理器 ["http-nio-8080"]
+22-May-2026 19:22:19.742 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Server.服务器版本: Apache Tomcat/10.1.52
+22-May-2026 19:22:19.745 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 服务器构建:        Jan 23 2026 19:29:07 UTC
+22-May-2026 19:22:19.745 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 服务器版本号:      10.1.52.0
+22-May-2026 19:22:19.745 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 操作系统名称:      Windows 11
+22-May-2026 19:22:19.746 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log OS.版本:           10.0
+22-May-2026 19:22:19.746 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 架构:              amd64
+22-May-2026 19:22:19.746 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Java 环境变量:     C:\Program Files\Java\jdk-21
+22-May-2026 19:22:19.746 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Java虚拟机版本:    21.0.6+8-LTS-188
+22-May-2026 19:22:19.746 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log JVM.供应商:        Oracle Corporation
+22-May-2026 19:22:19.747 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:     D:\creat\property-management\src\main\webapp
+22-May-2026 19:22:19.747 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:     D:\apache-tomcat-10.1.52
+22-May-2026 19:22:19.754 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.lang=ALL-UNNAMED
+22-May-2026 19:22:19.754 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.io=ALL-UNNAMED
+22-May-2026 19:22:19.754 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.util=ALL-UNNAMED
+22-May-2026 19:22:19.754 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.util.concurrent=ALL-UNNAMED
+22-May-2026 19:22:19.754 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED
+22-May-2026 19:22:19.754 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dcatalina.home=D:\apache-tomcat-10.1.52
+22-May-2026 19:22:19.754 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dcatalina.base=D:\creat\property-management\src\main\webapp
+22-May-2026 19:22:19.755 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Djava.io.tmpdir=D:\creat\property-management\src\main\webapp\temp
+22-May-2026 19:22:19.755 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Djava.util.logging.config.file=D:\creat\property-management\src\main\webapp\conf\logging.properties
+22-May-2026 19:22:19.755 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+22-May-2026 19:22:19.755 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -javaagent:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.3\lib\idea_rt.jar=10731:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.3\bin
+22-May-2026 19:22:19.755 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dfile.encoding=UTF-8
+22-May-2026 19:22:19.755 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dsun.stdout.encoding=UTF-8
+22-May-2026 19:22:19.755 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dsun.stderr.encoding=UTF-8
+22-May-2026 19:22:19.762 信息 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent 在java.library.path:[C:\Program Files\Java\jdk-21\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files (x86)\VMware\VMware Workstation\bin\;$env:PATH;C:\MinGW\bin;C:\Program Files\NVIDIA Corporation\NVIDIA App\NvDLISR;C:\Program Files\dotnet\;C:\Program Files\nodejs\;C:\Program Files\Git LFS;C:\Windows\System32;C:\Windows;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Program Files (x86)\Microsoft SQL Server\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\180\Tools\Binn\;C:\Program Files\Microsoft SQL Server\170\DTS\Binn\;D:\rational rose\common;C:\tools\deepseek;C:\Program Files\GitHub CLI\;C:\Users\links\.mavis\bin;C:\Users\links\AppData\Local\Microsoft\WindowsApps;C:\Users\links\.dotnet\tools;D:\cursor\resources\app\bin;D:\Microsoft VS Code\bin;C:\MinGW\bin;C:\Users\links\AppData\Roaming\npm;C:\Users\links\AppData\Roaming\npm\bin;C:\Program Files\Git\cmd;C:\Program Files\Git\bin;C:\Program Files\Java\jdk-17\bin;C:\Users\links\AppData\Local\Python\bin;.]上找不到基于APR的Apache Tomcat本机库，该库允许在生产环境中获得最佳性能
+22-May-2026 19:22:19.924 信息 [main] org.apache.coyote.AbstractProtocol.init 初始化协议处理器 ["http-nio-8080"]
+22-May-2026 19:22:19.934 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[319]毫秒内初始化
+22-May-2026 19:22:19.975 信息 [main] org.apache.catalina.core.StandardService.startInternal 正在启动服务[Catalina]
+22-May-2026 19:22:19.976 信息 [main] org.apache.catalina.core.StandardEngine.startInternal 正在启动 Servlet 引擎：[Apache Tomcat/10.1.52]
+22-May-2026 19:22:19.984 信息 [main] org.apache.catalina.startup.HostConfig.deployDescriptor 正在部署部署描述符[D:\creat\property-management\src\main\webapp\conf\Catalina\localhost\webapp.xml]。
+22-May-2026 19:22:20.380 信息 [main] org.apache.jasper.servlet.TldScanner.scanJars 至少有一个JAR被扫描用于TLD但尚未包含TLD。 为此记录器启用调试日志记录，以获取已扫描但未在其中找到TLD的完整JAR列表。 在扫描期间跳过不需要的JAR可以缩短启动时间和JSP编译时间。
+22-May-2026 19:22:20.403 警告 [main] org.apache.catalina.filters.FilterBase.init 未为[org.apache.catalina.filters.SetCharacterEncodingFilter]类型的筛选器定义属性[forceEncoding]
+22-May-2026 19:22:20.415 信息 [main] org.apache.catalina.startup.HostConfig.deployDescriptor 部署描述符[D:\creat\property-management\src\main\webapp\conf\Catalina\localhost\webapp.xml]的部署已在[429]ms内完成
+22-May-2026 19:22:20.417 信息 [main] org.apache.coyote.AbstractProtocol.start 开始协议处理句柄["http-nio-8080"]
+22-May-2026 19:22:20.432 信息 [main] org.apache.catalina.startup.Catalina.start [496]毫秒后服务器启动
+22-May-2026 19:26:10.279 信息 [Thread-1] org.apache.coyote.AbstractProtocol.pause 暂停ProtocolHandler["http-nio-8080"]
+22-May-2026 19:26:10.282 信息 [Thread-1] org.apache.catalina.core.StandardService.stopInternal 正在停止服务[Catalina]
+22-May-2026 19:26:10.284 警告 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesJdbc Web应用程序 [webapp] 注册了JDBC驱动程序 [com.microsoft.sqlserver.jdbc.SQLServerDriver]，但在Web应用程序停止时无法注销它。 为防止内存泄漏，JDBC驱动程序已被强制取消注册。
+22-May-2026 19:26:10.284 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@145c47a6]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:21 ClientConnectionId: cb01bd31-1a02-4c05-ab89-571f35dce778），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:26:10.286 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@145c47a6]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:39 ClientConnectionId: 934952f9-c631-4eae-9378-5a5c07ecaa26），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:26:10.286 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@145c47a6]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:40 ClientConnectionId: b4c1b2dd-d7e7-4903-8fee-a72da40ebe28），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:26:10.286 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@145c47a6]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:32 ClientConnectionId: b79e1ec7-b50f-48f7-ac56-5aad64c8297c），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:26:10.286 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@145c47a6]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:16 ClientConnectionId: 880fd01b-a440-461d-a4c7-5c123f78cc49），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:26:10.286 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@145c47a6]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:34 ClientConnectionId: 9cbb46ff-e348-4305-829b-b7a72c8085cf），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:26:10.286 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@145c47a6]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:36 ClientConnectionId: cb5a2b16-03fb-4559-9651-9ad706607c72），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:26:10.287 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@145c47a6]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:37 ClientConnectionId: c07352b9-ad91-43af-953d-203c6cf93cf9），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:26:10.287 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@145c47a6]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:38 ClientConnectionId: 25dc5207-940f-4221-b5ce-e2c4eaa78b15），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:26:10.291 信息 [Thread-1] org.apache.coyote.AbstractProtocol.stop 正在停止ProtocolHandler ["http-nio-8080"]
+22-May-2026 19:26:10.293 信息 [Thread-1] org.apache.coyote.AbstractProtocol.destroy 正在销毁协议处理器 ["http-nio-8080"]
+22-May-2026 19:27:48.782 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Server.服务器版本: Apache Tomcat/10.1.52
+22-May-2026 19:27:48.786 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 服务器构建:        Jan 23 2026 19:29:07 UTC
+22-May-2026 19:27:48.787 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 服务器版本号:      10.1.52.0
+22-May-2026 19:27:48.787 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 操作系统名称:      Windows 11
+22-May-2026 19:27:48.787 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log OS.版本:           10.0
+22-May-2026 19:27:48.787 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 架构:              amd64
+22-May-2026 19:27:48.787 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Java 环境变量:     C:\Program Files\Java\jdk-21
+22-May-2026 19:27:48.787 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Java虚拟机版本:    21.0.6+8-LTS-188
+22-May-2026 19:27:48.787 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log JVM.供应商:        Oracle Corporation
+22-May-2026 19:27:48.788 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:     D:\creat\property-management\src\main\webapp
+22-May-2026 19:27:48.788 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:     D:\apache-tomcat-10.1.52
+22-May-2026 19:27:48.794 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.lang=ALL-UNNAMED
+22-May-2026 19:27:48.795 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.io=ALL-UNNAMED
+22-May-2026 19:27:48.795 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.util=ALL-UNNAMED
+22-May-2026 19:27:48.795 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.util.concurrent=ALL-UNNAMED
+22-May-2026 19:27:48.795 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED
+22-May-2026 19:27:48.795 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dcatalina.home=D:\apache-tomcat-10.1.52
+22-May-2026 19:27:48.795 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dcatalina.base=D:\creat\property-management\src\main\webapp
+22-May-2026 19:27:48.795 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Djava.io.tmpdir=D:\creat\property-management\src\main\webapp\temp
+22-May-2026 19:27:48.795 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Djava.util.logging.config.file=D:\creat\property-management\src\main\webapp\conf\logging.properties
+22-May-2026 19:27:48.796 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+22-May-2026 19:27:48.796 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -javaagent:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.3\lib\idea_rt.jar=9437:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.3\bin
+22-May-2026 19:27:48.796 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dfile.encoding=UTF-8
+22-May-2026 19:27:48.796 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dsun.stdout.encoding=UTF-8
+22-May-2026 19:27:48.796 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dsun.stderr.encoding=UTF-8
+22-May-2026 19:27:48.807 信息 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent 在java.library.path:[C:\Program Files\Java\jdk-21\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files (x86)\VMware\VMware Workstation\bin\;$env:PATH;C:\MinGW\bin;C:\Program Files\NVIDIA Corporation\NVIDIA App\NvDLISR;C:\Program Files\dotnet\;C:\Program Files\nodejs\;C:\Program Files\Git LFS;C:\Windows\System32;C:\Windows;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Program Files (x86)\Microsoft SQL Server\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\180\Tools\Binn\;C:\Program Files\Microsoft SQL Server\170\DTS\Binn\;D:\rational rose\common;C:\tools\deepseek;C:\Program Files\GitHub CLI\;C:\Users\links\.mavis\bin;C:\Users\links\AppData\Local\Microsoft\WindowsApps;C:\Users\links\.dotnet\tools;D:\cursor\resources\app\bin;D:\Microsoft VS Code\bin;C:\MinGW\bin;C:\Users\links\AppData\Roaming\npm;C:\Users\links\AppData\Roaming\npm\bin;C:\Program Files\Git\cmd;C:\Program Files\Git\bin;C:\Program Files\Java\jdk-17\bin;C:\Users\links\AppData\Local\Python\bin;.]上找不到基于APR的Apache Tomcat本机库，该库允许在生产环境中获得最佳性能
+22-May-2026 19:27:48.978 信息 [main] org.apache.coyote.AbstractProtocol.init 初始化协议处理器 ["http-nio-8080"]
+22-May-2026 19:27:48.992 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[340]毫秒内初始化
+22-May-2026 19:27:49.033 信息 [main] org.apache.catalina.core.StandardService.startInternal 正在启动服务[Catalina]
+22-May-2026 19:27:49.034 信息 [main] org.apache.catalina.core.StandardEngine.startInternal 正在启动 Servlet 引擎：[Apache Tomcat/10.1.52]
+22-May-2026 19:27:49.041 信息 [main] org.apache.catalina.startup.HostConfig.deployDescriptor 正在部署部署描述符[D:\creat\property-management\src\main\webapp\conf\Catalina\localhost\webapp.xml]。
+22-May-2026 19:27:49.441 信息 [main] org.apache.jasper.servlet.TldScanner.scanJars 至少有一个JAR被扫描用于TLD但尚未包含TLD。 为此记录器启用调试日志记录，以获取已扫描但未在其中找到TLD的完整JAR列表。 在扫描期间跳过不需要的JAR可以缩短启动时间和JSP编译时间。
+22-May-2026 19:27:49.464 警告 [main] org.apache.catalina.filters.FilterBase.init 未为[org.apache.catalina.filters.SetCharacterEncodingFilter]类型的筛选器定义属性[forceEncoding]
+22-May-2026 19:27:49.478 信息 [main] org.apache.catalina.startup.HostConfig.deployDescriptor 部署描述符[D:\creat\property-management\src\main\webapp\conf\Catalina\localhost\webapp.xml]的部署已在[435]ms内完成
+22-May-2026 19:27:49.482 信息 [main] org.apache.coyote.AbstractProtocol.start 开始协议处理句柄["http-nio-8080"]
+22-May-2026 19:27:49.496 信息 [main] org.apache.catalina.startup.Catalina.start [503]毫秒后服务器启动
+22-May-2026 19:31:40.161 信息 [Thread-1] org.apache.coyote.AbstractProtocol.pause 暂停ProtocolHandler["http-nio-8080"]
+22-May-2026 19:31:40.163 信息 [Thread-1] org.apache.catalina.core.StandardService.stopInternal 正在停止服务[Catalina]
+22-May-2026 19:31:40.166 警告 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesJdbc Web应用程序 [webapp] 注册了JDBC驱动程序 [com.microsoft.sqlserver.jdbc.SQLServerDriver]，但在Web应用程序停止时无法注销它。 为防止内存泄漏，JDBC驱动程序已被强制取消注册。
+22-May-2026 19:31:40.167 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@13b8fe64]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:1 ClientConnectionId: 056c06de-c90b-4690-9568-309bddb3156a），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:31:40.167 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@13b8fe64]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:2 ClientConnectionId: 28847442-575e-4a1b-bb0f-05cb43de7ff0），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:31:40.167 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@13b8fe64]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:3 ClientConnectionId: cfc7189a-6263-4be0-87e4-070d3a31f4a0），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:31:40.167 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@13b8fe64]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:4 ClientConnectionId: ed3bc688-eab1-47a9-bd46-d5d5e07e0ff2），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:31:40.167 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@13b8fe64]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:5 ClientConnectionId: 485aaf75-4e03-483c-9b3a-cd9610836ce2），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:31:40.169 信息 [Thread-1] org.apache.coyote.AbstractProtocol.stop 正在停止ProtocolHandler ["http-nio-8080"]
+22-May-2026 19:31:40.171 信息 [Thread-1] org.apache.coyote.AbstractProtocol.destroy 正在销毁协议处理器 ["http-nio-8080"]
+22-May-2026 19:31:41.735 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Server.服务器版本: Apache Tomcat/10.1.52
+22-May-2026 19:31:41.739 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 服务器构建:        Jan 23 2026 19:29:07 UTC
+22-May-2026 19:31:41.740 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 服务器版本号:      10.1.52.0
+22-May-2026 19:31:41.740 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 操作系统名称:      Windows 11
+22-May-2026 19:31:41.740 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log OS.版本:           10.0
+22-May-2026 19:31:41.741 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 架构:              amd64
+22-May-2026 19:31:41.741 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Java 环境变量:     C:\Program Files\Java\jdk-21
+22-May-2026 19:31:41.741 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Java虚拟机版本:    21.0.6+8-LTS-188
+22-May-2026 19:31:41.741 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log JVM.供应商:        Oracle Corporation
+22-May-2026 19:31:41.741 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:     D:\creat\property-management\src\main\webapp
+22-May-2026 19:31:41.742 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:     D:\apache-tomcat-10.1.52
+22-May-2026 19:31:41.748 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.lang=ALL-UNNAMED
+22-May-2026 19:31:41.748 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.io=ALL-UNNAMED
+22-May-2026 19:31:41.748 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.util=ALL-UNNAMED
+22-May-2026 19:31:41.749 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.util.concurrent=ALL-UNNAMED
+22-May-2026 19:31:41.749 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED
+22-May-2026 19:31:41.749 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dcatalina.home=D:\apache-tomcat-10.1.52
+22-May-2026 19:31:41.749 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dcatalina.base=D:\creat\property-management\src\main\webapp
+22-May-2026 19:31:41.751 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Djava.io.tmpdir=D:\creat\property-management\src\main\webapp\temp
+22-May-2026 19:31:41.751 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Djava.util.logging.config.file=D:\creat\property-management\src\main\webapp\conf\logging.properties
+22-May-2026 19:31:41.751 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+22-May-2026 19:31:41.751 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -javaagent:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.3\lib\idea_rt.jar=6430:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.3\bin
+22-May-2026 19:31:41.751 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dfile.encoding=UTF-8
+22-May-2026 19:31:41.751 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dsun.stdout.encoding=UTF-8
+22-May-2026 19:31:41.752 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dsun.stderr.encoding=UTF-8
+22-May-2026 19:31:41.759 信息 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent 在java.library.path:[C:\Program Files\Java\jdk-21\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files (x86)\VMware\VMware Workstation\bin\;$env:PATH;C:\MinGW\bin;C:\Program Files\NVIDIA Corporation\NVIDIA App\NvDLISR;C:\Program Files\dotnet\;C:\Program Files\nodejs\;C:\Program Files\Git LFS;C:\Windows\System32;C:\Windows;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Program Files (x86)\Microsoft SQL Server\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\180\Tools\Binn\;C:\Program Files\Microsoft SQL Server\170\DTS\Binn\;D:\rational rose\common;C:\tools\deepseek;C:\Program Files\GitHub CLI\;C:\Users\links\.mavis\bin;C:\Users\links\AppData\Local\Microsoft\WindowsApps;C:\Users\links\.dotnet\tools;D:\cursor\resources\app\bin;D:\Microsoft VS Code\bin;C:\MinGW\bin;C:\Users\links\AppData\Roaming\npm;C:\Users\links\AppData\Roaming\npm\bin;C:\Program Files\Git\cmd;C:\Program Files\Git\bin;C:\Program Files\Java\jdk-17\bin;C:\Users\links\AppData\Local\Python\bin;.]上找不到基于APR的Apache Tomcat本机库，该库允许在生产环境中获得最佳性能
+22-May-2026 19:31:41.915 信息 [main] org.apache.coyote.AbstractProtocol.init 初始化协议处理器 ["http-nio-8080"]
+22-May-2026 19:31:41.926 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[321]毫秒内初始化
+22-May-2026 19:31:41.978 信息 [main] org.apache.catalina.core.StandardService.startInternal 正在启动服务[Catalina]
+22-May-2026 19:31:41.978 信息 [main] org.apache.catalina.core.StandardEngine.startInternal 正在启动 Servlet 引擎：[Apache Tomcat/10.1.52]
+22-May-2026 19:31:41.988 信息 [main] org.apache.catalina.startup.HostConfig.deployDescriptor 正在部署部署描述符[D:\creat\property-management\src\main\webapp\conf\Catalina\localhost\webapp.xml]。
+22-May-2026 19:31:42.409 信息 [main] org.apache.jasper.servlet.TldScanner.scanJars 至少有一个JAR被扫描用于TLD但尚未包含TLD。 为此记录器启用调试日志记录，以获取已扫描但未在其中找到TLD的完整JAR列表。 在扫描期间跳过不需要的JAR可以缩短启动时间和JSP编译时间。
+22-May-2026 19:31:42.433 警告 [main] org.apache.catalina.filters.FilterBase.init 未为[org.apache.catalina.filters.SetCharacterEncodingFilter]类型的筛选器定义属性[forceEncoding]
+22-May-2026 19:31:42.446 信息 [main] org.apache.catalina.startup.HostConfig.deployDescriptor 部署描述符[D:\creat\property-management\src\main\webapp\conf\Catalina\localhost\webapp.xml]的部署已在[455]ms内完成
+22-May-2026 19:31:42.451 信息 [main] org.apache.coyote.AbstractProtocol.start 开始协议处理句柄["http-nio-8080"]
+22-May-2026 19:31:42.469 信息 [main] org.apache.catalina.startup.Catalina.start [542]毫秒后服务器启动
+22-May-2026 19:33:56.128 信息 [Thread-1] org.apache.coyote.AbstractProtocol.pause 暂停ProtocolHandler["http-nio-8080"]
+22-May-2026 19:33:56.130 信息 [Thread-1] org.apache.catalina.core.StandardService.stopInternal 正在停止服务[Catalina]
+22-May-2026 19:33:56.134 警告 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesJdbc Web应用程序 [webapp] 注册了JDBC驱动程序 [com.microsoft.sqlserver.jdbc.SQLServerDriver]，但在Web应用程序停止时无法注销它。 为防止内存泄漏，JDBC驱动程序已被强制取消注册。
+22-May-2026 19:33:56.135 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@1d650676]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:2 ClientConnectionId: 34c1d819-efaf-434a-a66e-d8412e277499），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:33:56.135 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@1d650676]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:3 ClientConnectionId: 9e60094a-c6a1-41ab-be25-3b37d04d33b0），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:33:56.135 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@1d650676]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:5 ClientConnectionId: fb2f716e-e13d-47f9-9218-8def5216c3eb），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:33:56.135 严重 [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.checkThreadLocalMapForLeaks web应用程序[webapp]创建了一个ThreadLocal，其键类型为[java.lang.ThreadLocal]（值为[java.lang.ThreadLocal@1d650676]），值类型为[com.microsoft.sqlserver.jdbc.SQLServerConnection43]（值为[ConnectionID:10 ClientConnectionId: ed0f6b89-3323-4cd4-bf70-0125176110a4），但在停止web应用程序时未能将其删除。线程将随着时间的推移而更新，以尝试避免可能的内存泄漏
+22-May-2026 19:33:56.137 信息 [Thread-1] org.apache.coyote.AbstractProtocol.stop 正在停止ProtocolHandler ["http-nio-8080"]
+22-May-2026 19:33:56.140 信息 [Thread-1] org.apache.coyote.AbstractProtocol.destroy 正在销毁协议处理器 ["http-nio-8080"]
+22-May-2026 19:33:57.861 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Server.服务器版本: Apache Tomcat/10.1.52
+22-May-2026 19:33:57.864 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 服务器构建:        Jan 23 2026 19:29:07 UTC
+22-May-2026 19:33:57.865 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 服务器版本号:      10.1.52.0
+22-May-2026 19:33:57.865 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 操作系统名称:      Windows 11
+22-May-2026 19:33:57.865 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log OS.版本:           10.0
+22-May-2026 19:33:57.865 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 架构:              amd64
+22-May-2026 19:33:57.865 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Java 环境变量:     C:\Program Files\Java\jdk-21
+22-May-2026 19:33:57.865 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log Java虚拟机版本:    21.0.6+8-LTS-188
+22-May-2026 19:33:57.865 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log JVM.供应商:        Oracle Corporation
+22-May-2026 19:33:57.865 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_BASE:     D:\creat\property-management\src\main\webapp
+22-May-2026 19:33:57.865 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log CATALINA_HOME:     D:\apache-tomcat-10.1.52
+22-May-2026 19:33:57.873 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.lang=ALL-UNNAMED
+22-May-2026 19:33:57.873 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.io=ALL-UNNAMED
+22-May-2026 19:33:57.873 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.util=ALL-UNNAMED
+22-May-2026 19:33:57.874 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.base/java.util.concurrent=ALL-UNNAMED
+22-May-2026 19:33:57.874 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED
+22-May-2026 19:33:57.874 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dcatalina.home=D:\apache-tomcat-10.1.52
+22-May-2026 19:33:57.874 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dcatalina.base=D:\creat\property-management\src\main\webapp
+22-May-2026 19:33:57.874 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Djava.io.tmpdir=D:\creat\property-management\src\main\webapp\temp
+22-May-2026 19:33:57.874 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Djava.util.logging.config.file=D:\creat\property-management\src\main\webapp\conf\logging.properties
+22-May-2026 19:33:57.874 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+22-May-2026 19:33:57.875 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -javaagent:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.3\lib\idea_rt.jar=5755:C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2024.3\bin
+22-May-2026 19:33:57.875 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dfile.encoding=UTF-8
+22-May-2026 19:33:57.875 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dsun.stdout.encoding=UTF-8
+22-May-2026 19:33:57.875 信息 [main] org.apache.catalina.startup.VersionLoggerListener.log 命令行参数：       -Dsun.stderr.encoding=UTF-8
+22-May-2026 19:33:57.882 信息 [main] org.apache.catalina.core.AprLifecycleListener.lifecycleEvent 在java.library.path:[C:\Program Files\Java\jdk-21\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files (x86)\VMware\VMware Workstation\bin\;$env:PATH;C:\MinGW\bin;C:\Program Files\NVIDIA Corporation\NVIDIA App\NvDLISR;C:\Program Files\dotnet\;C:\Program Files\nodejs\;C:\Program Files\Git LFS;C:\Windows\System32;C:\Windows;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Program Files (x86)\Microsoft SQL Server\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\170\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\180\Tools\Binn\;C:\Program Files\Microsoft SQL Server\170\DTS\Binn\;D:\rational rose\common;C:\tools\deepseek;C:\Program Files\GitHub CLI\;C:\Users\links\.mavis\bin;C:\Users\links\AppData\Local\Microsoft\WindowsApps;C:\Users\links\.dotnet\tools;D:\cursor\resources\app\bin;D:\Microsoft VS Code\bin;C:\MinGW\bin;C:\Users\links\AppData\Roaming\npm;C:\Users\links\AppData\Roaming\npm\bin;C:\Program Files\Git\cmd;C:\Program Files\Git\bin;C:\Program Files\Java\jdk-17\bin;C:\Users\links\AppData\Local\Python\bin;.]上找不到基于APR的Apache Tomcat本机库，该库允许在生产环境中获得最佳性能
+22-May-2026 19:33:58.049 信息 [main] org.apache.coyote.AbstractProtocol.init 初始化协议处理器 ["http-nio-8080"]
+22-May-2026 19:33:58.061 信息 [main] org.apache.catalina.startup.Catalina.load 服务器在[331]毫秒内初始化
+22-May-2026 19:33:58.111 信息 [main] org.apache.catalina.core.StandardService.startInternal 正在启动服务[Catalina]
+22-May-2026 19:33:58.111 信息 [main] org.apache.catalina.core.StandardEngine.startInternal 正在启动 Servlet 引擎：[Apache Tomcat/10.1.52]
+22-May-2026 19:33:58.120 信息 [main] org.apache.catalina.startup.HostConfig.deployDescriptor 正在部署部署描述符[D:\creat\property-management\src\main\webapp\conf\Catalina\localhost\webapp.xml]。
+22-May-2026 19:33:58.527 信息 [main] org.apache.jasper.servlet.TldScanner.scanJars 至少有一个JAR被扫描用于TLD但尚未包含TLD。 为此记录器启用调试日志记录，以获取已扫描但未在其中找到TLD的完整JAR列表。 在扫描期间跳过不需要的JAR可以缩短启动时间和JSP编译时间。
+22-May-2026 19:33:58.554 警告 [main] org.apache.catalina.filters.FilterBase.init 未为[org.apache.catalina.filters.SetCharacterEncodingFilter]类型的筛选器定义属性[forceEncoding]
+22-May-2026 19:33:58.569 信息 [main] org.apache.catalina.startup.HostConfig.deployDescriptor 部署描述符[D:\creat\property-management\src\main\webapp\conf\Catalina\localhost\webapp.xml]的部署已在[446]ms内完成
+22-May-2026 19:33:58.575 信息 [main] org.apache.coyote.AbstractProtocol.start 开始协议处理句柄["http-nio-8080"]
+22-May-2026 19:33:58.595 信息 [main] org.apache.catalina.startup.Catalina.start [532]毫秒后服务器启动
+22-May-2026 19:40:13.688 信息 [Thread-1] org.apache.coyote.AbstractProtocol.pause 暂停ProtocolHandler["http-nio-8080"]
+22-May-2026 19:40:13.690 信息 [Thread-1] org.apache.catalina.core.StandardService.stopInternal 正在停止服务[Catalina]
+22-May-2026 19:40:13.695 信息 [Thread-1] org.apache.coyote.AbstractProtocol.stop 正在停止ProtocolHandler ["http-nio-8080"]
+22-May-2026 19:40:13.698 信息 [Thread-1] org.apache.coyote.AbstractProtocol.destroy 正在销毁协议处理器 ["http-nio-8080"]

@@ -39,6 +39,7 @@ public class AdminPropertyAppealServlet extends BaseServlet {
         
         PropertyFeeAppeal appeal = service.findById(appealId);
         request.setAttribute("entity", appeal);
+        
         request.getRequestDispatcher("/pages/admin/property/appeal-detail.jsp").forward(request, response);
     }
     
