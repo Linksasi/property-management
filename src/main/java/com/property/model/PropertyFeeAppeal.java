@@ -22,6 +22,7 @@ public class PropertyFeeAppeal {
     private String billMonth;          // 计费月份
     private BigDecimal amount;        // 账单金额
     private String housingAddress;    // 住房地址
+    private String standardType;     // 收费类型
 
     public PropertyFeeAppeal() {
     }
@@ -143,5 +144,13 @@ public class PropertyFeeAppeal {
 
     public void setHousingAddress(String housingAddress) {
         this.housingAddress = housingAddress;
+    }
+    
+    public String getStandardType() {
+        return standardType;
+    }
+    
+    public void setStandardType(String standardType) {
+        this.standardType = standardType;
     }
 }

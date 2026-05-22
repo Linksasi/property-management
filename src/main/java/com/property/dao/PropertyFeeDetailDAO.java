@@ -77,4 +77,14 @@ public interface PropertyFeeDetailDAO {
      * 统计：根据月份统计各状态数量
      */
     int countByStatus(String billMonth, String status);
+    
+    /**
+     * 更新金额
+     */
+    int updateAmount(String detailId, java.math.BigDecimal amount);
+    
+    /**
+     * 更新状态和实缴金额（用于支付完成后）
+     */
+    int updateStatusAndPaidAmount(String detailId, String status, java.math.BigDecimal paidAmount);
 }

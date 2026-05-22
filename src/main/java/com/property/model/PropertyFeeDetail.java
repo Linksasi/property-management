@@ -24,6 +24,7 @@ public class PropertyFeeDetail {
     private String housingAddress;  // 住房地址（楼栋+单元+房号）
     private String residentName;    // 住户姓名
     private String billMonth;       // 计费月份
+    private String standardType;    // 收费类型（物业费/绿化费/电梯费）
 
     public PropertyFeeDetail() {
     }
@@ -165,5 +166,13 @@ public class PropertyFeeDetail {
 
     public void setBillMonth(String billMonth) {
         this.billMonth = billMonth;
+    }
+    
+    public String getStandardType() {
+        return standardType;
+    }
+    
+    public void setStandardType(String standardType) {
+        this.standardType = standardType;
     }
 }

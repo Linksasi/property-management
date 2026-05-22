@@ -21,12 +21,12 @@ public class OwnerPropertyServlet extends BaseServlet {
         Object residentIdObj = request.getSession().getAttribute("userId");
         String residentId = residentIdObj != null ? residentIdObj.toString() : null;
         
-        List<PropertyFeeDetail> list;
-        if (residentId != null) {
-            list = service.findByResidentId(residentId);
-        } else {
-            list = service.findAll();
+        if (residentId == null) {
+            response.sendRedirect(request.getContextPath() + "/login-test.jsp");
+            return;
         }
+        
+        List<PropertyFeeDetail> list = service.findByResidentId(residentId);
         
         request.setAttribute("list", list);
         request.getRequestDispatcher("/pages/owner/property/list.jsp").forward(request, response);

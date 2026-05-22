@@ -77,8 +77,13 @@ public class PropertyFeeAppealService {
     
     /**
      * 审核申诉
+     * @param appealId 申诉ID
+     * @param status 审核结果（通过/驳回）
+     * @param adminId 管理员ID
+     * @param adminReason 审核意见
+     * @param adjustedAmountStr 调整后的金额（可选）
      */
-    public boolean reviewAppeal(String appealId, String status, String adminId, String adminReason) {
+    public boolean reviewAppeal(String appealId, String status, String adminId, String adminReason, String adjustedAmountStr) {
         PropertyFeeAppeal appeal = appealDAO.findById(appealId);
         if (appeal == null) {
             return false;
@@ -87,12 +92,21 @@ public class PropertyFeeAppealService {
         // 更新申诉状态
         appealDAO.updateStatus(appealId, status, adminId, adminReason);
         
-        // 如果通过，同时更新物业费明细状态为已缴（申诉通过，免除缴费或视为已处理）
-        // 如果驳回，保持申诉中状态（等待重新处理）
         if ("通过".equals(status)) {
-            detailDAO.updateStatus(appeal.getDetailId(), "已缴");
+            // 如果有调整金额，更新账单金额
+            if (adjustedAmountStr != null && !adjustedAmountStr.isEmpty()) {
+                try {
+                    java.math.BigDecimal adjustedAmount = new java.math.BigDecimal(adjustedAmountStr);
+                    detailDAO.updateAmount(appeal.getDetailId(), adjustedAmount);
+                } catch (NumberFormatException e) {
+                    // 金额格式错误，跳过
+                }
+            }
+            // 申诉通过后状态改为"未缴"，住户需重新缴费
+            detailDAO.updateStatus(appeal.getDetailId(), "未缴");
         } else if ("驳回".equals(status)) {
-            detailDAO.updateStatus(appeal.getDetailId(), "申诉中");
+            // 驳回（申诉失败）后状态改回"未缴"
+            detailDAO.updateStatus(appeal.getDetailId(), "未缴");
         }
         
         return true;

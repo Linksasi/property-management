@@ -1,0 +1,155 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.property.model.PropertyFeeDetail" %>
+<%
+    PropertyFeeDetail detail = (PropertyFeeDetail) request.getAttribute("detail");
+    if (detail == null) {
+        detail = new PropertyFeeDetail();
+    }
+    String error = (String) request.getAttribute("error");
+    if (error == null) error = "";
+%>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>费用申诉 - 小区物业管理系统</title>
+    <link href="${pageContext.request.contextPath}/css/common.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 顶部栏 -->
+    <div class="top-bar">
+        <h4>小区物业管理系统</h4>
+        <div>当前用户：<%= session.getAttribute("currentUser") != null ? session.getAttribute("currentUser") : "业主" %></div>
+    </div>
+    
+    <!-- 主容器 -->
+    <div class="main-container">
+        <!-- 侧边栏 -->
+        <div class="sidebar">
+            <div class="sidebar-title">业主菜单</div>
+            <a href="${pageContext.request.contextPath}/owner/personal?action=info" class="sidebar-item">个人信息</a>
+            <a href="${pageContext.request.contextPath}/owner/property?action=list" class="sidebar-item active">物业费</a>
+            <a href="${pageContext.request.contextPath}/owner/water?action=list" class="sidebar-item">水费</a>
+            <a href="${pageContext.request.contextPath}/owner/repair?action=list" class="sidebar-item">维修申请</a>
+            <div class="sidebar-divider"></div>
+            <a href="${pageContext.request.contextPath}/logout" class="sidebar-item">退出登录</a>
+        </div>
+        
+        <!-- 内容区 -->
+        <div class="content-area">
+            <!-- 内部导航 -->
+            <div class="property-nav">
+                <a href="${pageContext.request.contextPath}/owner/property?action=list">我的账单</a>
+                <a href="${pageContext.request.contextPath}/owner/property/appeal?action=list">申诉记录</a>
+            </div>
+            
+            <!-- 页面标题 -->
+            <h2 class="page-title">费用申诉</h2>
+            
+            <!-- 返回按钮 -->
+            <div class="mb-3">
+                <a href="${pageContext.request.contextPath}/owner/property?action=list" class="btn btn-secondary">
+                    &larr; 返回列表
+                </a>
+            </div>
+            
+            <% if (!error.isEmpty()) { %>
+            <div class="card" style="border-left:4px solid var(--error);margin-bottom:16px">
+                <p style="color:var(--error);margin:0;padding:12px"><%= error %></p>
+            </div>
+            <% } %>
+            
+            <!-- 账单信息 -->
+            <div class="card mb-3">
+                <h5 style="padding:12px 16px;border-bottom:1px solid var(--border);margin:0">关联账单</h5>
+                <div style="padding:16px">
+                    <div class="d-flex gap-12">
+                        <div class="form-group" style="flex:1;margin-bottom:0">
+                            <label class="form-label">账单ID</label>
+                            <p style="margin:0"><%= detail.getDetailId() != null ? detail.getDetailId() : "" %></p>
+                        </div>
+                        <div class="form-group" style="flex:1;margin-bottom:0">
+                            <label class="form-label">计费月份</label>
+                            <p style="margin:0"><%= detail.getBillMonth() != null ? detail.getBillMonth() : "" %></p>
+                        </div>
+                        <div class="form-group" style="flex:1;margin-bottom:0">
+                            <label class="form-label">收费类型</label>
+                            <p style="margin:0"><%= detail.getStandardType() != null ? detail.getStandardType() : "物业费" %></p>
+                        </div>
+                        <div class="form-group" style="flex:1;margin-bottom:0">
+                            <label class="form-label">应缴金额</label>
+                            <p style="margin:0;color:var(--primary);font-weight:bold">
+                                ¥<%= detail.getAmount() != null ? detail.getAmount().setScale(2) : "0.00" %>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 申诉表单 -->
+            <div class="card">
+                <h5 style="padding:12px 16px;border-bottom:1px solid var(--border);margin:0">填写申诉信息</h5>
+                <div style="padding:16px">
+                    <form method="post" action="${pageContext.request.contextPath}/owner/property/appeal">
+                        <input type="hidden" name="action" value="save">
+                        <input type="hidden" name="detailId" value="<%= detail.getDetailId() %>">
+                        
+                        <div class="form-group">
+                            <label class="form-label">申诉原因 <span class="required">*</span></label>
+                            <textarea name="reason" class="form-control" rows="5" required
+                                      placeholder="请详细描述您的申诉原因，例如：&#10;- 面积计算错误，实际面积为XX平方米&#10;- 对收费标准有异议&#10;- 其他原因说明"></textarea>
+                            <small style="color:var(--text-secondary)">请详细描述问题，以便物业管理部门核实处理</small>
+                        </div>
+                        
+                        <div class="d-flex gap-12">
+                            <button type="submit" class="btn btn-primary">提交申诉</button>
+                            <a href="${pageContext.request.contextPath}/owner/property?action=list" class="btn btn-secondary">取消</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- 提示 -->
+            <div class="card" style="background:#fff3e0;border-left:4px solid #ff9800;margin-top:16px">
+                <div style="padding:12px">
+                    <strong>申诉说明：</strong>
+                    <ul style="margin-bottom:0;padding-left:20px;margin-top:8px">
+                        <li>提交申诉后，账单状态将变为"申诉中"</li>
+                        <li>管理员将在1-3个工作日内处理您的申诉</li>
+                        <li>申诉结果可在"申诉记录"中查看</li>
+                        <li>已缴费账单不支持申诉</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<style>
+.property-nav {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+}
+.property-nav a {
+    padding: 8px 16px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-radius: var(--radius-btn);
+    font-size: 14px;
+    transition: all 0.2s;
+}
+.property-nav a:hover {
+    background-color: var(--bg-page);
+    color: var(--primary);
+}
+.property-nav a.active {
+    background-color: var(--primary);
+    color: white;
+}
+</style>

@@ -57,8 +57,8 @@ public class PaymentOrderService {
         // 1. 更新订单状态为已支付
         orderDAO.updateStatus(orderId, "已支付");
         
-        // 2. 更新物业费明细状态为已缴
-        detailDAO.updateStatus(order.getDetailId(), "已缴");
+        // 2. 更新物业费明细状态为已缴，并设置实缴金额
+        detailDAO.updateStatusAndPaidAmount(order.getDetailId(), "已缴", order.getAmount());
         
         // 3. 获取明细信息
         PropertyFeeDetail detail = detailDAO.findById(order.getDetailId());

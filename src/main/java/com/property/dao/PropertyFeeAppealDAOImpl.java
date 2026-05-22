@@ -15,13 +15,15 @@ public class PropertyFeeAppealDAOImpl implements PropertyFeeAppealDAO {
     public List<PropertyFeeAppeal> findAll() {
         List<PropertyFeeAppeal> list = new ArrayList<>();
         String sql = "SELECT a.*, r.name as resident_name, " +
-                     "b.bill_month, d.amount, " +
-                     "h.building + '-' + h.unit + '-' + h.room_no as housing_address " +
+                     "b.bill_month, d.amount, d.area, " +
+                     "h.building + '-' + h.unit + '-' + h.room_no as housing_address, " +
+                     "s.fee_type as standard_type " +
                      "FROM PropertyFeeAppeal a " +
                      "LEFT JOIN Resident r ON a.resident_id = r.resident_id " +
                      "LEFT JOIN PropertyFeeDetail d ON a.detail_id = d.detail_id " +
                      "LEFT JOIN PropertyFeeBatch b ON d.batch_id = b.batch_id " +
                      "LEFT JOIN Housing h ON d.housing_id = h.housing_id " +
+                     "LEFT JOIN PropertyStandard s ON d.standard_id = s.standard_id " +
                      "ORDER BY a.create_time DESC";
         
         try (Connection conn = DBUtil.getConnection();
@@ -41,12 +43,14 @@ public class PropertyFeeAppealDAOImpl implements PropertyFeeAppealDAO {
     public PropertyFeeAppeal findById(String appealId) {
         String sql = "SELECT a.*, r.name as resident_name, " +
                      "b.bill_month, d.amount, d.area, " +
-                     "h.building + '-' + h.unit + '-' + h.room_no as housing_address " +
+                     "h.building + '-' + h.unit + '-' + h.room_no as housing_address, " +
+                     "s.fee_type as standard_type " +
                      "FROM PropertyFeeAppeal a " +
                      "LEFT JOIN Resident r ON a.resident_id = r.resident_id " +
                      "LEFT JOIN PropertyFeeDetail d ON a.detail_id = d.detail_id " +
                      "LEFT JOIN PropertyFeeBatch b ON d.batch_id = b.batch_id " +
                      "LEFT JOIN Housing h ON d.housing_id = h.housing_id " +
+                     "LEFT JOIN PropertyStandard s ON d.standard_id = s.standard_id " +
                      "WHERE a.appeal_id = ?";
         
         try (Connection conn = DBUtil.getConnection();
@@ -68,11 +72,15 @@ public class PropertyFeeAppealDAOImpl implements PropertyFeeAppealDAO {
     public List<PropertyFeeAppeal> findByResidentId(String residentId) {
         List<PropertyFeeAppeal> list = new ArrayList<>();
         String sql = "SELECT a.*, r.name as resident_name, " +
-                     "b.bill_month, d.amount " +
+                     "b.bill_month, d.amount, d.area, " +
+                     "h.building + '-' + h.unit + '-' + h.room_no as housing_address, " +
+                     "s.fee_type as standard_type " +
                      "FROM PropertyFeeAppeal a " +
                      "LEFT JOIN Resident r ON a.resident_id = r.resident_id " +
                      "LEFT JOIN PropertyFeeDetail d ON a.detail_id = d.detail_id " +
                      "LEFT JOIN PropertyFeeBatch b ON d.batch_id = b.batch_id " +
+                     "LEFT JOIN Housing h ON d.housing_id = h.housing_id " +
+                     "LEFT JOIN PropertyStandard s ON d.standard_id = s.standard_id " +
                      "WHERE a.resident_id = ? " +
                      "ORDER BY a.create_time DESC";
         
@@ -213,6 +221,7 @@ public class PropertyFeeAppealDAOImpl implements PropertyFeeAppealDAO {
         appeal.setBillMonth(rs.getString("bill_month"));
         appeal.setAmount(rs.getBigDecimal("amount"));
         appeal.setHousingAddress(rs.getString("housing_address"));
+        appeal.setStandardType(rs.getString("standard_type"));
         return appeal;
     }
 }

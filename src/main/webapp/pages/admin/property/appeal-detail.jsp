@@ -155,21 +155,30 @@
                         
                         <div class="form-group">
                             <label class="form-label">审核结果 <span class="required">*</span></label>
-                            <select name="status" class="form-control" required>
+                            <select name="status" class="form-control" required id="reviewStatus">
                                 <option value="">请选择</option>
-                                <option value="通过">通过（视为已缴费）</option>
+                                <option value="通过">通过（调整费用金额）</option>
                                 <option value="驳回">驳回（保持原状态）</option>
                             </select>
+                        </div>
+                        
+                        <div class="form-group" id="amountGroup" style="display:none">
+                            <label class="form-label">调整后金额</label>
+                            <input type="number" name="adjustedAmount" id="adjustedAmount" class="form-control" 
+                                   step="0.01" min="0" placeholder="请输入调整后的缴费金额">
                             <small style="color:var(--text-secondary)">
-                                • 通过：账单状态改为"已缴"，业主无需缴费<br>
-                                • 驳回：账单状态保持"申诉中"
+                                原金额：¥<%= detail.getAmount() != null ? detail.getAmount().setScale(2) : "0.00" %>
                             </small>
                         </div>
                         
                         <div class="form-group">
                             <label class="form-label">审核意见</label>
-                            <textarea name="adminReason" class="form-control" rows="3" 
+                            <textarea name="adminReason" class="form-control" rows="3"
                                       placeholder="请输入审核意见（选填）"></textarea>
+                            <small style="color:var(--text-secondary)">
+                                • 通过：调整费用后状态改为"未缴"，住户需重新缴费<br>
+                                • 驳回：申诉失败，账单恢复为"未缴"
+                            </small>
                         </div>
                         
                         <div class="d-flex gap-12">
@@ -179,6 +188,21 @@
                     </form>
                 </div>
             </div>
+            
+            <script>
+            document.getElementById('reviewStatus').addEventListener('change', function() {
+                var amountGroup = document.getElementById('amountGroup');
+                var adjustedAmount = document.getElementById('adjustedAmount');
+                if (this.value === '通过') {
+                    amountGroup.style.display = 'block';
+                    adjustedAmount.required = true;
+                } else {
+                    amountGroup.style.display = 'none';
+                    adjustedAmount.required = false;
+                    adjustedAmount.value = '';
+                }
+            });
+            </script>
             <% } else { %>
             
             <!-- 已审核结果 -->

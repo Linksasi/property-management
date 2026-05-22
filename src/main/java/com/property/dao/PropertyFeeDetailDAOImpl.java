@@ -37,11 +37,12 @@ public class PropertyFeeDetailDAOImpl implements PropertyFeeDetailDAO {
     @Override
     public PropertyFeeDetail findById(String detailId) {
         String sql = "SELECT d.*, h.building + '-' + h.unit + '-' + h.room_no as housing_address, " +
-                     "r.name as resident_name, b.bill_month " +
+                     "r.name as resident_name, b.bill_month, s.fee_type as standard_type " +
                      "FROM PropertyFeeDetail d " +
                      "LEFT JOIN Housing h ON d.housing_id = h.housing_id " +
                      "LEFT JOIN Resident r ON d.resident_id = r.resident_id " +
                      "LEFT JOIN PropertyFeeBatch b ON d.batch_id = b.batch_id " +
+                     "LEFT JOIN PropertyStandard s ON d.standard_id = s.standard_id " +
                      "WHERE d.detail_id = ?";
         
         try (Connection conn = DBUtil.getConnection();
@@ -89,11 +90,12 @@ public class PropertyFeeDetailDAOImpl implements PropertyFeeDetailDAO {
     public List<PropertyFeeDetail> findByResidentId(String residentId) {
         List<PropertyFeeDetail> list = new ArrayList<>();
         String sql = "SELECT d.*, h.building + '-' + h.unit + '-' + h.room_no as housing_address, " +
-                     "r.name as resident_name, b.bill_month " +
+                     "r.name as resident_name, b.bill_month, s.fee_type as standard_type " +
                      "FROM PropertyFeeDetail d " +
                      "LEFT JOIN Housing h ON d.housing_id = h.housing_id " +
                      "LEFT JOIN Resident r ON d.resident_id = r.resident_id " +
                      "LEFT JOIN PropertyFeeBatch b ON d.batch_id = b.batch_id " +
+                     "LEFT JOIN PropertyStandard s ON d.standard_id = s.standard_id " +
                      "WHERE d.resident_id = ? " +
                      "ORDER BY b.bill_month DESC, d.create_date DESC";
         
@@ -316,6 +318,39 @@ public class PropertyFeeDetailDAOImpl implements PropertyFeeDetailDAO {
         }
         return 0;
     }
+    
+    @Override
+    public int updateAmount(String detailId, java.math.BigDecimal amount) {
+        String sql = "UPDATE PropertyFeeDetail SET amount = ? WHERE detail_id = ?";
+        
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setBigDecimal(1, amount);
+            ps.setString(2, detailId);
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    
+    @Override
+    public int updateStatusAndPaidAmount(String detailId, String status, java.math.BigDecimal paidAmount) {
+        String sql = "UPDATE PropertyFeeDetail SET status = ?, paid_amount = ? WHERE detail_id = ?";
+        
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setString(1, status);
+            ps.setBigDecimal(2, paidAmount);
+            ps.setString(3, detailId);
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
     @Override
     public int delete(String detailId) {
@@ -390,7 +425,13 @@ public class PropertyFeeDetailDAOImpl implements PropertyFeeDetailDAO {
         detail.setPaidDate(rs.getTimestamp("paid_date"));
         detail.setHousingAddress(rs.getString("housing_address"));
         detail.setResidentName(rs.getString("resident_name"));
-        detail.setBillMonth(rs.getString("bill_month"));
+        // 可选字段，可能不存在于所有查询中
+        try {
+            detail.setBillMonth(rs.getString("bill_month"));
+            detail.setStandardType(rs.getString("standard_type"));
+        } catch (SQLException e) {
+            // 列不存在，忽略
+        }
         return detail;
     }
 }
