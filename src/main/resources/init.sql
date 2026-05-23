@@ -164,14 +164,12 @@ CREATE TABLE ApprovalRecord (
 -- 物业费管理模块
 -- =============================================
 
--- 14. PropertyStandard（收费标准）- 已更新：增加status和created_at字段
+-- 14. PropertyStandard（收费标准）
 CREATE TABLE PropertyStandard (
     standard_id VARCHAR(20) PRIMARY KEY,
     fee_type NVARCHAR(30) NOT NULL,
     unit_price DECIMAL(10,2) NOT NULL,
-    effective_date DATE NOT NULL,
-    status NVARCHAR(20) DEFAULT '生效',
-    created_at DATETIME DEFAULT GETDATE()
+    effective_date DATE NOT NULL
 );
 
 -- 15. PropertyFeeBatch（物业费批次）
@@ -188,18 +186,12 @@ CREATE TABLE PropertyFeeDetail (
     detail_id VARCHAR(20) PRIMARY KEY,
     batch_id VARCHAR(20),
     housing_id VARCHAR(20),
-    resident_id VARCHAR(20),
     standard_id VARCHAR(20),
-    area DECIMAL(10,2),
     amount DECIMAL(10,2) NOT NULL,
-    paid_amount DECIMAL(10,2) DEFAULT 0,
     status NVARCHAR(20) NOT NULL,
-    due_date DATE,
     create_date DATETIME DEFAULT GETDATE(),
-    paid_date DATETIME,
     FOREIGN KEY (batch_id) REFERENCES PropertyFeeBatch(batch_id),
     FOREIGN KEY (housing_id) REFERENCES Housing(housing_id),
-    FOREIGN KEY (resident_id) REFERENCES Resident(resident_id),
     FOREIGN KEY (standard_id) REFERENCES PropertyStandard(standard_id)
 );
 
@@ -207,12 +199,9 @@ CREATE TABLE PropertyFeeDetail (
 CREATE TABLE PaymentOrder (
     order_id VARCHAR(20) PRIMARY KEY,
     detail_id VARCHAR(20),
-    order_no VARCHAR(50),
-    amount DECIMAL(10,2),
-    payment_method NVARCHAR(20),
-    status NVARCHAR(20) NOT NULL,
-    create_time DATETIME DEFAULT GETDATE(),
+    pay_method NVARCHAR(20),
     pay_time DATETIME,
+    status NVARCHAR(20) NOT NULL,
     FOREIGN KEY (detail_id) REFERENCES PropertyFeeDetail(detail_id)
 );
 
@@ -220,31 +209,21 @@ CREATE TABLE PaymentOrder (
 CREATE TABLE ElectronicVoucher (
     voucher_id VARCHAR(20) PRIMARY KEY,
     order_id VARCHAR(20),
-    resident_id VARCHAR(20),
-    housing_id VARCHAR(20),
+    user_id VARCHAR(20) NOT NULL,
     amount DECIMAL(10,2) NOT NULL,
-    payment_date DATETIME,
-    transaction_no VARCHAR(50),
     create_time DATETIME DEFAULT GETDATE(),
-    FOREIGN KEY (order_id) REFERENCES PaymentOrder(order_id),
-    FOREIGN KEY (resident_id) REFERENCES Resident(resident_id),
-    FOREIGN KEY (housing_id) REFERENCES Housing(housing_id)
+    FOREIGN KEY (order_id) REFERENCES PaymentOrder(order_id)
 );
 
 -- 19. PropertyFeeAppeal（费用申诉）
 CREATE TABLE PropertyFeeAppeal (
     appeal_id VARCHAR(20) PRIMARY KEY,
     detail_id VARCHAR(20),
-    resident_id VARCHAR(20),
+    user_id VARCHAR(20) NOT NULL,
     reason NVARCHAR(500) NOT NULL,
+    appeal_date DATETIME NOT NULL,
     status NVARCHAR(20) NOT NULL,
-    admin_id VARCHAR(20),
-    admin_reason NVARCHAR(200),
-    create_time DATETIME DEFAULT GETDATE(),
-    handle_time DATETIME,
-    FOREIGN KEY (detail_id) REFERENCES PropertyFeeDetail(detail_id),
-    FOREIGN KEY (resident_id) REFERENCES Resident(resident_id),
-    FOREIGN KEY (admin_id) REFERENCES Staff(staff_id)
+    FOREIGN KEY (detail_id) REFERENCES PropertyFeeDetail(detail_id)
 );
 
 -- 20. CollectionRecord（催缴记录）
@@ -299,31 +278,37 @@ CREATE TABLE WaterFeeBill (
 -- 维修管理模块
 -- =============================================
 
--- 24. RepairRequest（维修申请）
+-- 24. RepairRequest（维修申请表）
 CREATE TABLE RepairRequest (
-    request_id VARCHAR(20) PRIMARY KEY,
-    housing_id VARCHAR(20),
-    user_id VARCHAR(20) NOT NULL,
-    description NVARCHAR(500) NOT NULL,
-    repair_type NVARCHAR(30) NOT NULL,
-    apply_time DATETIME NOT NULL,
-    urgency NVARCHAR(10) NOT NULL,
-    status NVARCHAR(20) NOT NULL,
-    FOREIGN KEY (housing_id) REFERENCES Housing(housing_id)
+    request_id    VARCHAR(20)   NOT NULL PRIMARY KEY,
+    user_id       VARCHAR(20)   FOREIGN KEY REFERENCES SystemUser(user_id),
+    housing_id    VARCHAR(20)   FOREIGN KEY REFERENCES Housing(housing_id),
+    repair_type   NVARCHAR(50)  NOT NULL,               -- 水电维修 / 家电维修 / 墙面维修 / 其他
+    description   NVARCHAR(500),                        -- 问题描述
+    urgency       NVARCHAR(10)  DEFAULT N'普通',         -- 普通 / 紧急
+    apply_time    DATETIME      DEFAULT GETDATE(),
+    status        NVARCHAR(10)  DEFAULT N'待审核',       -- 待审核 / 已派工 / 审核不通过 / 已取消 / 已完成
+    reject_reason NVARCHAR(500) NULL,
+    admin_id      VARCHAR(20)   NULL FOREIGN KEY REFERENCES Staff(staff_id)
 );
 
--- 25. MaintenanceWorkOrder（维修工单）
+-- 25. MaintenanceWorkOrder（维修工单表）
 CREATE TABLE MaintenanceWorkOrder (
-    workorder_id VARCHAR(20) PRIMARY KEY,
-    request_id VARCHAR(20),
-    staff_id VARCHAR(20),
-    content NVARCHAR(500),
-    materials NVARCHAR(200),
-    work_hours DECIMAL(5,2),
-    complete_time DATETIME,
-    status NVARCHAR(20) NOT NULL,
-    FOREIGN KEY (request_id) REFERENCES RepairRequest(request_id),
-    FOREIGN KEY (staff_id) REFERENCES Staff(staff_id)
+    work_order_id  VARCHAR(20)   NOT NULL PRIMARY KEY,
+    request_id     VARCHAR(20)   FOREIGN KEY REFERENCES RepairRequest(request_id),
+    staff_id       VARCHAR(20)   FOREIGN KEY REFERENCES Staff(staff_id),
+    admin_id       VARCHAR(20)   FOREIGN KEY REFERENCES Staff(staff_id),
+    assign_time    DATETIME      DEFAULT GETDATE(),
+    receive_time   DATETIME      NULL,
+    start_time     DATETIME      NULL,
+    complete_time  DATETIME      NULL,
+    confirm_time   DATETIME      NULL,
+    repair_content NVARCHAR(1000) NULL,                 -- 维修工人提交结果
+    materials_used NVARCHAR(500)  NULL,                 -- 使用材料
+    work_hours     DECIMAL(4,1)  NULL,                   -- 工时
+    status         NVARCHAR(10)  DEFAULT N'待接单',      -- 待接单 / 已接单 / 维修中 / 待确认 / 已完成
+    rating         INT           NULL,                  -- 评分 1-5
+    comment        NVARCHAR(500) NULL                  -- 评价内容
 );
 
 -- =============================================
@@ -381,23 +366,6 @@ CREATE TABLE ParkingApply (
     FOREIGN KEY (admin_id) REFERENCES Staff(staff_id)
 );
 
--- 车位相关索引
-CREATE INDEX IX_ParkingSpace_status ON ParkingSpace(status);
-CREATE INDEX IX_ParkingSpace_resident ON ParkingSpace(resident_id);
-CREATE INDEX IX_ParkingStandard_type_status ON ParkingStandard(parking_type, status);
-CREATE INDEX IX_ParkingFeeRecord_space ON ParkingFeeRecord(space_id);
-CREATE INDEX IX_ParkingFeeRecord_status ON ParkingFeeRecord(status);
-CREATE INDEX IX_ParkingApply_space ON ParkingApply(space_id);
-CREATE INDEX IX_ParkingApply_resident ON ParkingApply(resident_id);
-CREATE INDEX IX_ParkingApply_status ON ParkingApply(status);
-
--- 插入车位月费标准数据
-INSERT INTO ParkingStandard (standard_id, parking_type, price, effective_date, status) VALUES
-('PS001', N'地下一层A区', 200.00, GETDATE(), N'生效'),
-('PS002', N'地下一层B区', 200.00, GETDATE(), N'生效'),
-('PS003', N'地下一层C区', 180.00, GETDATE(), N'生效'),
-('PS004', N'户外停车场', 100.00, GETDATE(), N'生效');
-
 -- =============================================
 -- 创建索引
 -- =============================================
@@ -409,7 +377,25 @@ CREATE INDEX IX_PropertyFeeDetail_housing ON PropertyFeeDetail(housing_id);
 CREATE INDEX IX_PropertyFeeDetail_status ON PropertyFeeDetail(status);
 CREATE INDEX IX_WaterFeeBill_meter ON WaterFeeBill(meter_id);
 CREATE INDEX IX_WaterFeeBill_month ON WaterFeeBill(bill_month);
+
+-- 维修相关索引
+CREATE INDEX IX_RepairRequest_resident ON RepairRequest(resident_id);
+CREATE INDEX IX_RepairRequest_housing ON RepairRequest(housing_id);
 CREATE INDEX IX_RepairRequest_status ON RepairRequest(status);
+CREATE INDEX IX_RepairRequest_create_time ON RepairRequest(create_time);
+CREATE INDEX IX_MaintenanceWorkOrder_request ON MaintenanceWorkOrder(request_id);
+CREATE INDEX IX_MaintenanceWorkOrder_staff ON MaintenanceWorkOrder(staff_id);
+CREATE INDEX IX_MaintenanceWorkOrder_status ON MaintenanceWorkOrder(status);
+
+-- 车位相关索引
+CREATE INDEX IX_ParkingSpace_status ON ParkingSpace(status);
+CREATE INDEX IX_ParkingSpace_resident ON ParkingSpace(resident_id);
+CREATE INDEX IX_ParkingStandard_type_status ON ParkingStandard(parking_type, status);
+CREATE INDEX IX_ParkingFeeRecord_space ON ParkingFeeRecord(space_id);
+CREATE INDEX IX_ParkingFeeRecord_status ON ParkingFeeRecord(status);
+CREATE INDEX IX_ParkingApply_space ON ParkingApply(space_id);
+CREATE INDEX IX_ParkingApply_resident ON ParkingApply(resident_id);
+CREATE INDEX IX_ParkingApply_status ON ParkingApply(status);
 
 -- =============================================
 -- 初始化数据
@@ -431,5 +417,12 @@ INSERT INTO WorkLocation (location_id, location_name) VALUES
 ('LOC002', '维修部'),
 ('LOC003', '保洁部'),
 ('LOC004', '安保中心');
+
+-- 插入车位月费标准数据
+INSERT INTO ParkingStandard (standard_id, parking_type, price, effective_date, status) VALUES
+('PS001', N'地下一层A区', 200.00, GETDATE(), N'生效'),
+('PS002', N'地下一层B区', 200.00, GETDATE(), N'生效'),
+('PS003', N'地下一层C区', 180.00, GETDATE(), N'生效'),
+('PS004', N'户外停车场', 100.00, GETDATE(), N'生效');
 
 GO

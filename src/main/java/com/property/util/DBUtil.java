@@ -65,4 +65,18 @@ public class DBUtil {
             }
         }
     }
+
+    /**
+     * 测试数据库连接，返回格式：SUCCESS|消息 或 ERROR|消息
+     */
+    public static String testConnection() {
+        try (Connection conn = DriverManager.getConnection(URL, USERNAME, PASSWORD)) {
+            if (conn != null && !conn.isClosed()) {
+                return "SUCCESS|数据库连接成功！";
+            }
+            return "ERROR|连接失败";
+        } catch (SQLException e) {
+            return "ERROR|连接异常: " + e.getMessage();
+        }
+    }
 }

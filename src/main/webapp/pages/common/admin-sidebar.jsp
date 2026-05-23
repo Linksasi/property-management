@@ -13,7 +13,7 @@ if (currentModule == null) {
     <a href="${pageContext.request.contextPath}/admin/property?action=list" class="sidebar-item <%= "property".equals(currentModule) ? "active" : "" %>">物业费管理</a>
     <a href="${pageContext.request.contextPath}/admin/water?action=list" class="sidebar-item <%= "water".equals(currentModule) ? "active" : "" %>">水费管理</a>
     <a href="${pageContext.request.contextPath}/admin/parking?action=list" class="sidebar-item <%= "parking".equals(currentModule) ? "active" : "" %>">车位费管理</a>
-    <a href="${pageContext.request.contextPath}/admin/repair?action=list" class="sidebar-item <%= "repair".equals(currentModule) ? "active" : "" %>">维修管理</a>
+    <a href="${pageContext.request.contextPath}/admin/repair?action=list" class="sidebar-item <%= ("repair".equals(currentModule) || "admin_repair".equals(currentModule)) ? "active" : "" %>">维修管理</a>
     <a href="${pageContext.request.contextPath}/admin/ad?action=list" class="sidebar-item <%= "ad".equals(currentModule) ? "active" : "" %>">广告管理</a>
     <div class="sidebar-divider"></div>
     <a href="${pageContext.request.contextPath}/logout" class="sidebar-item">退出登录</a>
