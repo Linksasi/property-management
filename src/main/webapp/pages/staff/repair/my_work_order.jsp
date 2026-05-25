@@ -27,7 +27,7 @@
 </head>
 <body>
 <%
-    request.setAttribute("module", "staff_repair");
+    request.setAttribute("module", "repair");
 %>
 <jsp:include page="/pages/common/header.jsp" />
 <div class="main-container">

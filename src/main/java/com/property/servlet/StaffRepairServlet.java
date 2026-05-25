@@ -25,6 +25,7 @@ public class StaffRepairServlet extends HttpServlet {
         if (action == null) action = "list";
 
         SystemUser user = (SystemUser) req.getSession().getAttribute("currentUser");
+        req.setAttribute("module", "repair");
 
         switch (action) {
             case "list":

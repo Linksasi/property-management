@@ -95,7 +95,8 @@ public class AdminStaffServlet extends BaseServlet {
             } else {
                 // 新增：先创建登录账号
                 SystemUser u = new SystemUser();
-                u.setUserId(userDAO.generateId("维修员"));
+                String newUserId = userDAO.generateId("维修员");
+                u.setUserId(newUserId);
                 u.setUsername(username != null && !username.isEmpty() ? username.trim() : phone);
                 u.setPassword(password != null && !password.isEmpty() ? password : "123456");
                 u.setUserType("维修员");
@@ -103,7 +104,13 @@ public class AdminStaffServlet extends BaseServlet {
                 u.setPhone(phone);
                 userDAO.register(u);
                 staff.setUserId(u.getUserId());
-                staffService.add(staff);
+                try {
+                    staffService.add(staff);
+                } catch (SQLException e) {
+                    // 员工记录创建失败 → 删除已创建的 SystemUser
+                    userDAO.delete(newUserId);
+                    throw e;
+                }
             }
             response.sendRedirect(request.getContextPath() + "/admin/staff?action=list");
         } catch (SQLException e) {

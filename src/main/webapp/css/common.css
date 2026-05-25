@@ -163,6 +163,7 @@ body {
 
 .btn-primary:hover {
     background-color: var(--primary-dark);
+    color: #fff;
 }
 
 .btn-secondary {
@@ -173,6 +174,7 @@ body {
 
 .btn-secondary:hover {
     background-color: #E8F5E9;
+    color: var(--primary-dark);
 }
 
 .btn-danger {
@@ -182,6 +184,7 @@ body {
 
 .btn-danger:hover {
     background-color: #D32F2F;
+    color: #fff;
 }
 
 .btn-warning {
@@ -191,6 +194,7 @@ body {
 
 .btn-warning:hover {
     background-color: #F57C00;
+    color: #fff;
 }
 
 .btn-info {
@@ -200,6 +204,7 @@ body {
 
 .btn-info:hover {
     background-color: #1976D2;
+    color: #fff;
 }
 
 .btn-success {
@@ -209,6 +214,7 @@ body {
 
 .btn-success:hover {
     background-color: #388E3C;
+    color: #fff;
 }
 
 /* outline 风格按钮 */
@@ -219,7 +225,9 @@ body {
 }
 
 .btn-outline-primary:hover {
-    background-color: #E8F5E9;
+    background-color: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
 }
 
 .btn-outline-secondary {
@@ -241,7 +249,9 @@ body {
 }
 
 .btn-outline-danger:hover {
-    background-color: #FFEBEE;
+    background-color: var(--error);
+    color: #fff;
+    border-color: var(--error);
 }
 
 .btn-outline-warning {
@@ -251,7 +261,9 @@ body {
 }
 
 .btn-outline-warning:hover {
-    background-color: #FFF3E0;
+    background-color: var(--warning);
+    color: #fff;
+    border-color: var(--warning);
 }
 
 .btn-outline-info {
@@ -261,7 +273,9 @@ body {
 }
 
 .btn-outline-info:hover {
-    background-color: #E3F2FD;
+    background-color: var(--info);
+    color: #fff;
+    border-color: var(--info);
 }
 
 .btn-sm {

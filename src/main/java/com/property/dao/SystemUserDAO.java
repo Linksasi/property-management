@@ -90,6 +90,19 @@ public class SystemUserDAO {
     }
 
     /**
+     * 删除用户（注册失败回滚用）
+     */
+    public boolean delete(String userId) {
+        String sql = "DELETE FROM SystemUser WHERE user_id=?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, userId);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) { e.printStackTrace(); }
+        return false;
+    }
+
+    /**
      * 注册新用户（BCrypt 加密密码）
      */
     public boolean register(SystemUser user) {

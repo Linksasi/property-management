@@ -21,7 +21,7 @@ public class StaffDAO {
         return null;
     }
 
-    public boolean insert(Staff s) {
+    public boolean insert(Staff s) throws SQLException {
         if (s.getStaffId() == null || s.getStaffId().isEmpty()) {
             s.setStaffId(generateId());
         }
@@ -36,8 +36,7 @@ public class StaffDAO {
             ps.setString(6, s.getWorktypeId());
             ps.setBoolean(7, s.isAdmin());
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) { e.printStackTrace(); }
-        return false;
+        }
     }
 
     public List<Staff> findAllNonAdmin() {

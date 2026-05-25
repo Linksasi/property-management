@@ -16,6 +16,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebServlet({"/login", "/logout", "/register"})
 public class LoginServlet extends HttpServlet {
@@ -190,7 +191,13 @@ public class LoginServlet extends HttpServlet {
                     s.setIdCard(idCard != null && !idCard.isEmpty() ? idCard : "440000" + String.format("%012d", (long)(System.currentTimeMillis() % 1000000000000L)));
                     s.setAdmin(true);
                     s.setWorktypeId("WT007");
-                    detailOk = staffDAO.insert(s);
+                    try {
+                        detailOk = staffDAO.insert(s);
+                        if (!detailOk) detailError = "管理员信息写入失败";
+                    } catch (SQLException e) {
+                        detailOk = false;
+                        detailError = e.getMessage();
+                    }
                 } else if ("维修员".equals(userType)) {
                     String workTypeId = req.getParameter("workTypeId");
                     Staff s = new Staff();
@@ -201,7 +208,13 @@ public class LoginServlet extends HttpServlet {
                     s.setIdCard(idCard != null && !idCard.isEmpty() ? idCard : "440000" + String.format("%012d", (long)(System.currentTimeMillis() % 1000000000000L)));
                     s.setAdmin(false);
                     s.setWorktypeId(workTypeId != null && !workTypeId.isEmpty() ? workTypeId : "WT001");
-                    detailOk = staffDAO.insert(s);
+                    try {
+                        detailOk = staffDAO.insert(s);
+                        if (!detailOk) detailError = "员工信息写入失败";
+                    } catch (SQLException e) {
+                        detailOk = false;
+                        detailError = e.getMessage();
+                    }
                 } else if ("广告公司".equals(userType)) {
                     String companyName = req.getParameter("companyName");
                     if (companyName == null || companyName.trim().isEmpty()) {
@@ -224,6 +237,8 @@ public class LoginServlet extends HttpServlet {
                     redirectByRole(req, resp, u);
                     return;
                 } else {
+                    // 角色记录创建失败 → 删除已创建的 SystemUser，避免孤儿账号
+                    try { userDAO.delete(u.getUserId()); } catch (Exception ignored) {}
                     req.setAttribute("error", detailError.isEmpty() ? "账号已创建，但详细信息保存失败，请联系管理员" : detailError);
                     forwardRegister(req, resp);
                     return;
