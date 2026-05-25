@@ -6,85 +6,110 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>车位费账单</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 0; }
-        .content-area { flex: 1; padding: 20px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; font-size: 14px; }
-        th { background-color: #f2f2f2; }
-        .badge { padding: 3px 10px; border-radius: 4px; color: white; font-size: 12px; }
-        .badge-success { background-color: #28a745; }
-        .badge-danger { background-color: #dc3545; }
-        .badge-info { background-color: #17a2b8; }
-        .btn { padding: 5px 12px; text-decoration: none; border-radius: 4px; color: white; font-size: 12px; display: inline-block; border: none; cursor: pointer; }
-        .btn-info { background-color: #17a2b8; }
-        .btn-primary { background-color: #007bff; }
-        .btn-secondary { background-color: #6c757d; }
-        .btn-warning { background-color: #ff9800; }
-        .btn-warning:disabled { background-color: #ccc; cursor: not-allowed; }
-        .summary-bar { background-color: #fff3cd; padding: 12px 16px; border-radius: 4px; margin-bottom: 15px; display: flex; align-items: center; gap: 20px; }
-        .summary-bar .total { font-size: 18px; font-weight: bold; color: #d32f2f; }
-    </style>
+    <meta charset="UTF-8">
+    <title>车位费账单 - 小区物业管理系统</title>
+    <link href="${pageContext.request.contextPath}/css/common.css" rel="stylesheet">
 </head>
 <body>
-<%
-    request.setAttribute("module", "parking");
-%>
-<jsp:include page="/pages/common/header.jsp" />
-<div class="main-container">
-    <jsp:include page="/pages/common/owner-sidebar.jsp" />
-    <div class="content-area">
-        <h2>车位费账单</h2>
-        <div style="margin-bottom:15px;">
-            <a href="${pageContext.request.contextPath}/owner/parking?action=list" class="btn btn-secondary">我的车位</a>
-            <a href="${pageContext.request.contextPath}/owner/parking?action=query" class="btn btn-secondary">查询空闲车位</a>
-        </div>
-        <% if (fees == null || fees.isEmpty()) { %>
-            <p style="color:#999;">暂无车位费账单。</p>
-        <% } else { %>
-        <div class="summary-bar" id="summaryBar" style="display:none;">
-            <span>已选 <strong id="selectedCount">0</strong> 笔账单</span>
-            <span>合计：<span class="total" id="totalAmount">¥0.00</span></span>
-            <button class="btn btn-warning" id="multiPayBtn" disabled onclick="goMultiPay()">合并支付</button>
-            <a href="javascript:void(0)" onclick="clearSelection()" style="color:#666;font-size:12px;">取消选择</a>
-        </div>
-        <table>
-            <tr>
-                <th><input type="checkbox" id="selectAll" onchange="toggleAll(this)"></th>
-                <th>记录ID</th><th>车位编号</th><th>月份</th><th>金额</th><th>状态</th><th>操作</th>
-            </tr>
-            <% for (ParkingFeeRecord pf : fees) {
-                String badgeClass = "badge-info";
-                if ("PAID".equals(pf.getStatus()) || "已缴".equals(pf.getStatus())) badgeClass = "badge-success";
-                else if ("UNPAID".equals(pf.getStatus()) || "未缴".equals(pf.getStatus())) badgeClass = "badge-danger";
-                boolean isUnpaid = ("UNPAID".equals(pf.getStatus()) || "未缴".equals(pf.getStatus()));
-            %>
-            <tr>
-                <td>
-                    <% if (isUnpaid) { %>
-                        <input type="checkbox" class="fee-check" data-id="<%=pf.getRecordId()%>" data-amount="<%=pf.getAmount()%>" onchange="updateSummary()">
-                    <% } %>
-                </td>
-                <td><%=pf.getRecordId()%></td>
-                <td><%=pf.getSpaceNo() != null ? pf.getSpaceNo() : "--"%></td>
-                <td><%=pf.getMonth() != null ? pf.getMonth() : "--"%></td>
-                <td>¥<%=String.format("%.2f", pf.getAmount())%></td>
-                <td><span class="badge <%=badgeClass%>"><%=pf.getStatus() != null ? pf.getStatus() : "--"%></span></td>
-                <td>
-                    <% if (isUnpaid) { %>
-                        <a href="${pageContext.request.contextPath}/owner/parking?action=pay&recordId=<%=pf.getRecordId()%>" class="btn btn-primary">去缴费</a>
-                    <% } else { %>
-                        <span style="color:#999;">已缴费</span>
-                    <% } %>
-                </td>
-            </tr>
-            <% } %>
-</table>
-        <% } %>
-        <jsp:include page="/pages/common/footer.jsp" />
+    <% request.setAttribute("module", "parking"); %>
+    <jsp:include page="/pages/common/header.jsp" />
+    <div class="main-container">
+        <jsp:include page="/pages/common/owner-sidebar.jsp" />
+        <div class="content-area">
+            <h2 class="page-title">车位费账单</h2>
+
+            <div class="d-flex gap-12 mb-3">
+                <a href="${pageContext.request.contextPath}/owner/parking?action=list" class="btn btn-secondary btn-sm">我的车位</a>
+                <a href="${pageContext.request.contextPath}/owner/parking?action=query" class="btn btn-secondary btn-sm">查询空闲车位</a>
+            </div>
+
+            <!-- 合并支付摘要栏 -->
+            <div id="summaryBar" class="card mb-3" style="display:none;background:#FFF3E0;border-left:4px solid var(--warning);">
+                <div class="d-flex gap-12 align-items-center">
+                    <span>已选 <strong id="selectedCount">0</strong> 笔账单，合计：</span>
+                    <span style="font-size:18px;font-weight:bold;color:var(--error);" id="totalAmount">¥0.00</span>
+                    <button class="btn btn-warning" id="multiPayBtn" disabled onclick="goMultiPay()">合并支付</button>
+                    <a href="javascript:void(0)" onclick="clearSelection()" style="color:var(--text-secondary);font-size:12px;">取消选择</a>
+                </div>
+            </div>
+
+            <div class="card">
+                <table class="table-custom">
+                    <thead>
+                        <tr>
+                            <th style="width:40px;"><input type="checkbox" id="selectAll" onchange="toggleAll(this)"></th>
+                            <th>记录ID</th>
+                            <th>车位编号</th>
+                            <th>月份</th>
+                            <th>金额</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if (fees == null || fees.isEmpty()) { %>
+                        <tr>
+                            <td colspan="7" class="text-center" style="color:var(--text-secondary);padding:40px">暂无车位费账单</td>
+                        </tr>
+                        <% } else {
+                            for (ParkingFeeRecord pf : fees) {
+                                String badgeClass = "status-info";
+                                if ("PAID".equals(pf.getStatus()) || "已缴".equals(pf.getStatus())) badgeClass = "status-success";
+                                else if ("UNPAID".equals(pf.getStatus()) || "未缴".equals(pf.getStatus())) badgeClass = "status-error";
+                                boolean isUnpaid = ("UNPAID".equals(pf.getStatus()) || "未缴".equals(pf.getStatus()));
+                        %>
+                        <tr>
+                            <td>
+                                <% if (isUnpaid) { %>
+                                <input type="checkbox" class="fee-check" data-id="<%= pf.getRecordId() %>" data-amount="<%= pf.getAmount() %>" onchange="updateSummary()">
+                                <% } %>
+                            </td>
+                            <td><%= pf.getRecordId() %></td>
+                            <td><%= pf.getSpaceNo() != null ? pf.getSpaceNo() : "--" %></td>
+                            <td><%= pf.getMonth() != null ? pf.getMonth() : "--" %></td>
+                            <td>¥<%= String.format("%.2f", pf.getAmount()) %></td>
+                            <td><span class="status-tag <%= badgeClass %>"><%= pf.getStatus() != null ? pf.getStatus() : "--" %></span></td>
+                            <td>
+                                <% if (isUnpaid) { %>
+                                <a href="${pageContext.request.contextPath}/owner/parking?action=pay&recordId=<%= pf.getRecordId() %>" class="btn btn-primary btn-sm">去缴费</a>
+                                <% } else { %>
+                                <span style="color:var(--text-disabled);">已缴费</span>
+                                <% } %>
+                            </td>
+                        </tr>
+                        <% } } %>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
+    <script>
+        function toggleAll(cb) {
+            document.querySelectorAll('.fee-check').forEach(function(c) { c.checked = cb.checked; });
+            updateSummary();
+        }
+        function updateSummary() {
+            var total = 0, count = 0;
+            document.querySelectorAll('.fee-check:checked').forEach(function(c) {
+                total += parseFloat(c.dataset.amount);
+                count++;
+            });
+            document.getElementById('selectedCount').textContent = count;
+            document.getElementById('totalAmount').textContent = '¥' + total.toFixed(2);
+            document.getElementById('summaryBar').style.display = count > 0 ? 'block' : 'none';
+            document.getElementById('multiPayBtn').disabled = count === 0;
+        }
+        function clearSelection() {
+            document.querySelectorAll('.fee-check').forEach(function(c) { c.checked = false; });
+            updateSummary();
+        }
+        function goMultiPay() {
+            var ids = [];
+            document.querySelectorAll('.fee-check:checked').forEach(function(c) { ids.push(c.dataset.id); });
+            if (ids.length > 0) {
+                window.location.href = '${pageContext.request.contextPath}/owner/parking?action=pay&recordIds=' + ids.join(',');
+            }
+        }
+    </script>
 </body>
 </html>

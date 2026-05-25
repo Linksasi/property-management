@@ -182,6 +182,86 @@ body {
     background-color: #D32F2F;
 }
 
+.btn-warning {
+    background-color: var(--warning);
+    color: white;
+}
+
+.btn-warning:hover {
+    background-color: #F57C00;
+}
+
+.btn-info {
+    background-color: var(--info);
+    color: white;
+}
+
+.btn-info:hover {
+    background-color: #1976D2;
+}
+
+.btn-success {
+    background-color: var(--success);
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #388E3C;
+}
+
+/* outline 风格按钮 */
+.btn-outline-primary {
+    background-color: white;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+}
+
+.btn-outline-primary:hover {
+    background-color: #E8F5E9;
+}
+
+.btn-outline-secondary {
+    background-color: white;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--bg-page);
+    color: var(--text-primary);
+    border-color: var(--text-secondary);
+}
+
+.btn-outline-danger {
+    background-color: white;
+    color: var(--error);
+    border: 1px solid var(--error);
+}
+
+.btn-outline-danger:hover {
+    background-color: #FFEBEE;
+}
+
+.btn-outline-warning {
+    background-color: white;
+    color: var(--warning);
+    border: 1px solid var(--warning);
+}
+
+.btn-outline-warning:hover {
+    background-color: #FFF3E0;
+}
+
+.btn-outline-info {
+    background-color: white;
+    color: var(--info);
+    border: 1px solid var(--info);
+}
+
+.btn-outline-info:hover {
+    background-color: #E3F2FD;
+}
+
 .btn-sm {
     padding: 6px 16px;
     font-size: 14px;
