@@ -120,6 +120,8 @@ body {
 .content-area {
     flex: 1;
     padding: var(--spacing-page);
+    max-width: 100%;
+    overflow-x: auto;
 }
 
 .page-title {

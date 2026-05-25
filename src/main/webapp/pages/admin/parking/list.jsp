@@ -15,6 +15,10 @@
     <meta charset="UTF-8">
     <title>车位管理 - 小区物业管理系统</title>
     <link href="${pageContext.request.contextPath}/css/common.css" rel="stylesheet">
+    <style>
+        body { overflow-x: hidden; }
+        .main-container { max-width: 100%; }
+    </style>
 </head>
 <body>
     <% request.setAttribute("module", "parking"); %>
