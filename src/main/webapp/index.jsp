@@ -3,6 +3,7 @@
 <html>
 <head>
     <title>物业管理系统 - 测试入口</title>
+    <link href="${pageContext.request.contextPath}/css/common.css" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f0f2f5; min-height: 100vh; }
@@ -14,15 +15,12 @@
         .card-header { padding: 16px 20px; border-bottom: 1px solid #e8e8e8; font-size: 16px; font-weight: bold; color: #333; display: flex; justify-content: space-between; align-items: center; }
         .card-body { padding: 20px; }
 
+        /* index.jsp 特有按钮（common.css 未覆盖的变体） */
         .btn { padding: 8px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; display: inline-flex; align-items: center; gap: 6px; }
-        .btn-primary { background: #2E7D32; color: white; }
-        .btn-primary:hover { background: #1B5E20; }
         .btn-blue { background: #1976D2; color: white; }
         .btn-blue:hover { background: #1565C0; }
         .btn-orange { background: #FF6F00; color: white; }
         .btn-orange:hover { background: #E65100; }
-        .btn-outline { background: white; color: #2E7D32; border: 1px solid #2E7D32; }
-        .btn-outline:hover { background: #E8F5E9; }
         .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
         .status-bar { padding: 10px 16px; border-radius: 4px; margin-bottom: 12px; font-size: 13px; display: none; }
@@ -198,7 +196,7 @@
     <div class="card">
         <div class="card-header">
             已有账号列表
-            <button class="btn btn-outline" onclick="loadUsers()">刷新列表</button>
+            <button class="btn btn-outline-primary" onclick="loadUsers()">刷新列表</button>
         </div>
         <div class="card-body">
             <table>

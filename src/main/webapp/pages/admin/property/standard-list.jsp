@@ -93,7 +93,7 @@
                                    class="btn btn-secondary btn-sm">编辑</a>
                                 <% if ("生效".equals(standard.getStatus())) { %>
                                 <a href="${pageContext.request.contextPath}/admin/property/standard?action=disable&standardId=<%= standard.getStandardId() %>" 
-                                   class="btn btn-sm" style="background:#FFF3E0;color:#E65100;border:1px solid #E65100"
+                                   class="btn btn-warning btn-sm"
                                    onclick="return confirm('确定停用该标准？')">停用</a>
                                 <% } else { %>
                                 <a href="${pageContext.request.contextPath}/admin/property/standard?action=enable&standardId=<%= standard.getStandardId() %>" 
@@ -101,7 +101,7 @@
                                    onclick="return confirm('确定启用该标准？')">启用</a>
                                 <% } %>
                                 <a href="${pageContext.request.contextPath}/admin/property/standard?action=delete&standardId=<%= standard.getStandardId() %>" 
-                                   class="btn btn-sm" style="background:#FFEBEE;color:#C62828;border:1px solid #C62828"
+                                   class="btn btn-danger btn-sm"
                                    onclick="return confirm('确定删除该标准？删除后不可恢复！')">删除</a>
                             </td>
                         </tr>
