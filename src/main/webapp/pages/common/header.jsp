@@ -5,6 +5,14 @@
 <link href="${pageContext.request.contextPath}/css/common.css" rel="stylesheet">
 <div class="top-bar">
     <h4>小区物业管理系统</h4>
-    <div>当前用户：<%= session.getAttribute("currentUser") != null ? session.getAttribute("currentUser") : "管理员" %></div>
+    <%
+    com.property.entity.SystemUser currentUser = (com.property.entity.SystemUser) session.getAttribute("currentUser");
+    String displayName = "未登录";
+    if (currentUser != null) {
+        displayName = currentUser.getRealName() != null && !currentUser.getRealName().isEmpty()
+                      ? currentUser.getRealName() : currentUser.getUsername();
+    }
+%>
+    <div>当前用户：<%= displayName %></div>
 </div>
 <div class="main-container">

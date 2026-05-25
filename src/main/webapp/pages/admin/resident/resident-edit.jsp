@@ -52,6 +52,25 @@
                 </div>
             </div>
 
+            <c:if test="${resident == null}">
+            <div class="card" style="background:#f9f9f9;margin-bottom:20px;">
+                <div class="card-header" style="font-size:14px;">登录账号设置</div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">登录用户名 <span class="text-danger">*</span></label>
+                            <input type="text" name="username" class="form-control" placeholder="用于登录系统" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">登录密码 <span class="text-danger">*</span></label>
+                            <input type="text" name="password" class="form-control" value="123456" required>
+                            <small class="text-muted">默认密码 123456</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </c:if>
+
             <div class="mt-4">
                 <button type="submit" class="btn btn-primary">保存</button>
                 <a href="${pageContext.request.contextPath}/admin/resident?action=list" class="btn btn-secondary">取消</a>

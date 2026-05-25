@@ -2,21 +2,43 @@ package com.property.dao;
 
 import com.property.entity.SystemUser;
 import com.property.util.DBUtil;
+import org.mindrot.jbcrypt.BCrypt;
 import java.sql.*;
 import java.util.*;
 
 public class SystemUserDAO {
 
+    /**
+     * 登录验证（BCrypt 密码校验）
+     */
     public SystemUser login(String username, String password) {
-        String sql = "SELECT * FROM SystemUser WHERE username=? AND password=? AND status=N'正常'";
+        String sql = "SELECT * FROM SystemUser WHERE username=? AND status=N'正常'";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, username);
-            ps.setString(2, password);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return mapRow(rs);
+                    SystemUser user = mapRow(rs);
+                    // BCrypt 校验密码
+                    if (BCrypt.checkpw(password, user.getPassword())) {
+                        return user;
+                    }
                 }
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        return null;
+    }
+
+    /**
+     * 根据用户名查找（注册时查重）
+     */
+    public SystemUser findByUsername(String username) {
+        String sql = "SELECT * FROM SystemUser WHERE username=?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, username);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return mapRow(rs);
             }
         } catch (SQLException e) { e.printStackTrace(); }
         return null;
@@ -67,6 +89,31 @@ public class SystemUserDAO {
         return prefix + "0001";
     }
 
+    /**
+     * 注册新用户（BCrypt 加密密码）
+     */
+    public boolean register(SystemUser user) {
+        // BCrypt 哈希密码
+        String hashed = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+        user.setPassword(hashed);
+
+        String sql = "INSERT INTO SystemUser (user_id, username, password, user_type, real_name, phone, status, created_at) VALUES (?,?,?,?,?,?,N'正常',GETDATE())";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, user.getUserId());
+            ps.setString(2, user.getUsername());
+            ps.setString(3, user.getPassword());
+            ps.setString(4, user.getUserType());
+            ps.setString(5, user.getRealName());
+            ps.setString(6, user.getPhone());
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) { e.printStackTrace(); }
+        return false;
+    }
+
+    /**
+     * 直接插入用户（不加密，供迁移/测试用）
+     */
     public boolean insert(SystemUser user) {
         String sql = "INSERT INTO SystemUser (user_id, username, password, user_type, real_name, phone, status, created_at) VALUES (?,?,?,?,?,?,N'正常',GETDATE())";
         try (Connection conn = DBUtil.getConnection();

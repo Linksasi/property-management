@@ -6,27 +6,12 @@
     if (list == null) list = new java.util.ArrayList<>();
 %>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>收费标准管理 - 小区物业管理系统</title>
-    <link href="${pageContext.request.contextPath}/css/common.css" rel="stylesheet">
-</head>
-<body>
-    <!-- 顶部栏 -->
-    <div class="top-bar">
-        <h4>小区物业管理系统</h4>
-        <div>当前用户：<%= session.getAttribute("currentUser") != null ? session.getAttribute("currentUser") : "管理员" %></div>
-    </div>
-    
-    <!-- 主容器 -->
-    <div class="main-container">
-        <!-- 侧边栏 -->
-        <jsp:include page="/pages/common/admin-sidebar.jsp" />
-        
-        <!-- 内容区 -->
-        <div class="content-area">
+<% request.setAttribute("pageTitle", "收费标准管理"); %>
+<% request.setAttribute("module", "property"); %>
+<%@ include file="/pages/common/header.jsp" %>
+<%@ include file="/pages/common/admin-sidebar.jsp" %>
+
+<div class="content-area">
             <!-- 内部导航 -->
             <div class="property-nav">
                 <a href="${pageContext.request.contextPath}/admin/property?action=list">物业费明细</a>
@@ -101,33 +86,6 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-    </div>
-</body>
-</html>
+</div>
 
-<style>
-.property-nav {
-    display: flex;
-    gap: 4px;
-    margin-bottom: 16px;
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 12px;
-}
-.property-nav a {
-    padding: 8px 16px;
-    color: var(--text-secondary);
-    text-decoration: none;
-    border-radius: var(--radius-btn);
-    font-size: 14px;
-    transition: all 0.2s;
-}
-.property-nav a:hover {
-    background-color: var(--bg-page);
-    color: var(--primary);
-}
-.property-nav a.active {
-    background-color: var(--primary);
-    color: white;
-}
-</style>
+<%@ include file="/pages/common/footer.jsp" %>

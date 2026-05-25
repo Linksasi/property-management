@@ -412,6 +412,31 @@ select.form-control {
 .align-items-center { align-items: center; }
 .gap-12 { gap: 12px; }
 
+/* ========== 物业费子导航 ========== */
+.property-nav {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+}
+.property-nav a {
+    padding: 8px 16px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-radius: var(--radius-btn);
+    font-size: 14px;
+    transition: all 0.2s;
+}
+.property-nav a:hover {
+    background-color: var(--bg-page);
+    color: var(--primary);
+}
+.property-nav a.active {
+    background-color: var(--primary);
+    color: white;
+}
+
 /* ========== 响应式 ========== */
 @media (max-width: 1023px) {
     .sidebar { width: 180px; }

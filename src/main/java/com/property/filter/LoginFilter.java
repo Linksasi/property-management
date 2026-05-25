@@ -18,8 +18,8 @@ public class LoginFilter implements Filter {
 
         // 放行静态资源和登录相关
         if (path.startsWith("/css/") || path.startsWith("/js/") || path.startsWith("/images/")
-                || path.equals("/login.jsp") || path.equals("/login") || path.equals("/test")
-                || path.equals("/index.jsp") || path.equals("/") || path.equals("/favicon.ico")) {
+                || path.equals("/login.jsp") || path.equals("/login") || path.equals("/register.jsp") || path.equals("/register")
+                || path.equals("/") || path.equals("/favicon.ico")) {
             chain.doFilter(req, resp);
             return;
         }

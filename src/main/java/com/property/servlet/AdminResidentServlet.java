@@ -3,9 +3,11 @@ package com.property.servlet;
 import com.property.dao.ResidentDAO;
 import com.property.dao.HousingDAO;
 import com.property.dao.ResidentHousingDAO;
+import com.property.dao.SystemUserDAO;
 import com.property.entity.Resident;
 import com.property.entity.Housing;
 import com.property.entity.ResidentHousing;
+import com.property.entity.SystemUser;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,6 +25,7 @@ public class AdminResidentServlet extends BaseServlet {
     private ResidentDAO residentDAO = new ResidentDAO();
     private HousingDAO housingDAO = new HousingDAO();
     private ResidentHousingDAO residentHousingDAO = new ResidentHousingDAO();
+    private SystemUserDAO userDAO = new SystemUserDAO();
 
     /**
      * 住户列表
@@ -80,6 +83,8 @@ public class AdminResidentServlet extends BaseServlet {
         String phone = request.getParameter("phone");
         String idCard = request.getParameter("idCard");
         String checkInDate = request.getParameter("checkInDate");
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
 
         Resident resident = new Resident();
         resident.setResidentId(residentId);
@@ -93,6 +98,16 @@ public class AdminResidentServlet extends BaseServlet {
         if (existing != null) {
             residentDAO.update(resident);
         } else {
+            // 新增：先创建登录账号
+            SystemUser u = new SystemUser();
+            u.setUserId(userDAO.generateId("业主"));
+            u.setUsername(username != null && !username.isEmpty() ? username.trim() : phone);
+            u.setPassword(password != null && !password.isEmpty() ? password : "123456");
+            u.setUserType("业主");
+            u.setRealName(name);
+            u.setPhone(phone);
+            userDAO.register(u);
+            resident.setUserId(u.getUserId());
             residentDAO.insert(resident);
         }
 

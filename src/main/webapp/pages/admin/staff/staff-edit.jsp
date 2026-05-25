@@ -44,14 +44,25 @@
                 </select>
             </div>
             
-            <div class="form-group">
-                <label class="form-label">是否管理员</label>
-                <select class="form-control" name="isAdmin">
-                    <option value="0" ${!entity.admin ? 'selected' : ''}>否</option>
-                    <option value="1" ${entity.admin ? 'selected' : ''}>是</option>
-                </select>
+            <c:if test="${empty entity.staffId}">
+            <div class="card" style="background:#f9f9f9;margin-bottom:14px;">
+                <div class="card-header" style="font-size:14px;">登录账号设置</div>
+                <div class="card-body">
+                    <div class="form-row" style="display:flex;gap:12px;">
+                        <div class="form-group" style="flex:1;">
+                            <label class="form-label">登录用户名 <span class="required">*</span></label>
+                            <input type="text" class="form-control" name="username" placeholder="用于登录系统" required>
+                        </div>
+                        <div class="form-group" style="flex:1;">
+                            <label class="form-label">登录密码 <span class="required">*</span></label>
+                            <input type="text" class="form-control" name="password" value="123456" required>
+                            <small class="text-muted">默认密码 123456</small>
+                        </div>
+                    </div>
+                </div>
             </div>
-            
+            </c:if>
+
             <div class="d-flex gap-12 mt-3">
                 <button type="submit" class="btn btn-primary">保存</button>
                 <a href="${pageContext.request.contextPath}/admin/staff?action=list" class="btn btn-secondary">取消</a>

@@ -1,6 +1,8 @@
 package com.property.servlet;
 
+import com.property.dao.SystemUserDAO;
 import com.property.entity.Staff;
+import com.property.entity.SystemUser;
 import com.property.entity.WorkType;
 import com.property.model.WorkLocation;
 import com.property.service.StaffService;
@@ -20,6 +22,7 @@ public class AdminStaffServlet extends BaseServlet {
     private StaffService staffService = new StaffService();
     private WorkTypeService workTypeService = new WorkTypeService();
     private WorkLocationDAO locationDAO = new WorkLocationDAO();
+    private SystemUserDAO userDAO = new SystemUserDAO();
 
     protected void list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
@@ -71,23 +74,35 @@ public class AdminStaffServlet extends BaseServlet {
             String phone = request.getParameter("phone");
             String idCard = request.getParameter("idCard");
             String worktypeId = request.getParameter("worktypeId");
-            String isAdmin = request.getParameter("isAdmin");
             String status = request.getParameter("status");
+            String username = request.getParameter("username");
+            String password = request.getParameter("password");
 
             Staff staff = new Staff();
-            if (id != null && !id.isEmpty()) {
+            boolean isNew = (id == null || id.isEmpty());
+            if (!isNew) {
                 staff.setStaffId(id);
             }
             staff.setName(name);
             staff.setPhone(phone);
             staff.setIdCard(idCard);
             staff.setWorktypeId(worktypeId);
-            staff.setAdmin("1".equals(isAdmin));
+            staff.setAdmin(false);
             staff.setStatus(status != null ? status : "在职");
 
-            if (id != null && !id.isEmpty()) {
+            if (!isNew) {
                 staffService.update(staff);
             } else {
+                // 新增：先创建登录账号
+                SystemUser u = new SystemUser();
+                u.setUserId(userDAO.generateId("维修员"));
+                u.setUsername(username != null && !username.isEmpty() ? username.trim() : phone);
+                u.setPassword(password != null && !password.isEmpty() ? password : "123456");
+                u.setUserType("维修员");
+                u.setRealName(name);
+                u.setPhone(phone);
+                userDAO.register(u);
+                staff.setUserId(u.getUserId());
                 staffService.add(staff);
             }
             response.sendRedirect(request.getContextPath() + "/admin/staff?action=list");
