@@ -8,6 +8,7 @@ import java.util.List;
 
 public class StaffDAO {
 
+    // ===== 原 property-management 的方法 =====
     public Staff findByUserId(String userId) {
         String sql = "SELECT * FROM Staff WHERE user_id=?";
         try (Connection conn = DBUtil.getConnection();
@@ -64,6 +65,61 @@ public class StaffDAO {
         return "S0001";
     }
 
+    // ===== 合并自 sbh 的方法 =====
+    public List<Staff> getAll() throws SQLException {
+        List<Staff> list = new ArrayList<>();
+        String sql = "SELECT s.staff_id, s.user_id, s.name, s.phone, s.id_card, s.worktype_id, s.is_admin, s.status, w.worktype_name " +
+                     "FROM Staff s LEFT JOIN WorkType w ON s.worktype_id = w.worktype_id";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                list.add(mapRowAll(rs));
+            }
+        }
+        return list;
+    }
+
+    public Staff getById(String id) throws SQLException {
+        String sql = "SELECT s.staff_id, s.user_id, s.name, s.phone, s.id_card, s.worktype_id, s.is_admin, s.status, w.worktype_name " +
+                     "FROM Staff s LEFT JOIN WorkType w ON s.worktype_id = w.worktype_id WHERE s.staff_id = ?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapRowAll(rs);
+                }
+            }
+        }
+        return null;
+    }
+
+    public void update(Staff staff) throws SQLException {
+        String sql = "UPDATE Staff SET name = ?, phone = ?, id_card = ?, worktype_id = ?, is_admin = ?, status = ? WHERE staff_id = ?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, staff.getName());
+            stmt.setString(2, staff.getPhone());
+            stmt.setString(3, staff.getIdCard());
+            stmt.setString(4, staff.getWorktypeId());
+            stmt.setBoolean(5, staff.isAdmin());
+            stmt.setString(6, staff.getStatus());
+            stmt.setString(7, staff.getStaffId());
+            stmt.executeUpdate();
+        }
+    }
+
+    public void delete(String id) throws SQLException {
+        String sql = "DELETE FROM Staff WHERE staff_id = ?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, id);
+            stmt.executeUpdate();
+        }
+    }
+
+    // ===== mapRow 方法 =====
     private Staff mapRow(ResultSet rs) throws SQLException {
         Staff s = new Staff();
         s.setStaffId(rs.getString("staff_id"));
@@ -75,5 +131,19 @@ public class StaffDAO {
         s.setAdmin(rs.getBoolean("is_admin"));
         s.setStatus(rs.getString("status"));
         return s;
+    }
+
+    private Staff mapRowAll(ResultSet rs) throws SQLException {
+        Staff staff = new Staff();
+        staff.setStaffId(rs.getString("staff_id"));
+        staff.setUserId(rs.getString("user_id"));
+        staff.setName(rs.getString("name"));
+        staff.setPhone(rs.getString("phone"));
+        staff.setIdCard(rs.getString("id_card"));
+        staff.setWorktypeId(rs.getString("worktype_id"));
+        staff.setAdmin(rs.getBoolean("is_admin"));
+        staff.setStatus(rs.getString("status"));
+        staff.setWorktypeName(rs.getString("worktype_name"));
+        return staff;
     }
 }

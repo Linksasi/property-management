@@ -43,6 +43,7 @@
         .badge-admin { background: #FFF3E0; color: #E65100; }
         .badge-owner { background: #E8F5E9; color: #2E7D32; }
         .badge-staff { background: #E3F2FD; color: #1565C0; }
+        .badge-orange { background: #FFF3E0; color: #E65100; }
         .login-link { color: #2E7D32; text-decoration: none; font-weight: bold; cursor: pointer; }
         .login-link:hover { text-decoration: underline; }
     </style>
@@ -95,6 +96,7 @@
                         <option value="业主">业主</option>
                         <option value="管理员">管理员</option>
                         <option value="维修员">维修员</option>
+                        <option value="广告公司">广告公司</option>
                     </select>
                 </div>
             </div>
@@ -172,6 +174,20 @@
                         </select>
                     </div>
                 </div>
+
+                <!-- 广告公司专属 -->
+                <div id="companyFields" style="display:none;">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>公司名称 <span style="color:red;">*</span></label>
+                            <input type="text" id="companyName" placeholder="广告公司全称">
+                        </div>
+                        <div class="form-group">
+                            <label>联系人 <span style="color:red;">*</span></label>
+                            <input type="text" id="companyContact" placeholder="联系人姓名">
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <button class="btn btn-primary" onclick="addUser()">创建账号</button>
@@ -213,17 +229,24 @@ function onRoleChange() {
     var role = document.getElementById('userType').value;
     var ownerFields = document.getElementById('ownerFields');
     var staffFields = document.getElementById('staffFields');
+    var companyFields = document.getElementById('companyFields');
 
     if (role === '业主') {
         ownerFields.style.display = '';
         staffFields.style.display = 'none';
+        companyFields.style.display = 'none';
     } else if (role === '维修员') {
         ownerFields.style.display = 'none';
         staffFields.style.display = '';
-    } else {
-        // 管理员：不显示入住日期也不显示工种选择
+        companyFields.style.display = 'none';
+    } else if (role === '广告公司') {
         ownerFields.style.display = 'none';
         staffFields.style.display = 'none';
+        companyFields.style.display = '';
+    } else {
+        ownerFields.style.display = 'none';
+        staffFields.style.display = 'none';
+        companyFields.style.display = 'none';
     }
 }
 
@@ -313,6 +336,14 @@ function addUser() {
         if (!workTypeId) { showStatus('addStatus', 'error', '请选择工种'); return; }
         params.append('workTypeId', workTypeId);
     }
+    if (userType === '广告公司') {
+        var companyName = document.getElementById('companyName').value.trim();
+        var companyContact = document.getElementById('companyContact').value.trim();
+        if (!companyName) { showStatus('addStatus', 'error', '请输入公司名称'); return; }
+        if (!companyContact) { showStatus('addStatus', 'error', '请输入联系人'); return; }
+        params.append('companyName', companyName);
+        params.append('companyContact', companyContact);
+    }
 
     fetch(ctx + '/test?' + params.toString())
         .then(function(r) { return r.json(); })
@@ -349,7 +380,7 @@ function loadUsers() {
                 return;
             }
             var html = '';
-            var badgeMap = {'管理员': 'badge-admin', '业主': 'badge-owner', '维修员': 'badge-staff'};
+            var badgeMap = {'管理员': 'badge-admin', '业主': 'badge-owner', '维修员': 'badge-staff', '广告公司': 'badge-orange'};
             users.forEach(function(u) {
                 html += '<tr>';
                 html += '<td>' + u.userId + '</td>';

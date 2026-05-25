@@ -6,17 +6,20 @@ import com.property.dao.StaffDAO;
 import com.property.dao.WorkTypeDAO;
 import com.property.dao.HousingDAO;
 import com.property.dao.ResidentHousingDAO;
+import com.property.dao.ExternalAdCompanyDAO;
 import com.property.entity.SystemUser;
 import com.property.entity.Resident;
 import com.property.entity.Staff;
 import com.property.entity.WorkType;
 import com.property.entity.Housing;
 import com.property.entity.ResidentHousing;
+import com.property.model.ExternalAdCompany;
 import com.property.util.DBUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet({"/login", "/logout", "/test"})
@@ -28,6 +31,7 @@ public class LoginServlet extends HttpServlet {
     private WorkTypeDAO workTypeDAO = new WorkTypeDAO();
     private HousingDAO housingDAO = new HousingDAO();
     private ResidentHousingDAO residentHousingDAO = new ResidentHousingDAO();
+    private ExternalAdCompanyDAO companyDAO = new ExternalAdCompanyDAO();
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
         String path = req.getRequestURI().substring(req.getContextPath().length());
@@ -82,6 +86,7 @@ public class LoginServlet extends HttpServlet {
                 String idCard = req.getParameter("idCard");
                 String checkInDate = req.getParameter("checkInDate");
                 String workTypeId = req.getParameter("workTypeId");
+                String companyName = req.getParameter("companyName");
 
                 SystemUser u = new SystemUser();
                 u.setUserId(userDAO.generateId(userType));
@@ -150,6 +155,14 @@ public class LoginServlet extends HttpServlet {
                         s.setAdmin(false);
                         s.setWorktypeId(workTypeId != null ? workTypeId : "WT001");
                         detailOk = staffDAO.insert(s);
+                    } else if ("广告公司".equals(userType)) {
+                        ExternalAdCompany ec = new ExternalAdCompany();
+                        ec.setCompanyId(companyDAO.generateId());
+                        ec.setUserId(u.getUserId());
+                        ec.setCompanyName(companyName);
+                        ec.setContact(name != null ? name : u.getRealName());
+                        ec.setPhone(phone != null ? phone : u.getPhone());
+                        detailOk = companyDAO.insert(ec);
                     }
                 }
 
@@ -207,6 +220,13 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("staffId", staff.getStaffId());
             }
         }
+        // 广告公司登录时，存 companyId
+        if ("广告公司".equals(user.getUserType())) {
+            ExternalAdCompany company = companyDAO.findByUserId(user.getUserId());
+            if (company != null) {
+                session.setAttribute("companyId", company.getCompanyId());
+            }
+        }
     }
 
     private void redirectByRole(HttpServletRequest req, HttpServletResponse resp, SystemUser user) throws IOException {
@@ -219,6 +239,9 @@ public class LoginServlet extends HttpServlet {
                 break;
             case "维修员":
                 resp.sendRedirect(req.getContextPath() + "/staff/repair?action=list");
+                break;
+            case "广告公司":
+                resp.sendRedirect(req.getContextPath() + "/ad/company?action=myList");
                 break;
             default:
                 resp.sendRedirect(req.getContextPath() + "/index.jsp");
