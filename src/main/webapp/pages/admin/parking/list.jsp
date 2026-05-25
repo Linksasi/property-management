@@ -17,7 +17,8 @@
     <link href="${pageContext.request.contextPath}/css/common.css" rel="stylesheet">
     <style>
         body { overflow-x: hidden; }
-        .main-container { max-width: 100%; }
+        .main-container { width: 100%; }
+        .content-area { flex: 1; min-width: 0; }
     </style>
 </head>
 <body>
@@ -29,12 +30,12 @@
             <h2 class="page-title">车位管理</h2>
 
             <!-- 统计信息 -->
-            <div class="statistics-row" style="margin-bottom:16px;">
-                <div class="stat-card">
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:16px;">
+                <div class="stat-card" style="text-align:center;padding:16px;">
                     <div class="stat-value"><%= list != null ? list.size() : 0 %></div>
                     <div class="stat-label">总车位数</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" style="text-align:center;padding:16px;">
                     <div class="stat-value">
                         <%
                         int freeCount = 0;
@@ -48,7 +49,7 @@
                     </div>
                     <div class="stat-label">空闲车位</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" style="text-align:center;padding:16px;">
                     <div class="stat-value">
                         <%
                         int boundCount = 0;
@@ -62,7 +63,7 @@
                     </div>
                     <div class="stat-label">已绑定车位</div>
                 </div>
-                <div class="stat-card">
+                <div class="stat-card" style="text-align:center;padding:16px;">
                     <div class="stat-value">
                         <%
                         int overdueCount = 0;
