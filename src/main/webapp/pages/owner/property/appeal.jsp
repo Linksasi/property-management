@@ -27,15 +27,7 @@
     <!-- 主容器 -->
     <div class="main-container">
         <!-- 侧边栏 -->
-        <div class="sidebar">
-            <div class="sidebar-title">业主菜单</div>
-            <a href="${pageContext.request.contextPath}/owner/personal?action=info" class="sidebar-item">个人信息</a>
-            <a href="${pageContext.request.contextPath}/owner/property?action=list" class="sidebar-item active">物业费</a>
-            <a href="${pageContext.request.contextPath}/owner/water?action=list" class="sidebar-item">水费</a>
-            <a href="${pageContext.request.contextPath}/owner/repair?action=list" class="sidebar-item">维修申请</a>
-            <div class="sidebar-divider"></div>
-            <a href="${pageContext.request.contextPath}/logout" class="sidebar-item">退出登录</a>
-        </div>
+        <jsp:include page="/pages/common/owner-sidebar.jsp" />
         
         <!-- 内容区 -->
         <div class="content-area">

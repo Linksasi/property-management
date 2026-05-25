@@ -19,11 +19,13 @@ public class AdminPropertyStandardServlet extends BaseServlet {
     
     protected void list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<PropertyStandard> list = service.findAll();
+        request.setAttribute("module", "property");
         request.setAttribute("list", list);
         request.getRequestDispatcher("/pages/admin/property/standard-list.jsp").forward(request, response);
     }
     
     protected void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("module", "property");
         request.setAttribute("entity", new PropertyStandard());
         request.setAttribute("isEdit", false);
         request.getRequestDispatcher("/pages/admin/property/standard-edit.jsp").forward(request, response);
@@ -36,6 +38,7 @@ public class AdminPropertyStandardServlet extends BaseServlet {
         }
         
         PropertyStandard standard = service.findById(standardId);
+        request.setAttribute("module", "property");
         request.setAttribute("entity", standard);
         request.setAttribute("isEdit", true);
         request.getRequestDispatcher("/pages/admin/property/standard-edit.jsp").forward(request, response);
@@ -72,6 +75,7 @@ public class AdminPropertyStandardServlet extends BaseServlet {
         if (success) {
             response.sendRedirect(request.getContextPath() + "/admin/property/standard?action=list");
         } else {
+            request.setAttribute("module", "property");
             request.setAttribute("error", "保存失败");
             request.setAttribute("entity", standard);
             request.setAttribute("isEdit", standardId != null && !standardId.isEmpty());

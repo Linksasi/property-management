@@ -1,0 +1,67 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<% request.setAttribute("pageTitle", "水费管理"); %>
+<% request.setAttribute("module", "water"); %>
+
+<%@ include file="/pages/common/header.jsp" %>
+<%@ include file="/pages/common/admin-sidebar.jsp" %>
+
+<div class="content-area">
+    <h1 class="page-title">水费管理</h1>
+
+    <!-- 顶部标签导航 -->
+    <ul class="nav nav-tabs mb-4 water-nav-tabs" id="waterTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link ${activeTab == null || activeTab == 'billing' ? 'active' : ''}" 
+               href="${pageContext.request.contextPath}/admin/water?action=list">
+                <i class="bi bi-card-list"></i> 计费规则
+            </a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link ${activeTab == 'meter' ? 'active' : ''}" 
+               href="${pageContext.request.contextPath}/admin/waterMeter?action=list">
+                <i class="bi bi-gauge"></i> 水表管理
+            </a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link ${activeTab == 'read' ? 'active' : ''}" 
+               href="${pageContext.request.contextPath}/admin/waterMeter?action=meterRead">
+                <i class="bi bi-pen"></i> 抄表录入
+            </a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link ${activeTab == 'fee' ? 'active' : ''}" 
+               href="${pageContext.request.contextPath}/admin/waterFee?action=list">
+                <i class="bi bi-receipt"></i> 水费账单
+            </a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link ${activeTab == 'stat' ? 'active' : ''}" 
+               href="${pageContext.request.contextPath}/admin/waterStat?action=list">
+                <i class="bi bi-bar-chart"></i> 用水统计
+            </a>
+        </li>
+    </ul>
+
+    <%@ include file="/pages/admin/water/water-content.jsp" %>
+</div>
+
+<style>
+.water-nav-tabs .nav-link {
+    color: #495057;
+    border-radius: 0.25rem 0.25rem 0 0;
+    text-decoration: none;
+}
+.water-nav-tabs .nav-link.active {
+    color: #0d6efd;
+    font-weight: 600;
+    background-color: #fff;
+    border-color: #dee2e6 #dee2e6 #fff;
+}
+.water-nav-tabs .nav-link:hover {
+    color: #0d6efd;
+    border-color: #e9ecef #e9ecef #dee2e6;
+}
+</style>
+
+<%@ include file="/pages/common/footer.jsp" %>

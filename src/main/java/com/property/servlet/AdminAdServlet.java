@@ -103,4 +103,45 @@ public class AdminAdServlet extends BaseServlet {
             response.sendError(500, e.getMessage());
         }
     }
+
+    protected void slotAdd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/pages/admin/ad/slot-edit.jsp").forward(request, response);
+    }
+
+    protected void slotEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            String id = request.getParameter("id");
+            AdSlot slot = slotService.getById(id);
+            request.setAttribute("entity", slot);
+            request.getRequestDispatcher("/pages/admin/ad/slot-edit.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendError(500, e.getMessage());
+        }
+    }
+
+    protected void slotSave(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            String slotId = request.getParameter("slotId");
+            String location = request.getParameter("locationDescription");
+
+            AdSlot slot = new AdSlot();
+            if (slotId != null && !slotId.isEmpty()) {
+                slot.setSlotId(slotId);
+            }
+            slot.setLocation(location);
+            slot.setStatus("空闲");
+
+            if (slotId != null && !slotId.isEmpty()) {
+                slotService.update(slot);
+            } else {
+                slot.setSlotId("SL" + System.currentTimeMillis());
+                slotService.add(slot);
+            }
+            response.sendRedirect(request.getContextPath() + "/admin/ad?action=slotList");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendError(500, e.getMessage());
+        }
+    }
 }

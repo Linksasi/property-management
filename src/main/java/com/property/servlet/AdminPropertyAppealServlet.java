@@ -28,6 +28,7 @@ public class AdminPropertyAppealServlet extends BaseServlet {
             list = service.findAll();
         }
         
+        request.setAttribute("module", "property");
         request.setAttribute("list", list);
         request.getRequestDispatcher("/pages/admin/property/appeal-list.jsp").forward(request, response);
     }
@@ -39,6 +40,7 @@ public class AdminPropertyAppealServlet extends BaseServlet {
         }
         
         PropertyFeeAppeal appeal = service.findById(appealId);
+        request.setAttribute("module", "property");
         request.setAttribute("entity", appeal);
         
         // 获取关联的账单明细

@@ -3,11 +3,13 @@
 
 <% request.setAttribute("pageTitle", "工种管理"); %>
 <% request.setAttribute("module", "staff"); %>
+<% request.setAttribute("activeTab", "worktype"); %>
 
 <%@ include file="/pages/common/header.jsp" %>
 <%@ include file="/pages/common/admin-sidebar.jsp" %>
 
 <div class="content-area">
+    <jsp:include page="/pages/common/staff-tabs.jsp" />
     <h1 class="page-title">工种管理</h1>
     
     <div class="card">

@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
 <% request.setAttribute("pageTitle", "申请详情"); %>
-<% request.setAttribute("module", "ad"); %>
+<% request.setAttribute("module", "ad_app"); %>
 
 <%@ include file="/pages/common/header.jsp" %>
 <%@ include file="/pages/common/admin-sidebar.jsp" %>

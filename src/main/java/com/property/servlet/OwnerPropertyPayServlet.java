@@ -21,6 +21,8 @@ public class OwnerPropertyPayServlet extends BaseServlet {
     private final ElectronicVoucherService voucherService = new ElectronicVoucherService();
     
     protected void save(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (!checkLogin(request, response)) return;
+        
         String detailId = request.getParameter("detailId");
         String amountStr = request.getParameter("amount");
         String paymentMethod = request.getParameter("paymentMethod");
@@ -33,6 +35,7 @@ public class OwnerPropertyPayServlet extends BaseServlet {
             ElectronicVoucher voucher = orderService.processPayment(order.getOrderId());
             
             if (voucher != null) {
+                request.setAttribute("module", "property");
                 request.setAttribute("voucher", voucher);
                 request.getRequestDispatcher("/pages/owner/property/voucher.jsp").forward(request, response);
                 return;
@@ -44,10 +47,22 @@ public class OwnerPropertyPayServlet extends BaseServlet {
     }
     
     protected void voucher(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (!checkLogin(request, response)) return;
+        
         String orderId = request.getParameter("orderId");
         
         ElectronicVoucher voucher = voucherService.findByOrderId(orderId);
+        request.setAttribute("module", "property");
         request.setAttribute("voucher", voucher);
         request.getRequestDispatcher("/pages/owner/property/voucher.jsp").forward(request, response);
+    }
+    
+    private boolean checkLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Object residentIdObj = request.getSession().getAttribute("userId");
+        if (residentIdObj == null) {
+            response.sendRedirect(request.getContextPath() + "/login-test.jsp");
+            return false;
+        }
+        return true;
     }
 }

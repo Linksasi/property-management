@@ -3,12 +3,14 @@
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
 <% request.setAttribute("pageTitle", "排班管理"); %>
-<% request.setAttribute("module", "shift"); %>
+<% request.setAttribute("module", "staff"); %>
+<% request.setAttribute("activeTab", "shift"); %>
 
 <%@ include file="/pages/common/header.jsp" %>
 <%@ include file="/pages/common/admin-sidebar.jsp" %>
 
 <div class="content-area">
+    <jsp:include page="/pages/common/staff-tabs.jsp" />
     <h1 class="page-title">排班管理</h1>
     
     <div class="card">

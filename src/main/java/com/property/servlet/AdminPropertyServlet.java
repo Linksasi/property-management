@@ -29,6 +29,7 @@ public class AdminPropertyServlet extends BaseServlet {
             list = service.findAll();
         }
         
+        request.setAttribute("module", "property");
         request.setAttribute("list", list);
         request.getRequestDispatcher("/pages/admin/property/detail-list.jsp").forward(request, response);
     }
@@ -40,6 +41,7 @@ public class AdminPropertyServlet extends BaseServlet {
         }
         
         PropertyFeeDetail detail = service.findById(detailId);
+        request.setAttribute("module", "property");
         request.setAttribute("entity", detail);
         request.getRequestDispatcher("/pages/admin/property/detail-detail.jsp").forward(request, response);
     }

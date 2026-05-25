@@ -1,20 +1,22 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <% request.setAttribute("pageTitle", "工作人员管理"); %>
 <% request.setAttribute("module", "staff"); %>
+<% request.setAttribute("activeTab", "staff"); %>
 
 <%@ include file="/pages/common/header.jsp" %>
 <%@ include file="/pages/common/admin-sidebar.jsp" %>
 
 <div class="content-area">
-    <h1 class="page-title">工作人员管理</h1>
-    
+    <jsp:include page="/pages/common/staff-tabs.jsp" />
+    <h1 class="page-title">员工列表</h1>
+
     <div class="card">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <span>员工列表</span>
+        <div class="d-flex justify-content-end mb-3">
             <a href="${pageContext.request.contextPath}/admin/staff?action=add" class="btn btn-primary">新增员工</a>
         </div>
-        
+
         <table class="table-custom">
             <thead>
                 <tr>

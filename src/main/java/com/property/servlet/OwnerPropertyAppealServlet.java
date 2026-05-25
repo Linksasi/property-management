@@ -21,30 +21,33 @@ public class OwnerPropertyAppealServlet extends BaseServlet {
     private final PropertyFeeDetailService detailService = new PropertyFeeDetailService();
     
     protected void list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (!checkLogin(request, response)) return;
+        
         Object residentIdObj = request.getSession().getAttribute("userId");
         String residentId = residentIdObj != null ? residentIdObj.toString() : null;
         
-        List<PropertyFeeAppeal> list;
-        if (residentId != null) {
-            list = appealService.findByResidentId(residentId);
-        } else {
-            list = appealService.findAll();
-        }
+        List<PropertyFeeAppeal> list = appealService.findByResidentId(residentId);
         
+        request.setAttribute("module", "property");
         request.setAttribute("list", list);
         request.getRequestDispatcher("/pages/owner/property/appeal-list.jsp").forward(request, response);
     }
     
     protected void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (!checkLogin(request, response)) return;
+        
         String detailId = request.getParameter("detailId");
         if (detailId != null) {
             PropertyFeeDetail detail = detailService.findById(detailId);
+            request.setAttribute("module", "property");
             request.setAttribute("detail", detail);
         }
         request.getRequestDispatcher("/pages/owner/property/appeal.jsp").forward(request, response);
     }
     
     protected void save(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (!checkLogin(request, response)) return;
+        
         String detailId = request.getParameter("detailId");
         String reason = request.getParameter("reason");
         
@@ -57,18 +60,31 @@ public class OwnerPropertyAppealServlet extends BaseServlet {
             response.sendRedirect(request.getContextPath() + "/owner/property/appeal?action=list");
         } else {
             request.setAttribute("error", "提交失败，可能已有待审核的申诉");
+            request.setAttribute("module", "property");
             request.getRequestDispatcher("/pages/owner/property/appeal-list.jsp").forward(request, response);
         }
     }
     
     protected void detail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (!checkLogin(request, response)) return;
+        
         String appealId = request.getParameter("appealId");
         if (appealId == null) {
             appealId = request.getParameter("id");
         }
         
         PropertyFeeAppeal appeal = appealService.findById(appealId);
+        request.setAttribute("module", "property");
         request.setAttribute("entity", appeal);
         request.getRequestDispatcher("/pages/owner/property/appeal-detail.jsp").forward(request, response);
+    }
+    
+    private boolean checkLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Object residentIdObj = request.getSession().getAttribute("userId");
+        if (residentIdObj == null) {
+            response.sendRedirect(request.getContextPath() + "/login-test.jsp");
+            return false;
+        }
+        return true;
     }
 }

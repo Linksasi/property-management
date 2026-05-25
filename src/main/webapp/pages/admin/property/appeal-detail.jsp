@@ -32,18 +32,7 @@
     <!-- 主容器 -->
     <div class="main-container">
         <!-- 侧边栏 -->
-        <div class="sidebar">
-            <div class="sidebar-title">管理菜单</div>
-            <a href="${pageContext.request.contextPath}/admin/staff?action=list" class="sidebar-item">工作人员管理</a>
-            <a href="${pageContext.request.contextPath}/admin/resident?action=list" class="sidebar-item">住户管理</a>
-            <a href="${pageContext.request.contextPath}/admin/property?action=list" class="sidebar-item active">物业费管理</a>
-            <a href="${pageContext.request.contextPath}/admin/water?action=list" class="sidebar-item">水费管理</a>
-            <a href="${pageContext.request.contextPath}/admin/parking?action=list" class="sidebar-item">车位费管理</a>
-            <a href="${pageContext.request.contextPath}/admin/repair?action=list" class="sidebar-item">维修管理</a>
-            <a href="${pageContext.request.contextPath}/admin/ad?action=list" class="sidebar-item">广告管理</a>
-            <div class="sidebar-divider"></div>
-            <a href="${pageContext.request.contextPath}/logout" class="sidebar-item">退出登录</a>
-        </div>
+        <jsp:include page="/pages/common/admin-sidebar.jsp" />
         
         <!-- 内容区 -->
         <div class="content-area">

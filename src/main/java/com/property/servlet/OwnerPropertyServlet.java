@@ -18,39 +18,52 @@ public class OwnerPropertyServlet extends BaseServlet {
     private final PropertyFeeDetailService service = new PropertyFeeDetailService();
     
     protected void list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (!checkLogin(request, response)) return;
+        
         Object residentIdObj = request.getSession().getAttribute("userId");
         String residentId = residentIdObj != null ? residentIdObj.toString() : null;
         
-        if (residentId == null) {
-            response.sendRedirect(request.getContextPath() + "/login-test.jsp");
-            return;
-        }
-        
         List<PropertyFeeDetail> list = service.findByResidentId(residentId);
         
+        request.setAttribute("module", "property");
         request.setAttribute("list", list);
         request.getRequestDispatcher("/pages/owner/property/list.jsp").forward(request, response);
     }
     
     protected void detail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (!checkLogin(request, response)) return;
+        
         String detailId = request.getParameter("detailId");
         if (detailId == null) {
             detailId = request.getParameter("id");
         }
         
         PropertyFeeDetail detail = service.findById(detailId);
+        request.setAttribute("module", "property");
         request.setAttribute("entity", detail);
         request.getRequestDispatcher("/pages/owner/property/detail.jsp").forward(request, response);
     }
     
     protected void pay(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (!checkLogin(request, response)) return;
+        
         String detailId = request.getParameter("detailId");
         if (detailId == null) {
             detailId = request.getParameter("id");
         }
         
         PropertyFeeDetail detail = service.findById(detailId);
+        request.setAttribute("module", "property");
         request.setAttribute("entity", detail);
         request.getRequestDispatcher("/pages/owner/property/pay.jsp").forward(request, response);
+    }
+    
+    private boolean checkLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Object residentIdObj = request.getSession().getAttribute("userId");
+        if (residentIdObj == null) {
+            response.sendRedirect(request.getContextPath() + "/login-test.jsp");
+            return false;
+        }
+        return true;
     }
 }

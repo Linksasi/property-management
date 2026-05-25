@@ -22,6 +22,7 @@ public class AdminPropertyBatchServlet extends BaseServlet {
     
     protected void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int residentCount = detailService.countResidents();
+        request.setAttribute("module", "property");
         request.setAttribute("residentCount", residentCount);
         request.setAttribute("standardList", standardService.findByStatus("生效"));
         request.getRequestDispatcher("/pages/admin/property/batch.jsp").forward(request, response);
@@ -45,6 +46,7 @@ public class AdminPropertyBatchServlet extends BaseServlet {
             residentCount = detailService.countResidents();
         }
         
+        request.setAttribute("module", "property");
         request.setAttribute("billMonth", billMonth);
         request.setAttribute("previewList", previewList);
         request.setAttribute("residentCount", residentCount);
@@ -66,6 +68,7 @@ public class AdminPropertyBatchServlet extends BaseServlet {
         }
         
         if (billMonth == null || billMonth.isEmpty()) {
+            request.setAttribute("module", "property");
             request.setAttribute("error", "请选择计费月份");
             request.setAttribute("residentCount", detailService.countResidents());
             request.setAttribute("standardList", standardService.findByStatus("生效"));
@@ -74,6 +77,7 @@ public class AdminPropertyBatchServlet extends BaseServlet {
         }
         
         if (batchService.findByBillMonth(billMonth) != null) {
+            request.setAttribute("module", "property");
             request.setAttribute("error", "该月份的账单已存在");
             request.setAttribute("residentCount", detailService.countResidents());
             request.setAttribute("standardList", standardService.findByStatus("生效"));
@@ -87,6 +91,7 @@ public class AdminPropertyBatchServlet extends BaseServlet {
             // 生成成功，跳转到明细列表
             response.sendRedirect(request.getContextPath() + "/admin/property?action=list&billMonth=" + billMonth);
         } else {
+            request.setAttribute("module", "property");
             request.setAttribute("error", "生成失败，可能没有生效的收费标准或无住户数据");
             request.setAttribute("residentCount", detailService.countResidents());
             request.setAttribute("standardList", standardService.findByStatus("生效"));

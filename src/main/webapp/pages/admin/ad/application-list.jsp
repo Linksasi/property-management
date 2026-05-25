@@ -3,12 +3,14 @@
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 
 <% request.setAttribute("pageTitle", "广告申请审批"); %>
-<% request.setAttribute("module", "ad"); %>
+<% request.setAttribute("module", "ad_app"); %>
+<% request.setAttribute("activeTab", "ad_app"); %>
 
 <%@ include file="/pages/common/header.jsp" %>
 <%@ include file="/pages/common/admin-sidebar.jsp" %>
 
 <div class="content-area">
+    <jsp:include page="/pages/common/ad-tabs.jsp" />
     <h1 class="page-title">广告申请审批</h1>
 
     <div class="card">

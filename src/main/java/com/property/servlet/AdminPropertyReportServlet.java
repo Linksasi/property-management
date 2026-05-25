@@ -123,6 +123,7 @@ public class AdminPropertyReportServlet extends BaseServlet {
         request.setAttribute("totalAmount", totalAmount);
         request.setAttribute("paidAmount", paidAmount);
         request.setAttribute("paymentRate", paymentRate);
+        request.setAttribute("module", "property");
         request.setAttribute("monthlyStats", monthlyStats);
         
         request.getRequestDispatcher("/pages/admin/property/report.jsp").forward(request, response);

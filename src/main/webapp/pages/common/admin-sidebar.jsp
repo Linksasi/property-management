@@ -8,13 +8,13 @@ if (currentModule == null) {
 <div class="sidebar">
     <div class="sidebar-title">管理菜单</div>
     <a href="${pageContext.request.contextPath}/admin/staff?action=list" class="sidebar-item <%= "staff".equals(currentModule) ? "active" : "" %>">工作人员管理</a>
-    <a href="${pageContext.request.contextPath}/admin/shift?action=list" class="sidebar-item <%= "shift".equals(currentModule) ? "active" : "" %>">排班管理</a>
     <a href="${pageContext.request.contextPath}/admin/resident?action=list" class="sidebar-item <%= "resident".equals(currentModule) ? "active" : "" %>">住户管理</a>
+    <a href="${pageContext.request.contextPath}/admin/housing?action=list" class="sidebar-item <%= "housing".equals(currentModule) ? "active" : "" %>">住房管理</a>
     <a href="${pageContext.request.contextPath}/admin/property?action=list" class="sidebar-item <%= "property".equals(currentModule) ? "active" : "" %>">物业费管理</a>
-    <a href="${pageContext.request.contextPath}/admin/water?action=list" class="sidebar-item <%= "water".equals(currentModule) ? "active" : "" %>">水费管理</a>
+    <a href="${pageContext.request.contextPath}/admin/water?action=index" class="sidebar-item <%= "water".equals(currentModule) ? "active" : "" %>">水费管理</a>
     <a href="${pageContext.request.contextPath}/admin/parking?action=list" class="sidebar-item <%= "parking".equals(currentModule) ? "active" : "" %>">车位费管理</a>
     <a href="${pageContext.request.contextPath}/admin/repair?action=list" class="sidebar-item <%= ("repair".equals(currentModule) || "admin_repair".equals(currentModule)) ? "active" : "" %>">维修管理</a>
-    <a href="${pageContext.request.contextPath}/admin/ad?action=slotList" class="sidebar-item <%= "ad".equals(currentModule) ? "active" : "" %>">广告管理</a>
+    <a href="${pageContext.request.contextPath}/admin/ad?action=slotList" class="sidebar-item <%= ("ad".equals(currentModule) || "ad_slot".equals(currentModule) || "ad_app".equals(currentModule)) ? "active" : "" %>">广告管理</a>
     <div class="sidebar-divider"></div>
     <a href="${pageContext.request.contextPath}/logout" class="sidebar-item">退出登录</a>
 </div>
