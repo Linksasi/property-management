@@ -30,6 +30,48 @@
                     <div class="stat-value"><%= list != null ? list.size() : 0 %></div>
                     <div class="stat-label">总车位数</div>
                 </div>
+                <div class="stat-card">
+                    <div class="stat-value">
+                        <%
+                        int freeCount = 0;
+                        if (list != null) {
+                            for (ParkingSpace sp : list) {
+                                if ("空闲".equals(sp.getStatus())) freeCount++;
+                            }
+                        }
+                        out.print(freeCount);
+                        %>
+                    </div>
+                    <div class="stat-label">空闲车位</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">
+                        <%
+                        int boundCount = 0;
+                        if (list != null) {
+                            for (ParkingSpace sp : list) {
+                                if ("已绑定".equals(sp.getStatus())) boundCount++;
+                            }
+                        }
+                        out.print(boundCount);
+                        %>
+                    </div>
+                    <div class="stat-label">已绑定车位</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">
+                        <%
+                        int overdueCount = 0;
+                        if (list != null) {
+                            for (ParkingSpace sp : list) {
+                                if ("欠费".equals(sp.getFeeStatus())) overdueCount++;
+                            }
+                        }
+                        out.print(overdueCount);
+                        %>
+                    </div>
+                    <div class="stat-label">欠费车位</div>
+                </div>
             </div>
 
             <!-- 筛选栏 -->

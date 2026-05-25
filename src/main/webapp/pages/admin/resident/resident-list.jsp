@@ -48,7 +48,7 @@
                                 <td>${item.checkInDate}</td>
                                 <td>
                                     <a href="${pageContext.request.contextPath}/admin/resident?action=edit&id=${item.residentId}" class="btn btn-secondary btn-sm">编辑</a>
-                                    <a href="${pageContext.request.contextPath}/admin/resident?action=housingList&residentId=${item.residentId}" class="btn btn-info btn-sm">关联住房</a>
+                                    <a href="${pageContext.request.contextPath}/admin/resident?action=housingList&residentId=${item.residentId}" class="btn btn-secondary btn-sm">关联住房</a>
                                     <a href="${pageContext.request.contextPath}/admin/resident?action=delete&id=${item.residentId}" class="btn btn-danger btn-sm" onclick="return confirm('确定删除该住户吗？')">删除</a>
                                 </td>
                             </tr>
