@@ -8,30 +8,36 @@
 <%@ include file="/pages/common/admin-sidebar.jsp" %>
 
 <div class="content-area">
-    <h1 class="page-title">${not empty entity.staffId ? '编辑员工' : '新增员工'}</h1>
-    
+    <h1 class="page-title">${(entity != null && not empty entity.staffId) || (staff != null && not empty staff.staffId) ? '编辑员工' : '新增员工'}</h1>
+
+    <c:if test="${not empty error}">
+    <div class="card" style="border-left:4px solid var(--error);margin-bottom:16px">
+        <p style="color:var(--error);margin:0;padding:12px">${error}</p>
+    </div>
+    </c:if>
+
     <div class="card">
         <form action="${pageContext.request.contextPath}/admin/staff?action=save" method="post">
             <c:if test="${not empty entity.staffId}">
             <div class="form-group">
                 <label class="form-label">员工ID</label>
-                <input type="text" class="form-control" value="${entity.staffId}" readonly style="background-color: #eee;">
+                <input type="text" class="form-control" value="${(entity != null && not empty entity.staffId) ? entity.staffId : (staff != null ? staff.staffId : '')}" readonly style="background-color: #eee;">
             </div>
             </c:if>
             
             <div class="form-group">
                 <label class="form-label"><span class="required">*</span>姓名</label>
-                <input type="text" class="form-control" name="name" value="${entity.name}" required>
+                <input type="text" class="form-control" name="name" value="${entity.name != null ? entity.name : staff.name}" required>
             </div>
             
             <div class="form-group">
                 <label class="form-label"><span class="required">*</span>联系电话</label>
-                <input type="text" class="form-control" name="phone" value="${entity.phone}" required>
+                <input type="text" class="form-control" name="phone" value="${entity.phone != null ? entity.phone : staff.phone}" required>
             </div>
             
             <div class="form-group">
                 <label class="form-label"><span class="required">*</span>身份证号</label>
-                <input type="text" class="form-control" name="idCard" value="${entity.idCard}" required>
+                <input type="text" class="form-control" name="idCard" value="${entity.idCard != null ? entity.idCard : staff.idCard}" required>
             </div>
             
             <div class="form-group">

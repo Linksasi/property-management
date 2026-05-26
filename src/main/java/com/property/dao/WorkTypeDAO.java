@@ -84,6 +84,9 @@ public class WorkTypeDAO {
     }
 
     public void add(WorkType wt) {
+        if (wt.getWorktypeId() == null || wt.getWorktypeId().isEmpty()) {
+            wt.setWorktypeId(generateId());
+        }
         String sql = "INSERT INTO WorkType(worktype_id, worktype_name) VALUES(?, ?)";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -116,5 +119,17 @@ public class WorkTypeDAO {
         } catch (SQLException e) {
             throw new DataAccessException("删除工种失败", e);
         }
+    }
+
+    public String generateId() {
+        String sql = "SELECT CONCAT('WT', RIGHT('000'+CAST(ISNULL(MAX(CAST(SUBSTRING(worktype_id,3,10) AS INT)),0)+1 AS VARCHAR),3)) FROM WorkType";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next() && rs.getString(1) != null) return rs.getString(1);
+        } catch (SQLException e) {
+            throw new DataAccessException("生成工种ID失败", e);
+        }
+        return "WT001";
     }
 }

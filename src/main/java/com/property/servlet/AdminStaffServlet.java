@@ -53,34 +53,44 @@ public class AdminStaffServlet extends BaseServlet {
         request.getRequestDispatcher("/pages/admin/staff/staff-edit.jsp").forward(request, response);
     }
 
-    protected void save(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, Exception {
-        try {
-            String id = request.getParameter("staffId");
-            String name = request.getParameter("name");
-            String phone = request.getParameter("phone");
-            String idCard = request.getParameter("idCard");
-            String worktypeId = request.getParameter("worktypeId");
-            String status = request.getParameter("status");
-            String username = request.getParameter("username");
-            String password = request.getParameter("password");
+    protected void save(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String id = request.getParameter("staffId");
+        String name = request.getParameter("name");
+        String phone = request.getParameter("phone");
+        String idCard = request.getParameter("idCard");
+        String worktypeId = request.getParameter("worktypeId");
+        String status = request.getParameter("status");
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
 
-            Staff staff = new Staff();
-            boolean isNew = (id == null || id.isEmpty());
-            if (!isNew) {
-                staff.setStaffId(id);
+        Staff staff = new Staff();
+        boolean isNew = (id == null || id.isEmpty());
+        if (!isNew) {
+            staff.setStaffId(id);
+        }
+        staff.setName(name);
+        staff.setPhone(phone);
+        staff.setIdCard(idCard);
+        staff.setWorktypeId(worktypeId);
+        staff.setAdmin(false);
+        staff.setStatus(status != null ? status : "在职");
+
+        if (!isNew) {
+            try { staffService.update(staff); } catch (Exception e) { e.printStackTrace(); }
+        } else {
+            if (username != null && !username.trim().isEmpty()) {
+                try {
+                    if (userDAO.findByUsername(username.trim()) != null) {
+                        request.setAttribute("error", "用户名 [" + username + "] 已存在，请换一个");
+                        request.setAttribute("staff", staff);
+                        request.setAttribute("workTypes", workTypeService.getAll());
+                        request.setAttribute("locations", locationDAO.getAll());
+                        request.getRequestDispatcher("/pages/admin/staff/staff-edit.jsp").forward(request, response);
+                        return;
+                    }
+                } catch (Exception ex) { ex.printStackTrace(); }
             }
-            staff.setName(name);
-            staff.setPhone(phone);
-            staff.setIdCard(idCard);
-            staff.setWorktypeId(worktypeId);
-            staff.setAdmin(false);
-            staff.setStatus(status != null ? status : "在职");
-
-            if (!isNew) {
-                staffService.update(staff);
-            } else {
-                // 事务保护：创建账号 + 员工记录必须在同一个事务中
-                DBUtil.beginTransaction();
+            try {
                 SystemUser u = new SystemUser();
                 u.setUserId(userDAO.generateId("维修员"));
                 u.setUsername(username != null && !username.isEmpty() ? username.trim() : phone);
@@ -91,15 +101,19 @@ public class AdminStaffServlet extends BaseServlet {
                 userDAO.register(u);
                 staff.setUserId(u.getUserId());
                 staffService.add(staff);
-                DBUtil.commit();
-                DBUtil.closeConnection();
+            } catch (Exception e) {
+                e.printStackTrace();
+                request.setAttribute("error", "创建失败：" + e.getMessage());
+                request.setAttribute("staff", staff);
+                try {
+                    request.setAttribute("workTypes", workTypeService.getAll());
+                    request.setAttribute("locations", locationDAO.getAll());
+                } catch (Exception ex) { ex.printStackTrace(); }
+                request.getRequestDispatcher("/pages/admin/staff/staff-edit.jsp").forward(request, response);
+                return;
             }
-            response.sendRedirect(request.getContextPath() + "/admin/staff?action=list");
-        } catch (Exception e) {
-            DBUtil.rollback();
-            DBUtil.closeConnection();
-            throw new BusinessException("创建员工失败: " + e.getMessage());
         }
+        response.sendRedirect(request.getContextPath() + "/admin/staff?action=list");
     }
 
     protected void delete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, Exception {

@@ -63,9 +63,9 @@
                             <p style="margin:0">
                                 <% 
                                     String statusClass = "";
-                                    if ("待审核".equals(appeal.getStatus())) statusClass = "status-warning";
-                                    else if ("通过".equals(appeal.getStatus())) statusClass = "status-success";
-                                    else if ("驳回".equals(appeal.getStatus())) statusClass = "status-error";
+                                    if ("待处理".equals(appeal.getStatus())) statusClass = "status-warning";
+                                    else if ("已通过".equals(appeal.getStatus())) statusClass = "status-success";
+                                    else if ("已驳回".equals(appeal.getStatus())) statusClass = "status-error";
                                 %>
                                 <span class="status-tag <%= statusClass %>"><%= appeal.getStatus() != null ? appeal.getStatus() : "" %></span>
                             </p>
@@ -118,7 +118,7 @@
             </div>
             
             <!-- 审核表单 -->
-            <% if ("待审核".equals(appeal.getStatus())) { %>
+            <% if ("待处理".equals(appeal.getStatus())) { %>
             <div class="card">
                 <h5 style="padding:12px 16px;border-bottom:1px solid var(--border);margin:0;background:#fff3e0">审核操作</h5>
                 <div style="padding:16px">
@@ -130,8 +130,8 @@
                             <label class="form-label">审核结果 <span class="required">*</span></label>
                             <select name="status" class="form-control" required id="reviewStatus">
                                 <option value="">请选择</option>
-                                <option value="通过">通过（调整费用金额）</option>
-                                <option value="驳回">驳回（保持原状态）</option>
+                                <option value="已通过">通过（调整费用金额）</option>
+                                <option value="已驳回">驳回（保持原状态）</option>
                             </select>
                         </div>
                         
@@ -166,7 +166,7 @@
             document.getElementById('reviewStatus').addEventListener('change', function() {
                 var amountGroup = document.getElementById('amountGroup');
                 var adjustedAmount = document.getElementById('adjustedAmount');
-                if (this.value === '通过') {
+                if (this.value === '已通过') {
                     amountGroup.style.display = 'block';
                     adjustedAmount.required = true;
                 } else {

@@ -62,7 +62,7 @@ public class StaffDAO {
     }
 
     public String generateId() {
-        String sql = "SELECT CONCAT('S', RIGHT('0000'+CAST(ISNULL(MAX(CAST(SUBSTRING(staff_id,2,10) AS INT)),0)+1 AS VARCHAR),4)) FROM Staff";
+        String sql = "SELECT CONCAT('ST', RIGHT('0000'+CAST(ISNULL(MAX(CAST(SUBSTRING(staff_id,3,10) AS INT)),0)+1 AS VARCHAR),4)) FROM Staff";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
@@ -70,7 +70,7 @@ public class StaffDAO {
         } catch (SQLException e) {
             throw new DataAccessException("生成员工ID失败", e);
         }
-        return "S0001";
+        return "ST0001";
     }
 
     public List<Staff> getAll() {

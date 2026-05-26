@@ -3,6 +3,8 @@ package com.property.servlet;
 import com.property.service.PropertyFeeAppealService;
 import com.property.model.PropertyFeeAppeal;
 import com.property.model.PropertyFeeDetail;
+import com.property.dao.StaffDAO;
+import com.property.entity.Staff;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,6 +19,7 @@ import java.util.List;
 public class AdminPropertyAppealServlet extends BaseServlet {
     
     private final PropertyFeeAppealService service = new PropertyFeeAppealService();
+    private final StaffDAO staffDAO = new StaffDAO();
     
     protected void list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String status = request.getParameter("status");
@@ -58,10 +61,13 @@ public class AdminPropertyAppealServlet extends BaseServlet {
         String adminReason = request.getParameter("adminReason");
         String adjustedAmountStr = request.getParameter("adjustedAmount");
         
-        String adminId = request.getParameter("adminId");
-        if (adminId == null || adminId.isEmpty()) {
-            Object adminIdObj = request.getSession().getAttribute("userId");
-            adminId = adminIdObj != null ? adminIdObj.toString() : "ADMIN001";
+        String adminId = null;
+        Object userIdObj = request.getSession().getAttribute("userId");
+        if (userIdObj != null) {
+            Staff staff = staffDAO.findByUserId(userIdObj.toString());
+            if (staff != null) {
+                adminId = staff.getStaffId();
+            }
         }
         
         service.reviewAppeal(appealId, status, adminId, adminReason, adjustedAmountStr);

@@ -4,6 +4,8 @@ import com.property.service.PropertyFeeAppealService;
 import com.property.service.PropertyFeeDetailService;
 import com.property.model.PropertyFeeAppeal;
 import com.property.model.PropertyFeeDetail;
+import com.property.dao.ResidentDAO;
+import com.property.entity.Resident;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,12 +21,19 @@ public class OwnerPropertyAppealServlet extends BaseServlet {
     
     private final PropertyFeeAppealService appealService = new PropertyFeeAppealService();
     private final PropertyFeeDetailService detailService = new PropertyFeeDetailService();
+    private final ResidentDAO residentDAO = new ResidentDAO();
+    
+    private String getResidentId(HttpServletRequest request) {
+        Object userIdObj = request.getSession().getAttribute("userId");
+        if (userIdObj == null) return null;
+        Resident resident = residentDAO.findByUserId(userIdObj.toString());
+        return resident != null ? resident.getResidentId() : null;
+    }
     
     protected void list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (!checkLogin(request, response)) return;
         
-        Object residentIdObj = request.getSession().getAttribute("userId");
-        String residentId = residentIdObj != null ? residentIdObj.toString() : null;
+        String residentId = getResidentId(request);
         
         List<PropertyFeeAppeal> list = appealService.findByResidentId(residentId);
         
@@ -51,15 +60,14 @@ public class OwnerPropertyAppealServlet extends BaseServlet {
         String detailId = request.getParameter("detailId");
         String reason = request.getParameter("reason");
         
-        Object residentIdObj = request.getSession().getAttribute("userId");
-        String residentId = residentIdObj != null ? residentIdObj.toString() : "RES001";
+        String residentId = getResidentId(request);
         
         boolean success = appealService.submitAppeal(detailId, residentId, reason);
         
         if (success) {
             response.sendRedirect(request.getContextPath() + "/owner/property/appeal?action=list");
         } else {
-            request.setAttribute("error", "提交失败，可能已有待审核的申诉");
+            request.setAttribute("error", "提交失败，可能已有待处理的申诉");
             request.setAttribute("module", "property");
             request.getRequestDispatcher("/pages/owner/property/appeal-list.jsp").forward(request, response);
         }

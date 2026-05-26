@@ -33,9 +33,9 @@
                         <label class="form-label">状态筛选</label>
                         <select name="status" class="form-control">
                             <option value="">全部</option>
-                            <option value="待审核" <%= "待审核".equals(filterStatus) ? "selected" : "" %>>待审核</option>
-                            <option value="通过" <%= "通过".equals(filterStatus) ? "selected" : "" %>>通过</option>
-                            <option value="驳回" <%= "驳回".equals(filterStatus) ? "selected" : "" %>>驳回</option>
+                            <option value="待处理" <%= "待处理".equals(filterStatus) ? "selected" : "" %>>待处理</option>
+                            <option value="已通过" <%= "已通过".equals(filterStatus) ? "selected" : "" %>>已通过</option>
+                            <option value="已驳回" <%= "已驳回".equals(filterStatus) ? "selected" : "" %>>已驳回</option>
                         </select>
                     </div>
                     <div class="form-group" style="margin-bottom:0">
@@ -49,19 +49,19 @@
             <div class="d-flex gap-12 mb-3">
                 <div class="card" style="flex:1;text-align:center;padding:16px">
                     <div style="font-size:24px;font-weight:bold;color:var(--primary)">
-                        <%= list.stream().filter(a -> "待审核".equals(a.getStatus())).count() %>
+                        <%= list.stream().filter(a -> "待处理".equals(a.getStatus())).count() %>
                     </div>
-                    <div style="color:var(--text-secondary);font-size:14px">待审核</div>
+                    <div style="color:var(--text-secondary);font-size:14px">待处理</div>
                 </div>
                 <div class="card" style="flex:1;text-align:center;padding:16px">
                     <div style="font-size:24px;font-weight:bold;color:#198754">
-                        <%= list.stream().filter(a -> "通过".equals(a.getStatus())).count() %>
+                        <%= list.stream().filter(a -> "已通过".equals(a.getStatus())).count() %>
                     </div>
                     <div style="color:var(--text-secondary);font-size:14px">已通过</div>
                 </div>
                 <div class="card" style="flex:1;text-align:center;padding:16px">
                     <div style="font-size:24px;font-weight:bold;color:#dc3545">
-                        <%= list.stream().filter(a -> "驳回".equals(a.getStatus())).count() %>
+                        <%= list.stream().filter(a -> "已驳回".equals(a.getStatus())).count() %>
                     </div>
                     <div style="color:var(--text-secondary);font-size:14px">已驳回</div>
                 </div>

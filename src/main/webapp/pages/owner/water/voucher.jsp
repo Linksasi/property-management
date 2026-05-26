@@ -79,7 +79,7 @@
 
                 <div class="mt-4">
                     <a href="${pageContext.request.contextPath}/owner/water?action=list" class="btn btn-primary">查看我的水费</a>
-                    <a href="${pageContext.request.contextPath}/owner" class="btn btn-secondary">返回首页</a>
+                    <a href="${pageContext.request.contextPath}/owner/resident?action=info" class="btn btn-secondary">返回首页</a>
                 </div>
             </c:if>
         </div>

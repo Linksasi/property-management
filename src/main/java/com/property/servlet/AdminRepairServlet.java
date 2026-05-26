@@ -68,7 +68,12 @@ public class AdminRepairServlet extends HttpServlet {
 
                 // 获取当前管理员对应的 staff_id
                 Staff adminStaff = staffDAO.findByUserId(user.getUserId());
-                String adminId = adminStaff != null ? adminStaff.getStaffId() : user.getUserId();
+                String adminId = adminStaff != null ? adminStaff.getStaffId() : null;
+                if (adminId == null) {
+                    req.getSession().setAttribute("error", "当前用户未关联员工记录，无法审核");
+                    resp.sendRedirect(req.getContextPath() + "/admin/repair?action=list");
+                    return;
+                }
 
                 if (approved) {
                     MaintenanceWorkOrder wo = new MaintenanceWorkOrder();

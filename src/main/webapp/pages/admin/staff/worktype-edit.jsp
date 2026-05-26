@@ -11,16 +11,16 @@
     
     <div class="card">
         <form action="${pageContext.request.contextPath}/admin/worktype?action=save" method="post">
-            <input type="hidden" name="workTypeId" value="${entity.workTypeId}">
+            <input type="hidden" name="worktypeId" value="${entity.worktypeId}">
             
             <div class="form-group">
                 <label class="form-label"><span class="required">*</span>工种ID</label>
-                <input type="text" class="form-control" name="workTypeId" value="${entity.workTypeId}" ${entity == null ? 'required' : 'readonly'} ${entity == null ? '' : 'style="background-color: #eee;"'}>
+                <input type="text" class="form-control" name="worktypeId" value="${entity.worktypeId}" ${entity == null ? 'required' : 'readonly'} ${entity == null ? '' : 'style="background-color: #eee;"'}>
             </div>
             
             <div class="form-group">
                 <label class="form-label"><span class="required">*</span>工种名称</label>
-                <input type="text" class="form-control" name="workTypeName" value="${entity.workTypeName}" required>
+                <input type="text" class="form-control" name="worktypeName" value="${entity.worktypeName}" required>
             </div>
             
             <div class="d-flex gap-12 mt-3">
