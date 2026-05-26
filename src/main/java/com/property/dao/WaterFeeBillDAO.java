@@ -1,7 +1,9 @@
 package com.property.dao;
 
 import com.property.entity.WaterFeeBill;
+import com.property.exception.DataAccessException;
 import com.property.util.DBUtil;
+import com.property.util.FormatUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,9 +14,6 @@ import java.util.List;
  */
 public class WaterFeeBillDAO {
 
-    /**
-     * 查询所有账单
-     */
     public List<WaterFeeBill> findAll() {
         List<WaterFeeBill> list = new ArrayList<>();
         String sql = "SELECT b.bill_id, b.meter_id, b.resident_id, b.bill_month, " +
@@ -34,21 +33,18 @@ public class WaterFeeBillDAO {
 
             while (rs.next()) {
                 WaterFeeBill bill = mapResultSet(rs);
-                bill.setHousingAddress(formatAddress(rs.getString("building"),
+                bill.setHousingAddress(FormatUtil.formatAddress(rs.getString("building"),
                     rs.getString("unit"), rs.getString("room_no")));
                 bill.setResidentName(rs.getString("resident_name"));
                 bill.setMeterNo(rs.getString("meter_no"));
                 list.add(bill);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询水费账单列表失败", e);
         }
         return list;
     }
 
-    /**
-     * 根据ID查询账单
-     */
     public WaterFeeBill findById(String billId) {
         String sql = "SELECT b.bill_id, b.meter_id, b.resident_id, b.bill_month, " +
                      "b.last_read, b.current_read, b.usage, b.unit_price, " +
@@ -68,7 +64,7 @@ public class WaterFeeBillDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     WaterFeeBill bill = mapResultSet(rs);
-                    bill.setHousingAddress(formatAddress(rs.getString("building"),
+                    bill.setHousingAddress(FormatUtil.formatAddress(rs.getString("building"),
                         rs.getString("unit"), rs.getString("room_no")));
                     bill.setResidentName(rs.getString("resident_name"));
                     bill.setMeterNo(rs.getString("meter_no"));
@@ -76,14 +72,11 @@ public class WaterFeeBillDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询水费账单失败", e);
         }
         return null;
     }
 
-    /**
-     * 根据住户ID查询账单
-     */
     public List<WaterFeeBill> findByResidentId(String residentId) {
         List<WaterFeeBill> list = new ArrayList<>();
         String sql = "SELECT b.bill_id, b.meter_id, b.resident_id, b.bill_month, " +
@@ -105,7 +98,7 @@ public class WaterFeeBillDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     WaterFeeBill bill = mapResultSet(rs);
-                    bill.setHousingAddress(formatAddress(rs.getString("building"),
+                    bill.setHousingAddress(FormatUtil.formatAddress(rs.getString("building"),
                         rs.getString("unit"), rs.getString("room_no")));
                     bill.setResidentName(rs.getString("resident_name"));
                     bill.setMeterNo(rs.getString("meter_no"));
@@ -113,14 +106,29 @@ public class WaterFeeBillDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询水费账单列表失败", e);
         }
         return list;
     }
 
     /**
-     * 根据月份筛选账单
+     * 检查某水表某月份是否已有账单
      */
+    public boolean existsByMeterIdAndMonth(String meterId, String billMonth) {
+        String sql = "SELECT COUNT(1) FROM WaterFeeBill WHERE meter_id = ? AND bill_month = ?";
+        try (Connection conn = DBUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, meterId);
+            ps.setString(2, billMonth);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException("检查账单是否存在失败", e);
+        }
+        return false;
+    }
+
     public List<WaterFeeBill> findByMonth(String billMonth) {
         List<WaterFeeBill> list = new ArrayList<>();
         String sql = "SELECT b.bill_id, b.meter_id, b.resident_id, b.bill_month, " +
@@ -142,7 +150,7 @@ public class WaterFeeBillDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     WaterFeeBill bill = mapResultSet(rs);
-                    bill.setHousingAddress(formatAddress(rs.getString("building"),
+                    bill.setHousingAddress(FormatUtil.formatAddress(rs.getString("building"),
                         rs.getString("unit"), rs.getString("room_no")));
                     bill.setResidentName(rs.getString("resident_name"));
                     bill.setMeterNo(rs.getString("meter_no"));
@@ -150,14 +158,11 @@ public class WaterFeeBillDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询水费账单列表失败", e);
         }
         return list;
     }
 
-    /**
-     * 新增账单
-     */
     public boolean insert(WaterFeeBill bill) {
         if (bill.getBillId() == null || bill.getBillId().isEmpty()) {
             bill.setBillId(generateNextId());
@@ -186,14 +191,10 @@ public class WaterFeeBillDAO {
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("插入水费账单失败", e);
         }
-        return false;
     }
 
-    /**
-     * 更新账单
-     */
     public boolean update(WaterFeeBill bill) {
         String sql = "UPDATE WaterFeeBill SET meter_id = ?, resident_id = ?, bill_month = ?, " +
                      "last_read = ?, current_read = ?, usage = ?, unit_price = ?, " +
@@ -219,14 +220,10 @@ public class WaterFeeBillDAO {
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("更新水费账单失败", e);
         }
-        return false;
     }
 
-    /**
-     * 确认缴费
-     */
     public boolean confirmPayment(String billId, java.math.BigDecimal paidAmount) {
         String sql = "UPDATE WaterFeeBill SET status = '已缴', paid_amount = ?, paid_date = ? WHERE bill_id = ?";
 
@@ -239,14 +236,10 @@ public class WaterFeeBillDAO {
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("确认缴费失败", e);
         }
-        return false;
     }
 
-    /**
-     * 生成下一个账单ID
-     */
     public String generateNextId() {
         String sql = "SELECT TOP 1 bill_id FROM WaterFeeBill ORDER BY bill_id DESC";
 
@@ -256,11 +249,19 @@ public class WaterFeeBillDAO {
 
             if (rs.next()) {
                 String lastId = rs.getString("bill_id");
-                int num = Integer.parseInt(lastId.substring(1));
-                return "W" + String.format("%05d", num + 1);
+                // 处理 WB202606001 和 W00001 两种格式
+                String numStr = lastId.replaceAll("^W+", "");
+                try {
+                    int num = Integer.parseInt(numStr);
+                    return "WB" + String.format("%06d", num + 1);
+                } catch (NumberFormatException e) {
+                    // fallback: 直接截取末尾数字
+                    int num = Integer.parseInt(lastId.replaceAll("\\D", "").replaceAll("^0+", ""));
+                    return "WB" + String.format("%06d", num + 1);
+                }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("生成水费账单ID失败", e);
         }
         return "W00001";
     }
@@ -287,8 +288,4 @@ public class WaterFeeBillDAO {
         return bill;
     }
 
-    private String formatAddress(String building, String unit, String roomNo) {
-        if (building == null) return "";
-        return building + "栋" + (unit != null ? unit : "") + "单元" + (roomNo != null ? roomNo : "") + "室";
-    }
 }

@@ -1,6 +1,7 @@
 package com.property.dao;
 
 import com.property.entity.Resident;
+import com.property.exception.DataAccessException;
 import com.property.util.DBUtil;
 import java.sql.*;
 
@@ -9,9 +10,6 @@ import java.util.List;
 
 public class ResidentDAO {
 
-    /**
-     * 查询所有住户
-     */
     public List<Resident> findAll() {
         List<Resident> list = new ArrayList<>();
         String sql = "SELECT resident_id, user_id, name, phone, id_card, check_in_date FROM Resident ORDER BY resident_id DESC";
@@ -19,13 +17,12 @@ public class ResidentDAO {
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) list.add(mapRow(rs));
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            throw new DataAccessException("查询住户列表失败", e);
+        }
         return list;
     }
 
-    /**
-     * 根据ID查询住户
-     */
     public Resident findById(String residentId) {
         String sql = "SELECT resident_id, user_id, name, phone, id_card, check_in_date FROM Resident WHERE resident_id = ?";
         try (Connection conn = DBUtil.getConnection();
@@ -34,20 +31,16 @@ public class ResidentDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return mapRow(rs);
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            throw new DataAccessException("查询住户失败", e);
+        }
         return null;
     }
 
-    /**
-     * 根据住户ID查询住户（兼容旧方法）
-     */
     public Resident findByResidentId(String residentId) {
         return findById(residentId);
     }
 
-    /**
-     * 更新住户
-     */
     public boolean update(Resident r) {
         String sql = "UPDATE Resident SET name = ?, phone = ?, id_card = ?, check_in_date = ? WHERE resident_id = ?";
         try (Connection conn = DBUtil.getConnection();
@@ -58,21 +51,20 @@ public class ResidentDAO {
             ps.setString(4, r.getCheckInDate());
             ps.setString(5, r.getResidentId());
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) { e.printStackTrace(); }
-        return false;
+        } catch (SQLException e) {
+            throw new DataAccessException("更新住户失败", e);
+        }
     }
 
-    /**
-     * 删除住户
-     */
     public boolean delete(String residentId) {
         String sql = "DELETE FROM Resident WHERE resident_id = ?";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, residentId);
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) { e.printStackTrace(); }
-        return false;
+        } catch (SQLException e) {
+            throw new DataAccessException("删除住户失败", e);
+        }
     }
 
     public Resident findByUserId(String userId) {
@@ -83,7 +75,9 @@ public class ResidentDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return mapRow(rs);
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            throw new DataAccessException("查询住户失败", e);
+        }
         return null;
     }
 
@@ -101,8 +95,9 @@ public class ResidentDAO {
             ps.setString(5, r.getIdCard());
             ps.setString(6, r.getCheckInDate());
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) { e.printStackTrace(); }
-        return false;
+        } catch (SQLException e) {
+            throw new DataAccessException("插入住户失败", e);
+        }
     }
 
     public String generateId() {
@@ -111,7 +106,9 @@ public class ResidentDAO {
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             if (rs.next() && rs.getString(1) != null) return rs.getString(1);
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            throw new DataAccessException("生成住户ID失败", e);
+        }
         return "R0001";
     }
 

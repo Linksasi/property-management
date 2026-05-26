@@ -1,5 +1,6 @@
 package com.property.dao;
 
+import com.property.exception.DataAccessException;
 import com.property.model.PropertyStandard;
 import com.property.util.DBUtil;
 import java.sql.*;
@@ -24,7 +25,7 @@ public class PropertyStandardDAOImpl implements PropertyStandardDAO {
                 list.add(mapResultSet(rs));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询收费标准列表失败", e);
         }
         return list;
     }
@@ -43,7 +44,7 @@ public class PropertyStandardDAOImpl implements PropertyStandardDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询收费标准失败", e);
         }
         return null;
     }
@@ -63,7 +64,7 @@ public class PropertyStandardDAOImpl implements PropertyStandardDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询收费标准列表失败", e);
         }
         return list;
     }
@@ -83,7 +84,7 @@ public class PropertyStandardDAOImpl implements PropertyStandardDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询收费标准列表失败", e);
         }
         return list;
     }
@@ -104,9 +105,8 @@ public class PropertyStandardDAOImpl implements PropertyStandardDAO {
             
             return ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("插入收费标准失败", e);
         }
-        return 0;
     }
 
     @Override
@@ -125,12 +125,11 @@ public class PropertyStandardDAOImpl implements PropertyStandardDAO {
             
             return ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("更新收费标准失败", e);
         }
-        return 0;
     }
 
-@Override
+    @Override
     public int delete(String standardId) {
         String sql = "DELETE FROM PropertyStandard WHERE standard_id = ?";
         
@@ -140,14 +139,10 @@ public class PropertyStandardDAOImpl implements PropertyStandardDAO {
             ps.setString(1, standardId);
             return ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("删除收费标准失败", e);
         }
-        return 0;
     }
     
-    /**
-     * 将ResultSet映射为PropertyStandard对象
-     */
     private PropertyStandard mapResultSet(ResultSet rs) throws SQLException {
         PropertyStandard standard = new PropertyStandard();
         standard.setStandardId(rs.getString("standard_id"));

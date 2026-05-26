@@ -1,6 +1,7 @@
 package com.property.dao;
 
 import com.property.entity.ParkingStandard;
+import com.property.exception.DataAccessException;
 import com.property.util.DBUtil;
 import java.sql.*;
 import java.util.*;
@@ -15,7 +16,9 @@ public class ParkingStandardDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) list.add(mapRow(rs));
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            throw new DataAccessException("查询车位标准失败", e);
+        }
         return list;
     }
 
@@ -27,13 +30,14 @@ public class ParkingStandardDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return rs.getDouble("price");
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            throw new DataAccessException("查询车位价格失败", e);
+        }
         return 0;
     }
 
     public boolean upsertPrice(String parkingType, double price) {
         try (Connection conn = DBUtil.getConnection()) {
-            // try update first
             String updateSql = "UPDATE ParkingStandard SET price=? WHERE parking_type=?";
             try (PreparedStatement ps = conn.prepareStatement(updateSql)) {
                 ps.setDouble(1, price);
@@ -41,7 +45,6 @@ public class ParkingStandardDAO {
                 int rows = ps.executeUpdate();
                 if (rows > 0) return true;
             }
-            // insert if not exists
             String insertSql = "INSERT INTO ParkingStandard (standard_id, parking_type, price, status) VALUES (?,?,?,N'生效')";
             try (PreparedStatement ps = conn.prepareStatement(insertSql)) {
                 String id = "PS" + java.time.LocalDate.now().toString().replace("-","") +
@@ -51,8 +54,9 @@ public class ParkingStandardDAO {
                 ps.setDouble(3, price);
                 return ps.executeUpdate() > 0;
             }
-        } catch (SQLException e) { e.printStackTrace(); }
-        return false;
+        } catch (SQLException e) {
+            throw new DataAccessException("更新车位价格失败", e);
+        }
     }
 
     private ParkingStandard mapRow(ResultSet rs) throws SQLException {

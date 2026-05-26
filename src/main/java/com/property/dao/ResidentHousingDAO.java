@@ -1,6 +1,7 @@
 package com.property.dao;
 
 import com.property.entity.ResidentHousing;
+import com.property.exception.DataAccessException;
 import com.property.util.DBUtil;
 import java.sql.*;
 import java.util.ArrayList;
@@ -8,9 +9,6 @@ import java.util.List;
 
 public class ResidentHousingDAO {
 
-    /**
-     * 查询某住户的所有关联住房
-     */
     public List<ResidentHousing> findAllByResidentId(String residentId) {
         List<ResidentHousing> list = new ArrayList<>();
         String sql = "SELECT * FROM ResidentHousing WHERE resident_id = ? ORDER BY start_date DESC";
@@ -20,25 +18,23 @@ public class ResidentHousingDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) list.add(mapRow(rs));
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            throw new DataAccessException("查询住户住房关联失败", e);
+        }
         return list;
     }
 
-    /**
-     * 根据住户ID删除所有关联
-     */
     public void deleteByResidentId(String residentId) {
         String sql = "DELETE FROM ResidentHousing WHERE resident_id = ?";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, residentId);
             ps.executeUpdate();
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            throw new DataAccessException("删除住户住房关联失败", e);
+        }
     }
 
-    /**
-     * 删除指定住户-住房关联
-     */
     public boolean delete(String residentId, String housingId) {
         String sql = "DELETE FROM ResidentHousing WHERE resident_id = ? AND housing_id = ?";
         try (Connection conn = DBUtil.getConnection();
@@ -46,8 +42,9 @@ public class ResidentHousingDAO {
             ps.setString(1, residentId);
             ps.setString(2, housingId);
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) { e.printStackTrace(); }
-        return false;
+        } catch (SQLException e) {
+            throw new DataAccessException("删除住户住房关联失败", e);
+        }
     }
 
     public boolean insert(ResidentHousing rh) {
@@ -59,8 +56,9 @@ public class ResidentHousingDAO {
             ps.setString(3, rh.getStartDate());
             ps.setBoolean(4, rh.isOwner());
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) { e.printStackTrace(); }
-        return false;
+        } catch (SQLException e) {
+            throw new DataAccessException("插入住户住房关联失败", e);
+        }
     }
 
     public ResidentHousing findByResidentId(String residentId) {
@@ -71,7 +69,9 @@ public class ResidentHousingDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return mapRow(rs);
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            throw new DataAccessException("查询住户住房关联失败", e);
+        }
         return null;
     }
 

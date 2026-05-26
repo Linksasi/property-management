@@ -1,5 +1,6 @@
 package com.property.dao;
 
+import com.property.exception.DataAccessException;
 import com.property.model.ElectronicVoucher;
 import com.property.util.DBUtil;
 import java.sql.*;
@@ -29,7 +30,7 @@ public class ElectronicVoucherDAOImpl implements ElectronicVoucherDAO {
                 list.add(mapResultSet(rs));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询电子凭证列表失败", e);
         }
         return list;
     }
@@ -53,7 +54,7 @@ public class ElectronicVoucherDAOImpl implements ElectronicVoucherDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询电子凭证失败", e);
         }
         return null;
     }
@@ -77,7 +78,7 @@ public class ElectronicVoucherDAOImpl implements ElectronicVoucherDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询电子凭证失败", e);
         }
         return null;
     }
@@ -103,7 +104,7 @@ public class ElectronicVoucherDAOImpl implements ElectronicVoucherDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询电子凭证列表失败", e);
         }
         return list;
     }
@@ -128,9 +129,8 @@ public class ElectronicVoucherDAOImpl implements ElectronicVoucherDAO {
             
             return ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("插入电子凭证失败", e);
         }
-        return 0;
     }
 
     @Override
@@ -143,14 +143,10 @@ public class ElectronicVoucherDAOImpl implements ElectronicVoucherDAO {
             ps.setString(1, voucherId);
             return ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("删除电子凭证失败", e);
         }
-        return 0;
     }
 
-    /**
-     * 将ResultSet映射为ElectronicVoucher对象
-     */
     private ElectronicVoucher mapResultSet(ResultSet rs) throws SQLException {
         ElectronicVoucher voucher = new ElectronicVoucher();
         voucher.setVoucherId(rs.getString("voucher_id"));

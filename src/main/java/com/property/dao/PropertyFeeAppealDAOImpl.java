@@ -1,5 +1,6 @@
 package com.property.dao;
 
+import com.property.exception.DataAccessException;
 import com.property.model.PropertyFeeAppeal;
 import com.property.util.DBUtil;
 import java.sql.*;
@@ -34,7 +35,7 @@ public class PropertyFeeAppealDAOImpl implements PropertyFeeAppealDAO {
                 list.add(mapResultSet(rs));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询物业费申诉列表失败", e);
         }
         return list;
     }
@@ -63,7 +64,7 @@ public class PropertyFeeAppealDAOImpl implements PropertyFeeAppealDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询物业费申诉失败", e);
         }
         return null;
     }
@@ -94,7 +95,7 @@ public class PropertyFeeAppealDAOImpl implements PropertyFeeAppealDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询物业费申诉列表失败", e);
         }
         return list;
     }
@@ -123,7 +124,7 @@ public class PropertyFeeAppealDAOImpl implements PropertyFeeAppealDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询物业费申诉列表失败", e);
         }
         return list;
     }
@@ -142,7 +143,7 @@ public class PropertyFeeAppealDAOImpl implements PropertyFeeAppealDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询物业费申诉失败", e);
         }
         return null;
     }
@@ -163,9 +164,8 @@ public class PropertyFeeAppealDAOImpl implements PropertyFeeAppealDAO {
             
             return ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("插入物业费申诉失败", e);
         }
-        return 0;
     }
 
     @Override
@@ -183,9 +183,8 @@ public class PropertyFeeAppealDAOImpl implements PropertyFeeAppealDAO {
             
             return ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("更新物业费申诉状态失败", e);
         }
-        return 0;
     }
 
     @Override
@@ -198,14 +197,10 @@ public class PropertyFeeAppealDAOImpl implements PropertyFeeAppealDAO {
             ps.setString(1, appealId);
             return ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("删除物业费申诉失败", e);
         }
-        return 0;
     }
 
-    /**
-     * 将ResultSet映射为PropertyFeeAppeal对象
-     */
     private PropertyFeeAppeal mapResultSet(ResultSet rs) throws SQLException {
         PropertyFeeAppeal appeal = new PropertyFeeAppeal();
         appeal.setAppealId(rs.getString("appeal_id"));

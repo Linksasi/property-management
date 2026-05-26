@@ -1,5 +1,6 @@
 package com.property.dao;
 
+import com.property.exception.DataAccessException;
 import com.property.model.PaymentOrder;
 import com.property.util.DBUtil;
 import java.sql.*;
@@ -29,7 +30,7 @@ public class PaymentOrderDAOImpl implements PaymentOrderDAO {
                 list.add(mapResultSet(rs));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询支付订单列表失败", e);
         }
         return list;
     }
@@ -53,7 +54,7 @@ public class PaymentOrderDAOImpl implements PaymentOrderDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询支付订单失败", e);
         }
         return null;
     }
@@ -72,7 +73,7 @@ public class PaymentOrderDAOImpl implements PaymentOrderDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询支付订单失败", e);
         }
         return null;
     }
@@ -91,7 +92,7 @@ public class PaymentOrderDAOImpl implements PaymentOrderDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询支付订单失败", e);
         }
         return null;
     }
@@ -113,9 +114,8 @@ public class PaymentOrderDAOImpl implements PaymentOrderDAO {
             
             return ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("插入支付订单失败", e);
         }
-        return 0;
     }
 
     @Override
@@ -133,9 +133,8 @@ public class PaymentOrderDAOImpl implements PaymentOrderDAO {
             ps.setString(2, orderId);
             return ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("更新支付订单状态失败", e);
         }
-        return 0;
     }
 
     @Override
@@ -148,14 +147,10 @@ public class PaymentOrderDAOImpl implements PaymentOrderDAO {
             ps.setString(1, orderId);
             return ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("删除支付订单失败", e);
         }
-        return 0;
     }
 
-    /**
-     * 将ResultSet映射为PaymentOrder对象
-     */
     private PaymentOrder mapResultSet(ResultSet rs) throws SQLException {
         PaymentOrder order = new PaymentOrder();
         order.setOrderId(rs.getString("order_id"));

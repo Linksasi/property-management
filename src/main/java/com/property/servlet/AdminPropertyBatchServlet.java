@@ -1,8 +1,10 @@
 package com.property.servlet;
 
+import com.property.entity.Staff;
 import com.property.service.PropertyFeeBatchService;
 import com.property.service.PropertyFeeDetailService;
 import com.property.service.PropertyStandardService;
+import com.property.service.StaffService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,6 +21,7 @@ public class AdminPropertyBatchServlet extends BaseServlet {
     private final PropertyFeeBatchService batchService = new PropertyFeeBatchService();
     private final PropertyFeeDetailService detailService = new PropertyFeeDetailService();
     private final PropertyStandardService standardService = new PropertyStandardService();
+    private final StaffService staffService = new StaffService();
     
     protected void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int residentCount = detailService.countResidents();
@@ -64,7 +67,17 @@ public class AdminPropertyBatchServlet extends BaseServlet {
         
         if (adminId == null || adminId.isEmpty()) {
             Object adminIdObj = request.getSession().getAttribute("userId");
-            adminId = adminIdObj != null ? adminIdObj.toString() : "ADMIN001";
+            String systemUserId = adminIdObj != null ? adminIdObj.toString() : null;
+            if (systemUserId != null) {
+                Staff staff = staffService.findByUserId(systemUserId);
+                if (staff != null) {
+                    adminId = staff.getStaffId();
+                } else {
+                    adminId = "ST001"; // fallback
+                }
+            } else {
+                adminId = "ST001"; // fallback
+            }
         }
         
         if (billMonth == null || billMonth.isEmpty()) {

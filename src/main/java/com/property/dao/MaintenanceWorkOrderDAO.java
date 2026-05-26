@@ -1,6 +1,7 @@
 package com.property.dao;
 
 import com.property.entity.MaintenanceWorkOrder;
+import com.property.exception.DataAccessException;
 import com.property.util.DBUtil;
 import java.sql.*;
 import java.util.*;
@@ -19,7 +20,9 @@ public class MaintenanceWorkOrderDAO {
                     return wo;
                 }
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            throw new DataAccessException("查询维修工单失败", e);
+        }
         return null;
     }
 
@@ -36,7 +39,9 @@ public class MaintenanceWorkOrderDAO {
                     list.add(wo);
                 }
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            throw new DataAccessException("查询维修工单列表失败", e);
+        }
         return list;
     }
 
@@ -53,7 +58,9 @@ public class MaintenanceWorkOrderDAO {
                     list.add(wo);
                 }
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            throw new DataAccessException("查询维修工单列表失败", e);
+        }
         return list;
     }
 
@@ -69,21 +76,37 @@ public class MaintenanceWorkOrderDAO {
                     return wo;
                 }
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            throw new DataAccessException("查询维修工单失败", e);
+        }
         return null;
     }
 
-    public boolean insert(MaintenanceWorkOrder wo) {
-        String sql = "INSERT INTO MaintenanceWorkOrder (work_order_id, request_id, staff_id, admin_id, assign_time, status) VALUES (?,?,?,?,GETDATE(),N'待接单')";
-        try (Connection conn = DBUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, wo.getWorkOrderId());
-            ps.setString(2, wo.getRequestId());
-            ps.setString(3, wo.getStaffId());
-            ps.setString(4, wo.getAdminId());
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) { e.printStackTrace(); }
-        return false;
+    public boolean insert(MaintenanceWorkOrder wo) throws SQLException {
+        return insert(wo, null);
+    }
+
+    public boolean insert(MaintenanceWorkOrder wo, Connection externalConn) throws SQLException {
+        boolean needClose = false;
+        Connection conn = externalConn;
+        if (conn == null) {
+            conn = DBUtil.getConnection();
+            needClose = true;
+        }
+        try {
+            String sql = "INSERT INTO MaintenanceWorkOrder (work_order_id, request_id, staff_id, admin_id, assign_time, status) VALUES (?,?,?,?,GETDATE(),N'待接单')";
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, wo.getWorkOrderId());
+                ps.setString(2, wo.getRequestId());
+                ps.setString(3, wo.getStaffId());
+                ps.setString(4, wo.getAdminId());
+                return ps.executeUpdate() > 0;
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException("插入维修工单失败", e);
+        } finally {
+            if (needClose) DBUtil.closeConnection();
+        }
     }
 
     public boolean receive(String workOrderId) {
@@ -92,8 +115,9 @@ public class MaintenanceWorkOrderDAO {
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, workOrderId);
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) { e.printStackTrace(); }
-        return false;
+        } catch (SQLException e) {
+            throw new DataAccessException("接单失败", e);
+        }
     }
 
     public boolean startRepair(String workOrderId) {
@@ -102,8 +126,9 @@ public class MaintenanceWorkOrderDAO {
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, workOrderId);
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) { e.printStackTrace(); }
-        return false;
+        } catch (SQLException e) {
+            throw new DataAccessException("开始维修失败", e);
+        }
     }
 
     public boolean submitResult(String workOrderId, String repairContent, String materialsUsed, double workHours) {
@@ -115,8 +140,9 @@ public class MaintenanceWorkOrderDAO {
             ps.setDouble(3, workHours);
             ps.setString(4, workOrderId);
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) { e.printStackTrace(); }
-        return false;
+        } catch (SQLException e) {
+            throw new DataAccessException("提交维修结果失败", e);
+        }
     }
 
     public boolean confirm(String workOrderId, int rating, String comment) {
@@ -124,7 +150,6 @@ public class MaintenanceWorkOrderDAO {
         try {
             conn = DBUtil.getConnection();
             conn.setAutoCommit(false);
-            // update work order
             String sql1 = "UPDATE MaintenanceWorkOrder SET status=N'已完成', confirm_time=GETDATE(), rating=?, comment=? WHERE work_order_id=?";
             try (PreparedStatement ps = conn.prepareStatement(sql1)) {
                 ps.setInt(1, rating);
@@ -132,7 +157,6 @@ public class MaintenanceWorkOrderDAO {
                 ps.setString(3, workOrderId);
                 ps.executeUpdate();
             }
-            // update repair request status
             String sql2 = "UPDATE RepairRequest SET status=N'已完成' WHERE request_id=(SELECT request_id FROM MaintenanceWorkOrder WHERE work_order_id=?)";
             try (PreparedStatement ps = conn.prepareStatement(sql2)) {
                 ps.setString(1, workOrderId);
@@ -142,11 +166,10 @@ public class MaintenanceWorkOrderDAO {
             return true;
         } catch (SQLException e) {
             try { if (conn != null) conn.rollback(); } catch (SQLException ex) {}
-            e.printStackTrace();
+            throw new DataAccessException("确认维修工单失败", e);
         } finally {
             try { if (conn != null) conn.close(); } catch (SQLException e) {}
         }
-        return false;
     }
 
     public String generateId() {
@@ -155,7 +178,9 @@ public class MaintenanceWorkOrderDAO {
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             if (rs.next()) return rs.getString(1);
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            throw new DataAccessException("生成维修工单ID失败", e);
+        }
         return null;
     }
 

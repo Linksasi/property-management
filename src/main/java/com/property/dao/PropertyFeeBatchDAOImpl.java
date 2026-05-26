@@ -1,5 +1,6 @@
 package com.property.dao;
 
+import com.property.exception.DataAccessException;
 import com.property.model.PropertyFeeBatch;
 import com.property.util.DBUtil;
 import java.sql.*;
@@ -24,7 +25,7 @@ public class PropertyFeeBatchDAOImpl implements PropertyFeeBatchDAO {
                 list.add(mapResultSet(rs));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询物业费批次列表失败", e);
         }
         return list;
     }
@@ -43,7 +44,7 @@ public class PropertyFeeBatchDAOImpl implements PropertyFeeBatchDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询物业费批次失败", e);
         }
         return null;
     }
@@ -62,7 +63,7 @@ public class PropertyFeeBatchDAOImpl implements PropertyFeeBatchDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询物业费批次失败", e);
         }
         return null;
     }
@@ -81,9 +82,8 @@ public class PropertyFeeBatchDAOImpl implements PropertyFeeBatchDAO {
             
             return ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("插入物业费批次失败", e);
         }
-        return 0;
     }
 
     @Override
@@ -96,14 +96,10 @@ public class PropertyFeeBatchDAOImpl implements PropertyFeeBatchDAO {
             ps.setString(1, batchId);
             return ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("删除物业费批次失败", e);
         }
-        return 0;
     }
 
-    /**
-     * 将ResultSet映射为PropertyFeeBatch对象
-     */
     private PropertyFeeBatch mapResultSet(ResultSet rs) throws SQLException {
         PropertyFeeBatch batch = new PropertyFeeBatch();
         batch.setBatchId(rs.getString("batch_id"));

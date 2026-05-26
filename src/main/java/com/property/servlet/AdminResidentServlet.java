@@ -8,6 +8,8 @@ import com.property.entity.Resident;
 import com.property.entity.Housing;
 import com.property.entity.ResidentHousing;
 import com.property.entity.SystemUser;
+import com.property.exception.BusinessException;
+import com.property.util.DBUtil;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -98,17 +100,26 @@ public class AdminResidentServlet extends BaseServlet {
         if (existing != null) {
             residentDAO.update(resident);
         } else {
-            // 新增：先创建登录账号
-            SystemUser u = new SystemUser();
-            u.setUserId(userDAO.generateId("业主"));
-            u.setUsername(username != null && !username.isEmpty() ? username.trim() : phone);
-            u.setPassword(password != null && !password.isEmpty() ? password : "123456");
-            u.setUserType("业主");
-            u.setRealName(name);
-            u.setPhone(phone);
-            userDAO.register(u);
-            resident.setUserId(u.getUserId());
-            residentDAO.insert(resident);
+            // 事务保护：创建账号 + 插入住户必须在同一个事务中
+            try {
+                DBUtil.beginTransaction();
+                SystemUser u = new SystemUser();
+                u.setUserId(userDAO.generateId("业主"));
+                u.setUsername(username != null && !username.isEmpty() ? username.trim() : phone);
+                u.setPassword(password != null && !password.isEmpty() ? password : "123456");
+                u.setUserType("业主");
+                u.setRealName(name);
+                u.setPhone(phone);
+                userDAO.register(u);
+                resident.setUserId(u.getUserId());
+                residentDAO.insert(resident);
+                DBUtil.commit();
+            } catch (Exception e) {
+                DBUtil.rollback();
+                throw new BusinessException("创建住户失败: " + e.getMessage());
+            } finally {
+                DBUtil.closeConnection();
+            }
         }
 
         response.sendRedirect(request.getContextPath() + "/admin/resident?action=list");
@@ -122,10 +133,18 @@ public class AdminResidentServlet extends BaseServlet {
 
         String residentId = request.getParameter("id");
         if (residentId != null && !residentId.isEmpty()) {
-            // 先删除关联的住房关系
-            residentHousingDAO.deleteByResidentId(residentId);
-            // 再删除住户
-            residentDAO.delete(residentId);
+            // 事务保护：删除关联住房 + 删除住户必须在同一个事务中
+            try {
+                DBUtil.beginTransaction();
+                residentHousingDAO.deleteByResidentId(residentId);
+                residentDAO.delete(residentId);
+                DBUtil.commit();
+            } catch (Exception e) {
+                DBUtil.rollback();
+                throw new BusinessException("删除住户失败: " + e.getMessage());
+            } finally {
+                DBUtil.closeConnection();
+            }
         }
         response.sendRedirect(request.getContextPath() + "/admin/resident?action=list");
     }

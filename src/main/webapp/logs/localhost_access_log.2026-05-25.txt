@@ -1061,3 +1061,16 @@
 0:0:0:0:0:0:0:1 - - [25/May/2026:21:08:26 +0800] "GET /webapp/admin/property?action=list HTTP/1.1" 200 4737
 0:0:0:0:0:0:0:1 - - [25/May/2026:21:08:27 +0800] "GET /webapp/admin/water?action=index HTTP/1.1" 302 -
 0:0:0:0:0:0:0:1 - - [25/May/2026:21:08:28 +0800] "GET /webapp/admin/water?action=list HTTP/1.1" 200 3745
+0:0:0:0:0:0:0:1 - - [25/May/2026:22:43:14 +0800] "GET /webapp HTTP/1.1" 302 -
+0:0:0:0:0:0:0:1 - - [25/May/2026:22:43:14 +0800] "GET /webapp/ HTTP/1.1" 404 725
+0:0:0:0:0:0:0:1 - - [25/May/2026:22:43:14 +0800] "GET /favicon.ico HTTP/1.1" 404 649
+0:0:0:0:0:0:0:1 - - [25/May/2026:22:43:20 +0800] "GET /webapp/index.jsp HTTP/1.1" 302 -
+0:0:0:0:0:0:0:1 - - [25/May/2026:22:43:21 +0800] "GET /webapp/login.jsp HTTP/1.1" 200 2528
+0:0:0:0:0:0:0:1 - - [25/May/2026:22:43:29 +0800] "POST /webapp/login HTTP/1.1" 302 -
+0:0:0:0:0:0:0:1 - - [25/May/2026:22:43:30 +0800] "GET /webapp/admin/staff?action=list HTTP/1.1" 200 4837
+0:0:0:0:0:0:0:1 - - [25/May/2026:22:43:30 +0800] "GET /webapp/css/common.css HTTP/1.1" 304 -
+0:0:0:0:0:0:0:1 - - [25/May/2026:22:43:33 +0800] "GET /webapp/admin/worktype?action=list HTTP/1.1" 200 7140
+0:0:0:0:0:0:0:1 - - [25/May/2026:22:43:34 +0800] "GET /webapp/admin/shift?action=list HTTP/1.1" 200 3300
+0:0:0:0:0:0:0:1 - - [25/May/2026:22:43:35 +0800] "GET /webapp/admin/shift?action=list HTTP/1.1" 200 3300
+0:0:0:0:0:0:0:1 - - [25/May/2026:22:43:37 +0800] "GET /webapp/admin/worktype?action=list HTTP/1.1" 200 7140
+0:0:0:0:0:0:0:1 - - [25/May/2026:22:43:38 +0800] "GET /webapp/admin/staff?action=list HTTP/1.1" 200 4837

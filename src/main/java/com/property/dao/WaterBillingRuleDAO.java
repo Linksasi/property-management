@@ -1,6 +1,7 @@
 package com.property.dao;
 
 import com.property.entity.WaterBillingRule;
+import com.property.exception.DataAccessException;
 import com.property.util.DBUtil;
 
 import java.sql.*;
@@ -12,9 +13,6 @@ import java.util.List;
  */
 public class WaterBillingRuleDAO {
 
-    /**
-     * 查询所有计费规则
-     */
     public List<WaterBillingRule> findAll() {
         List<WaterBillingRule> list = new ArrayList<>();
         String sql = "SELECT rule_id, rule_name, base_price, pressure_price, pressure_floor, " +
@@ -30,14 +28,11 @@ public class WaterBillingRuleDAO {
                 list.add(rule);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询计费规则列表失败", e);
         }
         return list;
     }
 
-    /**
-     * 根据ID查询计费规则
-     */
     public WaterBillingRule findById(String ruleId) {
         String sql = "SELECT rule_id, rule_name, base_price, pressure_price, pressure_floor, " +
                      "tier1_threshold, tier1_multiplier, tier2_threshold, tier2_multiplier, " +
@@ -53,16 +48,12 @@ public class WaterBillingRuleDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询计费规则失败", e);
         }
         return null;
     }
 
-    /**
-     * 新增计费规则
-     */
     public boolean insert(WaterBillingRule rule) {
-        // 如果没有指定ID，自动生成
         if (rule.getRuleId() == null || rule.getRuleId().isEmpty()) {
             rule.setRuleId(generateNextId());
         }
@@ -88,14 +79,10 @@ public class WaterBillingRuleDAO {
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("插入计费规则失败", e);
         }
-        return false;
     }
 
-    /**
-     * 更新计费规则
-     */
     public boolean update(WaterBillingRule rule) {
         String sql = "UPDATE WaterBillingRule SET rule_name = ?, base_price = ?, pressure_price = ?, " +
                      "pressure_floor = ?, tier1_threshold = ?, tier1_multiplier = ?, tier2_threshold = ?, " +
@@ -118,14 +105,10 @@ public class WaterBillingRuleDAO {
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("更新计费规则失败", e);
         }
-        return false;
     }
 
-    /**
-     * 删除计费规则
-     */
     public boolean delete(String ruleId) {
         String sql = "DELETE FROM WaterBillingRule WHERE rule_id = ?";
 
@@ -135,14 +118,10 @@ public class WaterBillingRuleDAO {
             ps.setString(1, ruleId);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("删除计费规则失败", e);
         }
-        return false;
     }
 
-    /**
-     * 切换计费规则状态（启用/停用）
-     */
     public boolean toggleStatus(String ruleId) {
         String sql = "UPDATE WaterBillingRule SET status = CASE WHEN status = '生效' THEN '失效' ELSE '生效' END WHERE rule_id = ?";
 
@@ -152,14 +131,10 @@ public class WaterBillingRuleDAO {
             ps.setString(1, ruleId);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("切换计费规则状态失败", e);
         }
-        return false;
     }
 
-    /**
-     * 生成下一个规则ID（格式 RUL001）
-     */
     public String generateNextId() {
         String sql = "SELECT TOP 1 rule_id FROM WaterBillingRule ORDER BY rule_id DESC";
 
@@ -169,12 +144,11 @@ public class WaterBillingRuleDAO {
 
             if (rs.next()) {
                 String lastId = rs.getString("rule_id");
-                // 假设格式为 RUL + 数字，如 RUL001
                 int num = Integer.parseInt(lastId.substring(3));
                 return "RUL" + String.format("%03d", num + 1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("生成计费规则ID失败", e);
         }
         return "RUL001";
     }

@@ -1,6 +1,7 @@
 package com.property.dao;
 
 import com.property.entity.ParkingFeeRecord;
+import com.property.exception.DataAccessException;
 import com.property.util.DBUtil;
 import java.sql.*;
 import java.util.*;
@@ -20,7 +21,9 @@ public class ParkingFeeRecordDAO {
                     list.add(pf);
                 }
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            throw new DataAccessException("查询停车费记录失败", e);
+        }
         return list;
     }
 
@@ -36,7 +39,9 @@ public class ParkingFeeRecordDAO {
                     return pf;
                 }
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            throw new DataAccessException("查询停车费记录失败", e);
+        }
         return null;
     }
 
@@ -48,8 +53,9 @@ public class ParkingFeeRecordDAO {
             ps.setString(2, transactionNo);
             ps.setString(3, recordId);
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) { e.printStackTrace(); }
-        return false;
+        } catch (SQLException e) {
+            throw new DataAccessException("支付停车费失败", e);
+        }
     }
 
     public boolean insertBill(ParkingFeeRecord record) {
@@ -61,8 +67,9 @@ public class ParkingFeeRecordDAO {
             ps.setString(3, record.getMonth());
             ps.setDouble(4, record.getAmount());
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) { e.printStackTrace(); }
-        return false;
+        } catch (SQLException e) {
+            throw new DataAccessException("插入停车费记录失败", e);
+        }
     }
 
     public String generateRecordId() {
@@ -71,7 +78,9 @@ public class ParkingFeeRecordDAO {
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             if (rs.next()) return rs.getString(1);
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            throw new DataAccessException("生成停车费记录ID失败", e);
+        }
         return null;
     }
 

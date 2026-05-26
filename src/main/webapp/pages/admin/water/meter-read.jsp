@@ -59,13 +59,13 @@
                                     </td>
                                     <td>
                                         <input type="date" name="readDate" class="form-control form-control-sm"
-                                               value="${today}">
+                                               value="${today}" max="${today}">
                                     </td>
                                     <td class="usage-cell">
                                         <span class="usage-value">-</span>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-outline-primary btn-sm" onclick="fillSingle(this)">录入</button>
+                                        <button type="button" class="btn btn-primary btn-sm" onclick="submitRow(this)">录入</button>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -110,10 +110,11 @@ function calculateUsage(input) {
     }
 }
 
-function fillSingle(btn) {
+function submitRow(btn) {
     var row = btn.closest('tr');
     var currentReadInput = row.querySelector('input[name="currentRead"]');
     var readDateInput = row.querySelector('input[name="readDate"]');
+    var today = readDateInput.max;
 
     if (!currentReadInput.value) {
         alert('请先输入本次读数');
@@ -121,8 +122,58 @@ function fillSingle(btn) {
         return;
     }
 
-    calculateUsage(currentReadInput);
-    readDateInput.focus();
+    var lastRead = parseFloat(row.querySelector('input[name="lastRead"]').value) || 0;
+    var currentRead = parseFloat(currentReadInput.value) || 0;
+    if (currentRead < lastRead) {
+        alert('本次读数不能小于上次读数');
+        currentReadInput.focus();
+        return;
+    }
+
+    if (readDateInput.value && readDateInput.max && readDateInput.value > readDateInput.max) {
+        alert('抄表日期不能超过今天');
+        readDateInput.focus();
+        return;
+    }
+
+    // 禁用按钮防止重复提交
+    btn.disabled = true;
+    btn.textContent = '提交中...';
+
+    // 动态构建单行提交
+    var form = document.createElement('form');
+    form.method = 'post';
+    form.action = '${pageContext.request.contextPath}/admin/waterMeter';
+
+    var meterIdInput = row.querySelector('input[name="meterId"]');
+    if (meterIdInput && meterIdInput.value) {
+        var m = document.createElement('input');
+        m.type = 'hidden';
+        m.name = 'meterId';
+        m.value = meterIdInput.value;
+        form.appendChild(m);
+    }
+
+    var c = document.createElement('input');
+    c.type = 'hidden';
+    c.name = 'currentRead';
+    c.value = currentReadInput.value;
+    form.appendChild(c);
+
+    var d = document.createElement('input');
+    d.type = 'hidden';
+    d.name = 'readDate';
+    d.value = readDateInput.value;
+    form.appendChild(d);
+
+    var a = document.createElement('input');
+    a.type = 'hidden';
+    a.name = 'action';
+    a.value = 'saveReading';
+    form.appendChild(a);
+
+    document.body.appendChild(form);
+    form.submit();
 }
 </script>
 

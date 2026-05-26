@@ -1,6 +1,7 @@
 package com.property.dao;
 
 import com.property.entity.SystemUser;
+import com.property.exception.DataAccessException;
 import com.property.util.DBUtil;
 import org.mindrot.jbcrypt.BCrypt;
 import java.sql.*;
@@ -19,13 +20,16 @@ public class SystemUserDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     SystemUser user = mapRow(rs);
-                    // BCrypt 校验密码
                     if (BCrypt.checkpw(password, user.getPassword())) {
                         return user;
                     }
                 }
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            // 表不存在等底层错误不向上抛，返回 null 让上层给友好提示
+            System.err.println("[SystemUserDAO] 数据库访问异常: " + e.getMessage());
+            return null;
+        }
         return null;
     }
 
@@ -40,7 +44,9 @@ public class SystemUserDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return mapRow(rs);
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            throw new DataAccessException("查询用户失败", e);
+        }
         return null;
     }
 
@@ -52,7 +58,9 @@ public class SystemUserDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return mapRow(rs);
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            throw new DataAccessException("查询用户失败", e);
+        }
         return null;
     }
 
@@ -65,7 +73,9 @@ public class SystemUserDAO {
             while (rs.next()) {
                 list.add(mapRow(rs));
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            throw new DataAccessException("查询用户列表失败", e);
+        }
         return list;
     }
 
@@ -85,7 +95,9 @@ public class SystemUserDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next() && rs.getString(1) != null) return rs.getString(1);
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            throw new DataAccessException("生成ID失败", e);
+        }
         return prefix + "0001";
     }
 
@@ -98,15 +110,15 @@ public class SystemUserDAO {
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, userId);
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) { e.printStackTrace(); }
-        return false;
+        } catch (SQLException e) {
+            throw new DataAccessException("删除用户失败", e);
+        }
     }
 
     /**
      * 注册新用户（BCrypt 加密密码）
      */
     public boolean register(SystemUser user) {
-        // BCrypt 哈希密码
         String hashed = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
         user.setPassword(hashed);
 
@@ -120,8 +132,9 @@ public class SystemUserDAO {
             ps.setString(5, user.getRealName());
             ps.setString(6, user.getPhone());
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) { e.printStackTrace(); }
-        return false;
+        } catch (SQLException e) {
+            throw new DataAccessException("注册用户失败", e);
+        }
     }
 
     /**
@@ -138,8 +151,9 @@ public class SystemUserDAO {
             ps.setString(5, user.getRealName());
             ps.setString(6, user.getPhone());
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) { e.printStackTrace(); }
-        return false;
+        } catch (SQLException e) {
+            throw new DataAccessException("插入用户失败", e);
+        }
     }
 
     private SystemUser mapRow(ResultSet rs) throws SQLException {

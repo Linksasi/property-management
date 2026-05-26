@@ -12,11 +12,12 @@ import com.property.entity.Staff;
 import com.property.entity.Housing;
 import com.property.entity.ResidentHousing;
 import com.property.model.ExternalAdCompany;
+import com.property.exception.BusinessException;
+import com.property.util.DBUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
-import java.sql.SQLException;
 
 @WebServlet({"/login", "/logout", "/register"})
 public class LoginServlet extends HttpServlet {
@@ -130,11 +131,14 @@ public class LoginServlet extends HttpServlet {
             u.setRealName(name);
             u.setPhone(phone);
 
-            boolean userOk = userDAO.register(u);
             boolean detailOk = true;
             String detailError = "";
 
-            if (userOk) {
+            // 事务保护：创建账号 + 角色信息必须在同一个事务中
+            try {
+                DBUtil.beginTransaction();
+                userDAO.register(u);
+
                 if ("业主".equals(userType)) {
                     String checkInDate = req.getParameter("checkInDate");
                     String building = req.getParameter("building");
@@ -168,15 +172,13 @@ public class LoginServlet extends HttpServlet {
                             r.setPhone(phone != null ? phone : u.getPhone());
                             r.setIdCard(idCard != null && !idCard.isEmpty() ? idCard : "440000" + String.format("%012d", (long)(System.currentTimeMillis() % 1000000000000L)));
                             r.setCheckInDate(checkInDate != null && !checkInDate.isEmpty() ? checkInDate : new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()));
-                            detailOk = residentDAO.insert(r);
-                            if (detailOk) {
-                                ResidentHousing rh = new ResidentHousing();
-                                rh.setResidentId(r.getResidentId());
-                                rh.setHousingId(housing.getHousingId());
-                                rh.setStartDate(r.getCheckInDate());
-                                rh.setOwner(true);
-                                if (!residentHousingDAO.insert(rh)) detailOk = false;
-                            }
+                            residentDAO.insert(r);
+                            ResidentHousing rh = new ResidentHousing();
+                            rh.setResidentId(r.getResidentId());
+                            rh.setHousingId(housing.getHousingId());
+                            rh.setStartDate(r.getCheckInDate());
+                            rh.setOwner(true);
+                            residentHousingDAO.insert(rh);
                         } catch (NumberFormatException e) {
                             detailOk = false;
                             detailError = "面积或楼层格式不正确";
@@ -191,13 +193,7 @@ public class LoginServlet extends HttpServlet {
                     s.setIdCard(idCard != null && !idCard.isEmpty() ? idCard : "440000" + String.format("%012d", (long)(System.currentTimeMillis() % 1000000000000L)));
                     s.setAdmin(true);
                     s.setWorktypeId("WT007");
-                    try {
-                        detailOk = staffDAO.insert(s);
-                        if (!detailOk) detailError = "管理员信息写入失败";
-                    } catch (SQLException e) {
-                        detailOk = false;
-                        detailError = e.getMessage();
-                    }
+                    staffDAO.insert(s);
                 } else if ("维修员".equals(userType)) {
                     String workTypeId = req.getParameter("workTypeId");
                     Staff s = new Staff();
@@ -208,13 +204,7 @@ public class LoginServlet extends HttpServlet {
                     s.setIdCard(idCard != null && !idCard.isEmpty() ? idCard : "440000" + String.format("%012d", (long)(System.currentTimeMillis() % 1000000000000L)));
                     s.setAdmin(false);
                     s.setWorktypeId(workTypeId != null && !workTypeId.isEmpty() ? workTypeId : "WT001");
-                    try {
-                        detailOk = staffDAO.insert(s);
-                        if (!detailOk) detailError = "员工信息写入失败";
-                    } catch (SQLException e) {
-                        detailOk = false;
-                        detailError = e.getMessage();
-                    }
+                    staffDAO.insert(s);
                 } else if ("广告公司".equals(userType)) {
                     String companyName = req.getParameter("companyName");
                     if (companyName == null || companyName.trim().isEmpty()) {
@@ -227,26 +217,28 @@ public class LoginServlet extends HttpServlet {
                         ec.setCompanyName(companyName);
                         ec.setContact(name != null ? name : u.getRealName());
                         ec.setPhone(phone != null ? phone : u.getPhone());
-                        detailOk = companyDAO.insert(ec);
+                        companyDAO.insert(ec);
                     }
                 }
 
                 if (detailOk) {
-                    // 注册成功 → 自动登录
+                    DBUtil.commit();
                     loginUser(req, u);
                     redirectByRole(req, resp, u);
                     return;
                 } else {
-                    // 角色记录创建失败 → 删除已创建的 SystemUser，避免孤儿账号
-                    try { userDAO.delete(u.getUserId()); } catch (Exception ignored) {}
-                    req.setAttribute("error", detailError.isEmpty() ? "账号已创建，但详细信息保存失败，请联系管理员" : detailError);
+                    DBUtil.rollback();
+                    req.setAttribute("error", detailError.isEmpty() ? "账号创建失败，请稍后重试" : detailError);
                     forwardRegister(req, resp);
                     return;
                 }
-            } else {
-                req.setAttribute("error", "注册失败，请稍后重试");
+            } catch (Exception e) {
+                DBUtil.rollback();
+                req.setAttribute("error", "注册失败: " + e.getMessage());
                 forwardRegister(req, resp);
                 return;
+            } finally {
+                DBUtil.closeConnection();
             }
         }
 

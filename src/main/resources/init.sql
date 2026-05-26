@@ -169,7 +169,9 @@ CREATE TABLE PropertyStandard (
     standard_id VARCHAR(20) PRIMARY KEY,
     fee_type NVARCHAR(30) NOT NULL,
     unit_price DECIMAL(10,2) NOT NULL,
-    effective_date DATE NOT NULL
+    effective_date DATE NOT NULL,
+    status NVARCHAR(20) DEFAULT '生效',
+    created_at DATETIME DEFAULT GETDATE()
 );
 
 -- 15. PropertyFeeBatch（物业费批次）
@@ -186,11 +188,16 @@ CREATE TABLE PropertyFeeDetail (
     detail_id VARCHAR(20) PRIMARY KEY,
     batch_id VARCHAR(20),
     housing_id VARCHAR(20),
+    resident_id VARCHAR(20),
     standard_id VARCHAR(20),
+    area DECIMAL(10,2),
     amount DECIMAL(10,2) NOT NULL,
+    paid_amount DECIMAL(10,2) DEFAULT 0,
     status NVARCHAR(20) NOT NULL,
+    due_date DATE,
     create_date DATETIME DEFAULT GETDATE(),
-    FOREIGN KEY (batch_id) REFERENCES PropertyFeeBatch(batch_id),
+    paid_date DATETIME,
+FOREIGN KEY (batch_id) REFERENCES PropertyFeeBatch(batch_id),
     FOREIGN KEY (housing_id) REFERENCES Housing(housing_id),
     FOREIGN KEY (standard_id) REFERENCES PropertyStandard(standard_id)
 );
@@ -199,9 +206,12 @@ CREATE TABLE PropertyFeeDetail (
 CREATE TABLE PaymentOrder (
     order_id VARCHAR(20) PRIMARY KEY,
     detail_id VARCHAR(20),
-    pay_method NVARCHAR(20),
-    pay_time DATETIME,
+    order_no VARCHAR(50),
+    amount DECIMAL(10,2),
+    payment_method NVARCHAR(20),
     status NVARCHAR(20) NOT NULL,
+    create_time DATETIME DEFAULT GETDATE(),
+    pay_time DATETIME,
     FOREIGN KEY (detail_id) REFERENCES PropertyFeeDetail(detail_id)
 );
 
@@ -209,21 +219,31 @@ CREATE TABLE PaymentOrder (
 CREATE TABLE ElectronicVoucher (
     voucher_id VARCHAR(20) PRIMARY KEY,
     order_id VARCHAR(20),
-    user_id VARCHAR(20) NOT NULL,
+    resident_id VARCHAR(20),
+    housing_id VARCHAR(20),
     amount DECIMAL(10,2) NOT NULL,
+    payment_date DATETIME,
+    transaction_no VARCHAR(50),
     create_time DATETIME DEFAULT GETDATE(),
-    FOREIGN KEY (order_id) REFERENCES PaymentOrder(order_id)
+    FOREIGN KEY (order_id) REFERENCES PaymentOrder(order_id),
+    FOREIGN KEY (resident_id) REFERENCES Resident(resident_id),
+    FOREIGN KEY (housing_id) REFERENCES Housing(housing_id)
 );
 
 -- 19. PropertyFeeAppeal（费用申诉）
 CREATE TABLE PropertyFeeAppeal (
     appeal_id VARCHAR(20) PRIMARY KEY,
     detail_id VARCHAR(20),
-    user_id VARCHAR(20) NOT NULL,
+    resident_id VARCHAR(20),
     reason NVARCHAR(500) NOT NULL,
-    appeal_date DATETIME NOT NULL,
     status NVARCHAR(20) NOT NULL,
-    FOREIGN KEY (detail_id) REFERENCES PropertyFeeDetail(detail_id)
+    admin_id VARCHAR(20),
+    admin_reason NVARCHAR(200),
+    create_time DATETIME DEFAULT GETDATE(),
+    handle_time DATETIME,
+    FOREIGN KEY (detail_id) REFERENCES PropertyFeeDetail(detail_id),
+    FOREIGN KEY (resident_id) REFERENCES Resident(resident_id),
+    FOREIGN KEY (admin_id) REFERENCES Staff(staff_id)
 );
 
 -- 20. CollectionRecord（催缴记录）
@@ -245,33 +265,49 @@ CREATE TABLE CollectionRecord (
 CREATE TABLE WaterMeter (
     meter_id VARCHAR(20) PRIMARY KEY,
     housing_id VARCHAR(20),
-    current_read DECIMAL(10,2) NOT NULL,
-    last_read DECIMAL(10,2) NOT NULL,
-    update_date DATE NOT NULL,
+    install_date DATE,
+    initial_read DECIMAL(10,2) DEFAULT 0,
+    current_read DECIMAL(10,2) NOT NULL DEFAULT 0,
+    last_read DECIMAL(10,2) DEFAULT 0,
+    last_read_date DATE,
+    update_date DATE,
+    status NVARCHAR(20) DEFAULT N'正常',
     FOREIGN KEY (housing_id) REFERENCES Housing(housing_id)
 );
 
 -- 22. WaterBillingRule（水费阶梯规则）
 CREATE TABLE WaterBillingRule (
     rule_id VARCHAR(20) PRIMARY KEY,
+    rule_name NVARCHAR(50),
     base_price DECIMAL(10,2) NOT NULL,
-    boost_price DECIMAL(10,2) NOT NULL,
-    tier1_limit DECIMAL(10,2) NOT NULL,
-    tier2_limit DECIMAL(10,2) NOT NULL,
-    tier3_price DECIMAL(10,2) NOT NULL,
-    effective_date DATE NOT NULL
+    pressure_price DECIMAL(10,2),
+    pressure_floor INT,
+    tier1_threshold DECIMAL(10,2),
+    tier1_multiplier DECIMAL(10,2),
+    tier2_threshold DECIMAL(10,2),
+    tier2_multiplier DECIMAL(10,2),
+    effective_date DATE NOT NULL,
+    status NVARCHAR(20) DEFAULT '生效'
 );
 
 -- 23. WaterFeeBill（水费账单）
 CREATE TABLE WaterFeeBill (
     bill_id VARCHAR(20) PRIMARY KEY,
     meter_id VARCHAR(20),
+    resident_id VARCHAR(20),
     bill_month VARCHAR(7) NOT NULL,
+    last_read DECIMAL(10,2),
+    current_read DECIMAL(10,2),
     usage DECIMAL(10,2) NOT NULL,
+    unit_price DECIMAL(10,2),
     amount DECIMAL(10,2) NOT NULL,
+    paid_amount DECIMAL(10,2) DEFAULT 0,
     status NVARCHAR(20) NOT NULL,
+    due_date DATE,
     create_date DATETIME DEFAULT GETDATE(),
-    FOREIGN KEY (meter_id) REFERENCES WaterMeter(meter_id)
+    paid_date DATETIME,
+    FOREIGN KEY (meter_id) REFERENCES WaterMeter(meter_id),
+    FOREIGN KEY (resident_id) REFERENCES Resident(resident_id)
 );
 
 -- =============================================
@@ -379,10 +415,8 @@ CREATE INDEX IX_WaterFeeBill_meter ON WaterFeeBill(meter_id);
 CREATE INDEX IX_WaterFeeBill_month ON WaterFeeBill(bill_month);
 
 -- 维修相关索引
-CREATE INDEX IX_RepairRequest_resident ON RepairRequest(resident_id);
 CREATE INDEX IX_RepairRequest_housing ON RepairRequest(housing_id);
 CREATE INDEX IX_RepairRequest_status ON RepairRequest(status);
-CREATE INDEX IX_RepairRequest_create_time ON RepairRequest(create_time);
 CREATE INDEX IX_MaintenanceWorkOrder_request ON MaintenanceWorkOrder(request_id);
 CREATE INDEX IX_MaintenanceWorkOrder_staff ON MaintenanceWorkOrder(staff_id);
 CREATE INDEX IX_MaintenanceWorkOrder_status ON MaintenanceWorkOrder(status);

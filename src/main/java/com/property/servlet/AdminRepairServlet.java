@@ -2,10 +2,14 @@ package com.property.servlet;
 
 import com.property.dao.*;
 import com.property.entity.*;
+import com.property.exception.BusinessException;
+import com.property.util.DBUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet("/admin/repair")
@@ -26,7 +30,8 @@ public class AdminRepairServlet extends HttpServlet {
 
         SystemUser user = (SystemUser) req.getSession().getAttribute("currentUser");
 
-        switch (action) {
+        try {
+            switch (action) {
             case "list":
                 List<RepairRequest> list = requestDAO.findAll();
                 req.setAttribute("list", list);
@@ -64,16 +69,21 @@ public class AdminRepairServlet extends HttpServlet {
                 // 获取当前管理员对应的 staff_id
                 Staff adminStaff = staffDAO.findByUserId(user.getUserId());
                 String adminId = adminStaff != null ? adminStaff.getStaffId() : user.getUserId();
-                requestDAO.audit(requestId, approved, reason, adminId);
 
                 if (approved) {
                     MaintenanceWorkOrder wo = new MaintenanceWorkOrder();
-                    wo.setWorkOrderId(workOrderDAO.generateId());
+                    wo.setWorkOrderId(workOrderDAO.generateId()); // 先拿到ID，避免在事务中开新连接
                     wo.setRequestId(requestId);
                     wo.setStaffId(req.getParameter("staffId"));
-                    wo.setAdminId(user.getUserId());
+                    wo.setAdminId(adminId);
                     workOrderDAO.insert(wo);
                 }
+
+                boolean ok = requestDAO.audit(requestId, approved, reason, adminId);
+                if (!ok) {
+                    throw new BusinessException("审核操作失败");
+                }
+
                 resp.sendRedirect(req.getContextPath() + "/admin/repair?action=list");
                 break;
 
@@ -105,6 +115,10 @@ public class AdminRepairServlet extends HttpServlet {
 
             default:
                 resp.sendRedirect(req.getContextPath() + "/admin/repair?action=list");
+        }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            resp.sendRedirect(req.getContextPath() + "/admin/repair?action=list");
         }
     }
 }

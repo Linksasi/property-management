@@ -2,6 +2,7 @@ package com.property.dao;
 
 import com.property.entity.ParkingSpace;
 import com.property.entity.ParkingFeeRecord;
+import com.property.exception.DataAccessException;
 import com.property.util.DBUtil;
 import java.sql.*;
 import java.util.*;
@@ -50,7 +51,9 @@ public class ParkingSpaceDAO {
                     list.add(sp);
                 }
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            throw new DataAccessException("查询车位列表失败", e);
+        }
         return list;
     }
 
@@ -63,7 +66,9 @@ public class ParkingSpaceDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) list.add(mapRow(rs));
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            throw new DataAccessException("查询车位列表失败", e);
+        }
         return list;
     }
 
@@ -75,7 +80,9 @@ public class ParkingSpaceDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) list.add(mapRow(rs));
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            throw new DataAccessException("查询可用车位失败", e);
+        }
         return list;
     }
 
@@ -92,7 +99,9 @@ public class ParkingSpaceDAO {
                     return sp;
                 }
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            throw new DataAccessException("查询车位失败", e);
+        }
         return null;
     }
 
@@ -114,7 +123,9 @@ public class ParkingSpaceDAO {
                     list.add(r);
                 }
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            throw new DataAccessException("查询停车费记录失败", e);
+        }
         return list;
     }
 
@@ -125,8 +136,9 @@ public class ParkingSpaceDAO {
             ps.setString(1, residentId);
             ps.setString(2, spaceId);
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) { e.printStackTrace(); }
-        return false;
+        } catch (SQLException e) {
+            throw new DataAccessException("绑定车位失败", e);
+        }
     }
 
     public boolean unbind(String spaceId) {
@@ -135,8 +147,9 @@ public class ParkingSpaceDAO {
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, spaceId);
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) { e.printStackTrace(); }
-        return false;
+        } catch (SQLException e) {
+            throw new DataAccessException("解绑车位失败", e);
+        }
     }
 
     private ParkingSpace mapRow(ResultSet rs) throws SQLException {

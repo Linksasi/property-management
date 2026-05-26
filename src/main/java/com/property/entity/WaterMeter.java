@@ -18,6 +18,7 @@ public class WaterMeter {
     private String status;           // 正常/异常/停用
 
     // 关联的住房信息（用于列表显示）
+    private String residentId;       // 住户ID（通过housing关联）
     private String housingAddress;   // 住房地址
     private String building;
     private String unit;
@@ -54,6 +55,9 @@ public class WaterMeter {
 
     public String getHousingAddress() { return housingAddress; }
     public void setHousingAddress(String housingAddress) { this.housingAddress = housingAddress; }
+
+    public String getResidentId() { return residentId; }
+    public void setResidentId(String residentId) { this.residentId = residentId; }
 
     public String getBuilding() { return building; }
     public void setBuilding(String building) { this.building = building; }

@@ -1,5 +1,6 @@
 package com.property.dao;
 
+import com.property.exception.DataAccessException;
 import com.property.model.ShiftRecord;
 import com.property.util.DBUtil;
 
@@ -8,12 +9,12 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ShiftRecordDAO {
-    public List<ShiftRecord> getAll() throws SQLException {
+
+    public List<ShiftRecord> getAll() {
         List<ShiftRecord> list = new ArrayList<>();
         String sql = "SELECT sr.shift_id, sr.staff_id, sr.location_id, sr.shift_date, sr.shift_period, " +
                      "s.name as staff_name, wt.worktype_name, wl.location_name " +
@@ -28,11 +29,13 @@ public class ShiftRecordDAO {
             while (rs.next()) {
                 list.add(mapRow(rs));
             }
+        } catch (SQLException e) {
+            throw new DataAccessException("查询排班记录列表失败", e);
         }
         return list;
     }
 
-    public List<ShiftRecord> getByStaffId(String staffId) throws SQLException {
+    public List<ShiftRecord> getByStaffId(String staffId) {
         List<ShiftRecord> list = new ArrayList<>();
         String sql = "SELECT sr.shift_id, sr.staff_id, sr.location_id, sr.shift_date, sr.shift_period, " +
                      "s.name as staff_name, wt.worktype_name, wl.location_name " +
@@ -49,11 +52,13 @@ public class ShiftRecordDAO {
                     list.add(mapRow(rs));
                 }
             }
+        } catch (SQLException e) {
+            throw new DataAccessException("查询排班记录列表失败", e);
         }
         return list;
     }
 
-    public ShiftRecord getById(String id) throws SQLException {
+    public ShiftRecord getById(String id) {
         String sql = "SELECT sr.shift_id, sr.staff_id, sr.location_id, sr.shift_date, sr.shift_period, " +
                      "s.name as staff_name, wt.worktype_name, wl.location_name " +
                      "FROM ShiftRecord sr " +
@@ -69,11 +74,13 @@ public class ShiftRecordDAO {
                     return mapRow(rs);
                 }
             }
+        } catch (SQLException e) {
+            throw new DataAccessException("查询排班记录失败", e);
         }
         return null;
     }
 
-    public int add(ShiftRecord sr) throws SQLException {
+    public int add(ShiftRecord sr) {
         String newId = generateShiftId();
         sr.setShiftId(newId);
         String sql = "INSERT INTO ShiftRecord(shift_id, staff_id, location_id, shift_date, shift_period) VALUES(?, ?, ?, ?, ?)";
@@ -85,11 +92,13 @@ public class ShiftRecordDAO {
             stmt.setDate(4, new Date(sr.getShiftDate().getTime()));
             stmt.setString(5, sr.getShiftPeriod());
             stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new DataAccessException("添加排班记录失败", e);
         }
         return 1;
     }
 
-    private String generateShiftId() throws SQLException {
+    private String generateShiftId() {
         String sql = "SELECT TOP 1 shift_id FROM ShiftRecord ORDER BY shift_id DESC";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -100,11 +109,13 @@ public class ShiftRecordDAO {
                 int nextNum = Integer.parseInt(numStr) + 1;
                 return "SH" + String.format("%04d", nextNum);
             }
+        } catch (SQLException e) {
+            throw new DataAccessException("生成排班ID失败", e);
         }
         return "SH0001";
     }
 
-    public void update(ShiftRecord sr) throws SQLException {
+    public void update(ShiftRecord sr) {
         String sql = "UPDATE ShiftRecord SET staff_id = ?, location_id = ?, shift_date = ?, shift_period = ? WHERE shift_id = ?";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -114,15 +125,19 @@ public class ShiftRecordDAO {
             stmt.setString(4, sr.getShiftPeriod());
             stmt.setString(5, sr.getShiftId());
             stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new DataAccessException("更新排班记录失败", e);
         }
     }
 
-    public void delete(String id) throws SQLException {
+    public void delete(String id) {
         String sql = "DELETE FROM ShiftRecord WHERE shift_id = ?";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, id);
             stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new DataAccessException("删除排班记录失败", e);
         }
     }
 

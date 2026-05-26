@@ -1,6 +1,7 @@
 package com.property.dao;
 
 import com.property.entity.Housing;
+import com.property.exception.DataAccessException;
 import com.property.util.DBUtil;
 
 import java.sql.*;
@@ -28,7 +29,7 @@ public class HousingDAO {
                 list.add(h);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询住房列表失败", e);
         }
         return list;
     }
@@ -49,7 +50,7 @@ public class HousingDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询住房失败", e);
         }
         return null;
     }
@@ -59,7 +60,6 @@ public class HousingDAO {
      * 插入后回填 housingId
      */
     public boolean insert(Housing housing) {
-        // 如果没有指定ID，自动生成
         if (housing.getHousingId() == null || housing.getHousingId().isEmpty()) {
             housing.setHousingId(generateNextId());
         }
@@ -79,9 +79,8 @@ public class HousingDAO {
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("插入住房失败", e);
         }
-        return false;
     }
 
     /**
@@ -103,9 +102,8 @@ public class HousingDAO {
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("更新住房失败", e);
         }
-        return false;
     }
 
     /**
@@ -120,9 +118,8 @@ public class HousingDAO {
             ps.setString(1, housingId);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("删除住房失败", e);
         }
-        return false;
     }
 
     /**
@@ -137,12 +134,11 @@ public class HousingDAO {
 
             if (rs.next()) {
                 String lastId = rs.getString("housing_id");
-                // 假设格式为 H + 数字，如 H001
                 int num = Integer.parseInt(lastId.substring(1));
                 return "H" + String.format("%03d", num + 1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("生成住房ID失败", e);
         }
         return "H001";
     }
@@ -164,7 +160,7 @@ public class HousingDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询住房列表失败", e);
         }
         return list;
     }
@@ -184,7 +180,7 @@ public class HousingDAO {
                 list.add(rs.getString("building"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询楼栋列表失败", e);
         }
         return list;
     }
@@ -208,14 +204,13 @@ public class HousingDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询住房失败", e);
         }
         return null;
     }
 
     /**
      * 根据住户ID查询关联的住房列表
-     * 关联 ResidentHousing 表查询
      */
     public List<Housing> findByResidentId(String residentId) {
         List<Housing> list = new ArrayList<>();
@@ -235,7 +230,7 @@ public class HousingDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询住房列表失败", e);
         }
         return list;
     }

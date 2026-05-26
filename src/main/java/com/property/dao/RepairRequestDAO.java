@@ -1,7 +1,9 @@
 package com.property.dao;
 
 import com.property.entity.*;
+import com.property.exception.DataAccessException;
 import com.property.util.DBUtil;
+import com.property.util.FormatUtil;
 import java.sql.*;
 import java.util.*;
 
@@ -16,11 +18,13 @@ public class RepairRequestDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     RepairRequest rr = mapRow(rs);
-                    rr.setHousingAddress(rs.getString("building") + "号楼" + rs.getString("unit") + "单元" + rs.getString("room_no") + "室");
+                    rr.setHousingAddress(FormatUtil.formatAddressHao(rs.getString("building"), rs.getString("unit"), rs.getString("room_no")));
                     list.add(rr);
                 }
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            throw new DataAccessException("查询维修申请列表失败", e);
+        }
         return list;
     }
 
@@ -33,11 +37,13 @@ public class RepairRequestDAO {
                 while (rs.next()) {
                     RepairRequest rr = mapRow(rs);
                     rr.setResidentName(rs.getString("resident_name"));
-                    rr.setHousingAddress(rs.getString("building") + "号楼" + rs.getString("unit") + "单元" + rs.getString("room_no") + "室");
+                    rr.setHousingAddress(FormatUtil.formatAddressHao(rs.getString("building"), rs.getString("unit"), rs.getString("room_no")));
                     list.add(rr);
                 }
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            throw new DataAccessException("查询维修申请列表失败", e);
+        }
         return list;
     }
 
@@ -50,13 +56,15 @@ public class RepairRequestDAO {
                 if (rs.next()) {
                     RepairRequest rr = mapRow(rs);
                     rr.setResidentName(rs.getString("resident_name"));
-                    rr.setHousingAddress(rs.getString("building") + "号楼" + rs.getString("unit") + "单元" + rs.getString("room_no") + "室");
+                    rr.setHousingAddress(FormatUtil.formatAddressHao(rs.getString("building"), rs.getString("unit"), rs.getString("room_no")));
                     try { rr.setAdminName(rs.getString("admin_name")); } catch (SQLException e) {}
                     try { rr.setAdminPhone(rs.getString("admin_phone")); } catch (SQLException e) {}
                     return rr;
                 }
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            throw new DataAccessException("查询维修申请失败", e);
+        }
         return null;
     }
 
@@ -71,8 +79,9 @@ public class RepairRequestDAO {
             ps.setString(5, rr.getDescription());
             ps.setString(6, rr.getUrgency() != null ? rr.getUrgency() : "普通");
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) { e.printStackTrace(); }
-        return false;
+        } catch (SQLException e) {
+            throw new DataAccessException("插入维修申请失败", e);
+        }
     }
 
     public boolean cancel(String requestId) {
@@ -81,29 +90,42 @@ public class RepairRequestDAO {
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, requestId);
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) { e.printStackTrace(); }
-        return false;
+        } catch (SQLException e) {
+            throw new DataAccessException("取消维修申请失败", e);
+        }
     }
 
-    public boolean audit(String requestId, boolean approved, String reason, String adminId) {
-        if (approved) {
-            String sql = "UPDATE RepairRequest SET status=N'已派工' WHERE request_id=?";
-            try (Connection conn = DBUtil.getConnection();
-                 PreparedStatement ps = conn.prepareStatement(sql)) {
-                ps.setString(1, requestId);
-                return ps.executeUpdate() > 0;
-            } catch (SQLException e) { e.printStackTrace(); }
-        } else {
-            String sql = "UPDATE RepairRequest SET status=N'审核不通过', reject_reason=?, admin_id=? WHERE request_id=?";
-            try (Connection conn = DBUtil.getConnection();
-                 PreparedStatement ps = conn.prepareStatement(sql)) {
-                ps.setString(1, reason);
-                ps.setString(2, adminId);
-                ps.setString(3, requestId);
-                return ps.executeUpdate() > 0;
-            } catch (SQLException e) { e.printStackTrace(); }
+    public boolean audit(String requestId, boolean approved, String reason, String adminId) throws SQLException {
+        return audit(requestId, approved, reason, adminId, null);
+    }
+
+    public boolean audit(String requestId, boolean approved, String reason, String adminId, Connection externalConn) throws SQLException {
+        Connection conn = externalConn;
+        boolean needClose = false;
+        if (conn == null) {
+            conn = DBUtil.getConnection();
+            needClose = true;
         }
-        return false;
+        try {
+            if (approved) {
+                String sql = "UPDATE RepairRequest SET status=N'已派工', admin_id=? WHERE request_id=?";
+                try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                    ps.setString(1, adminId);
+                    ps.setString(2, requestId);
+                    return ps.executeUpdate() > 0;
+                }
+            } else {
+                String sql = "UPDATE RepairRequest SET status=N'审核不通过', reject_reason=?, admin_id=? WHERE request_id=?";
+                try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                    ps.setString(1, reason);
+                    ps.setString(2, adminId);
+                    ps.setString(3, requestId);
+                    return ps.executeUpdate() > 0;
+                }
+            }
+        } finally {
+            if (needClose) DBUtil.closeConnection();
+        }
     }
 
     public String generateId() {
@@ -112,7 +134,9 @@ public class RepairRequestDAO {
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             if (rs.next()) return rs.getString(1);
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            throw new DataAccessException("生成维修申请ID失败", e);
+        }
         return null;
     }
 

@@ -1,5 +1,6 @@
 package com.property.dao;
 
+import com.property.exception.DataAccessException;
 import com.property.model.ApprovalRecord;
 import com.property.util.DBUtil;
 
@@ -9,7 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ApprovalRecordDAO {
-    public ApprovalRecord getByAppId(String appId) throws SQLException {
+
+    public ApprovalRecord getByAppId(String appId) {
         String sql = "SELECT approval_id, app_id, approval_date, result, reject_reason FROM ApprovalRecord WHERE app_id = ?";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -25,11 +27,13 @@ public class ApprovalRecordDAO {
                     return ar;
                 }
             }
+        } catch (SQLException e) {
+            throw new DataAccessException("查询审批记录失败", e);
         }
         return null;
     }
 
-    public void add(ApprovalRecord ar) throws SQLException {
+    public void add(ApprovalRecord ar) {
         String sql = "INSERT INTO ApprovalRecord(approval_id, app_id, approval_date, result, reject_reason) VALUES(?, ?, ?, ?, ?)";
         try (Connection conn = DBUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -39,6 +43,8 @@ public class ApprovalRecordDAO {
             stmt.setString(4, ar.getApproveResult());
             stmt.setString(5, ar.getComments());
             stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new DataAccessException("添加审批记录失败", e);
         }
     }
 }

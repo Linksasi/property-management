@@ -1,5 +1,7 @@
 package com.property.servlet;
 
+import com.property.dao.ResidentDAO;
+import com.property.entity.Resident;
 import com.property.service.PropertyFeeDetailService;
 import com.property.model.PropertyFeeDetail;
 import jakarta.servlet.ServletException;
@@ -16,12 +18,22 @@ import java.util.List;
 public class OwnerPropertyServlet extends BaseServlet {
     
     private final PropertyFeeDetailService service = new PropertyFeeDetailService();
+    private final ResidentDAO residentDAO = new ResidentDAO();
     
     protected void list(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (!checkLogin(request, response)) return;
         
-        Object residentIdObj = request.getSession().getAttribute("userId");
-        String residentId = residentIdObj != null ? residentIdObj.toString() : null;
+        Object userIdObj = request.getSession().getAttribute("userId");
+        String systemUserId = userIdObj != null ? userIdObj.toString() : null;
+        
+        // 把 SystemUser ID 转成 Resident ID
+        String residentId = null;
+        if (systemUserId != null) {
+            Resident resident = residentDAO.findByUserId(systemUserId);
+            if (resident != null) {
+                residentId = resident.getResidentId();
+            }
+        }
         
         List<PropertyFeeDetail> list = service.findByResidentId(residentId);
         

@@ -1,6 +1,7 @@
 package com.property.dao;
 
 import com.property.entity.ParkingApply;
+import com.property.exception.DataAccessException;
 import com.property.util.DBUtil;
 import java.sql.*;
 import java.util.*;
@@ -20,7 +21,9 @@ public class ParkingApplyDAO {
                     list.add(pa);
                 }
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            throw new DataAccessException("查询车位申请列表失败", e);
+        }
         return list;
     }
 
@@ -33,8 +36,9 @@ public class ParkingApplyDAO {
             ps.setString(3, pa.getResidentId());
             ps.setInt(4, pa.getMonths());
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) { e.printStackTrace(); }
-        return false;
+        } catch (SQLException e) {
+            throw new DataAccessException("插入车位申请失败", e);
+        }
     }
 
     public boolean audit(String applyId, String adminId, boolean approved, String reason) {
@@ -47,8 +51,9 @@ public class ParkingApplyDAO {
             ps.setString(3, reason);
             ps.setString(4, applyId);
             return ps.executeUpdate() > 0;
-        } catch (SQLException e) { e.printStackTrace(); }
-        return false;
+        } catch (SQLException e) {
+            throw new DataAccessException("审核车位申请失败", e);
+        }
     }
 
     public ParkingApply findById(String applyId) {
@@ -64,7 +69,9 @@ public class ParkingApplyDAO {
                     return pa;
                 }
             }
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            throw new DataAccessException("查询车位申请失败", e);
+        }
         return null;
     }
 
@@ -74,7 +81,9 @@ public class ParkingApplyDAO {
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             if (rs.next()) return rs.getString(1);
-        } catch (SQLException e) { e.printStackTrace(); }
+        } catch (SQLException e) {
+            throw new DataAccessException("生成车位申请ID失败", e);
+        }
         return null;
     }
 

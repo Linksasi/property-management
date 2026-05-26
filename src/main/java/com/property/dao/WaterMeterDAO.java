@@ -1,6 +1,7 @@
 package com.property.dao;
 
 import com.property.entity.WaterMeter;
+import com.property.exception.DataAccessException;
 import com.property.util.DBUtil;
 
 import java.sql.*;
@@ -12,16 +13,14 @@ import java.util.List;
  */
 public class WaterMeterDAO {
 
-    /**
-     * 查询所有水表（关联住房信息）
-     */
     public List<WaterMeter> findAll() {
         List<WaterMeter> list = new ArrayList<>();
         String sql = "SELECT w.meter_id, w.housing_id, w.install_date, w.initial_read, " +
                      "w.current_read, w.last_read, w.last_read_date, w.update_date, w.status, " +
-                     "h.building, h.unit, h.room_no " +
+                     "h.building, h.unit, h.room_no, rh.resident_id " +
                      "FROM WaterMeter w " +
                      "LEFT JOIN Housing h ON w.housing_id = h.housing_id " +
+                     "LEFT JOIN ResidentHousing rh ON w.housing_id = rh.housing_id " +
                      "ORDER BY w.meter_id DESC";
 
         try (Connection conn = DBUtil.getConnection();
@@ -33,23 +32,22 @@ public class WaterMeterDAO {
                 meter.setBuilding(rs.getString("building"));
                 meter.setUnit(rs.getString("unit"));
                 meter.setRoomNo(rs.getString("room_no"));
+                meter.setResidentId(rs.getString("resident_id"));
                 list.add(meter);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询水表列表失败", e);
         }
         return list;
     }
 
-    /**
-     * 根据ID查询水表
-     */
     public WaterMeter findById(String meterId) {
         String sql = "SELECT w.meter_id, w.housing_id, w.install_date, w.initial_read, " +
                      "w.current_read, w.last_read, w.last_read_date, w.update_date, w.status, " +
-                     "h.building, h.unit, h.room_no " +
+                     "h.building, h.unit, h.room_no, rh.resident_id " +
                      "FROM WaterMeter w " +
                      "LEFT JOIN Housing h ON w.housing_id = h.housing_id " +
+                     "LEFT JOIN ResidentHousing rh ON w.housing_id = rh.housing_id " +
                      "WHERE w.meter_id = ?";
 
         try (Connection conn = DBUtil.getConnection();
@@ -62,25 +60,24 @@ public class WaterMeterDAO {
                     meter.setBuilding(rs.getString("building"));
                     meter.setUnit(rs.getString("unit"));
                     meter.setRoomNo(rs.getString("room_no"));
+                    meter.setResidentId(rs.getString("resident_id"));
                     return meter;
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询水表失败", e);
         }
         return null;
     }
 
-    /**
-     * 根据住房ID查询水表
-     */
     public List<WaterMeter> findByHousingId(String housingId) {
         List<WaterMeter> list = new ArrayList<>();
         String sql = "SELECT w.meter_id, w.housing_id, w.install_date, w.initial_read, " +
                      "w.current_read, w.last_read, w.last_read_date, w.update_date, w.status, " +
-                     "h.building, h.unit, h.room_no " +
+                     "h.building, h.unit, h.room_no, rh.resident_id " +
                      "FROM WaterMeter w " +
                      "LEFT JOIN Housing h ON w.housing_id = h.housing_id " +
+                     "LEFT JOIN ResidentHousing rh ON w.housing_id = rh.housing_id " +
                      "WHERE w.housing_id = ?";
 
         try (Connection conn = DBUtil.getConnection();
@@ -93,20 +90,17 @@ public class WaterMeterDAO {
                     meter.setBuilding(rs.getString("building"));
                     meter.setUnit(rs.getString("unit"));
                     meter.setRoomNo(rs.getString("room_no"));
+                    meter.setResidentId(rs.getString("resident_id"));
                     list.add(meter);
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("查询水表列表失败", e);
         }
         return list;
     }
 
-    /**
-     * 新增水表
-     */
     public boolean insert(WaterMeter meter) {
-        // 如果没有指定ID，自动生成
         if (meter.getMeterId() == null || meter.getMeterId().isEmpty()) {
             meter.setMeterId(generateNextId());
         }
@@ -130,14 +124,10 @@ public class WaterMeterDAO {
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("插入水表失败", e);
         }
-        return false;
     }
 
-    /**
-     * 更新水表
-     */
     public boolean update(WaterMeter meter) {
         String sql = "UPDATE WaterMeter SET housing_id = ?, install_date = ?, initial_read = ?, " +
                      "current_read = ?, last_read = ?, last_read_date = ?, update_date = ?, status = ? " +
@@ -158,14 +148,10 @@ public class WaterMeterDAO {
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("更新水表失败", e);
         }
-        return false;
     }
 
-    /**
-     * 删除水表
-     */
     public boolean delete(String meterId) {
         String sql = "DELETE FROM WaterMeter WHERE meter_id = ?";
 
@@ -175,14 +161,10 @@ public class WaterMeterDAO {
             ps.setString(1, meterId);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("删除水表失败", e);
         }
-        return false;
     }
 
-    /**
-     * 生成下一个水表ID（格式 MTR001）
-     */
     public String generateNextId() {
         String sql = "SELECT TOP 1 meter_id FROM WaterMeter ORDER BY meter_id DESC";
 
@@ -196,7 +178,7 @@ public class WaterMeterDAO {
                 return "MTR" + String.format("%03d", num + 1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException("生成水表ID失败", e);
         }
         return "MTR001";
     }
