@@ -23,13 +23,13 @@ public class StaffDAO {
         return null;
     }
 
-    public Staff insert(Staff s) {
+    public Staff insert(Staff s) throws SQLException {
         if (s.getStaffId() == null || s.getStaffId().isEmpty()) {
             s.setStaffId(generateId());
         }
         String sql = "INSERT INTO Staff (staff_id, user_id, name, phone, id_card, worktype_id, is_admin) VALUES (?,?,?,?,?,?,?)";
-        try (Connection conn = DBUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        Connection conn = DBUtil.getConnection();
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, s.getStaffId());
             ps.setString(2, s.getUserId());
             ps.setString(3, s.getName());

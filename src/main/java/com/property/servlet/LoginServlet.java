@@ -234,7 +234,13 @@ public class LoginServlet extends HttpServlet {
                 }
             } catch (Exception e) {
                 DBUtil.rollback();
-                req.setAttribute("error", "注册失败: " + e.getMessage());
+                String msg = e.getMessage();
+                Throwable cause = e;
+                while (cause.getCause() != null) cause = cause.getCause();
+                if (!cause.getMessage().equals(msg)) {
+                    msg = msg + "（原因：" + cause.getMessage() + "）";
+                }
+                req.setAttribute("error", "注册失败: " + msg);
                 forwardRegister(req, resp);
                 return;
             } finally {
